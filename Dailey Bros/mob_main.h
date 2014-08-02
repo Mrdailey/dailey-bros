@@ -57,10 +57,39 @@ class Goblins
         
         /** Begin Experience fuctions **/
         // award exp to character that defeated goblin
-        int reward_experience(){
+        int get_reward_experience(){
             return exp_reward;
         }
         
+        /** End of experience functions **/
+        
+        /** Begin hp functions **/
+        // set hp of goblin
+        void set_hp(int health) {
+            hp = health;
+        }
+        
+        // get hp of goblin class
+        int get_hp() {
+            return hp;
+        }
+        
+        /*
+         * Goblin is damaged
+         * 
+         * @return bool if goblin is killed
+         */
+        bool damage_hp(int dmg) {
+            hp = hp - dmg;
+            if (hp > 0) {
+                return false;
+            }
+            return true;
+        }
+        
+        /** End of hp functions **/
+        
+        /** **/
         
 };
 
