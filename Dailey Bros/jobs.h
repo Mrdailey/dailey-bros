@@ -97,7 +97,7 @@ class Warrior {
         }
         
         // warrior is damaged
-        int
+        
       
         
         

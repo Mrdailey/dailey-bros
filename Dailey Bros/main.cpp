@@ -18,8 +18,13 @@ using namespace std;
  * 
  */
 int main() {
+    Warrior Sedon;
+    Goblins Mob;
+    for(int i = 0; i<5; i++){
+        Sedon.increase_experience(Mob.reward_experience());
+    }
     
-    
+    cout << "Sedon has " << Sedon.get_experience() << " experience points!!!!!";
     
     
     return 0;

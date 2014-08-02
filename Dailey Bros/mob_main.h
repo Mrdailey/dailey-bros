@@ -29,13 +29,18 @@ using namespace std;
  */
 class Goblins
 {
+    struct ability{
+        string ability_name;
+        int damage;
+    };
+    
     private:
         string name;
         string description;
         int hp;
         int mp;
         int exp_reward;
-       
+        ability ind_ability[2];
     public:
         Goblins(){
             name = "Goblin";
@@ -44,6 +49,10 @@ class Goblins
             hp = 15;
             mp = 5;
             exp_reward = 1;
+            ind_ability[0].ability_name = "fire";
+            ind_ability[0].damage = 2;
+            ind_ability[1].ability_name = "goblin toss";
+            ind_ability[1].damage = 5;
         }
         
         /** Begin Experience fuctions **/
@@ -54,7 +63,4 @@ class Goblins
         
         
 };
->>>>>>> origin/beta
-
 #endif	/* MOB_MAIN_H */
-
