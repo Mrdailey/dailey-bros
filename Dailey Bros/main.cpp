@@ -10,7 +10,8 @@
 #include <iomanip>
 #include <iostream>
 #include <fstream>
-
+#include "mob_main.h"
+#include "jobs.h"
 using namespace std;
 
 /*

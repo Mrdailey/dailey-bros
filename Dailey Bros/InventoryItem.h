@@ -33,6 +33,7 @@ class InventoryItem
          description = "No description";
          cost = 0.0;
          units = 0;
+      
       }
 
       InventoryItem (string descr) // constructor function
