@@ -1,5 +1,5 @@
 /* 
- * File:   main.cpp
+ * File:   text_adventure.cpp
  * Author: Michael Ryan
  *
  * Created on August 1, 2014, 9:10 PM
@@ -10,7 +10,7 @@
 #include <iomanip>
 #include <iostream>
 #include <fstream>
-
+#include <allego.h>
 
 using namespace std;
 
