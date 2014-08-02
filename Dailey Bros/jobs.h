@@ -24,6 +24,13 @@ class job {
  * 
  */
 class Warrior {
+    
+    struct ability {
+        string ability_name;
+        int damage;        
+        int mp_cost;
+    };
+    
     private:
         string name;
         string description;
@@ -31,6 +38,7 @@ class Warrior {
         int mp;
         int experience;    
         int level;
+        ability ind_ability[2];
         
     public:
         Warrior() {
@@ -40,6 +48,12 @@ class Warrior {
             mp = 20.0;
             experience = 0;   
             level = 1;
+            ind_ability[0].ability_name = "Sword Attack!";
+            ind_ability[0].damage = 8;
+            ind_ability[0].mp_cost = 0;            
+            ind_ability[1].ability_name = "Head-bonk";
+            ind_ability[1].damage = 5; 
+            ind_ability[1].mp_cost = 5;
         }
         /** Begin Experience functions **/
         // add exp to warrior class upon defeating mob         
@@ -96,8 +110,40 @@ class Warrior {
             return hp;
         }
         
-        // warrior is damaged
-        int
+        /* warrior is damaged
+         *
+         * @return bool if warrior is killed
+         */
+        bool damage_hp(int dmg) {
+            hp = hp - dmg;
+            if (hp > 0) {
+                return false;
+            } 
+            return true;
+        }
+        
+        // warrior regains health upon level up or 
+        // end of fight.
+        void gain_hp(int health) {
+            hp += health;
+        }
+        
+        /** End of hp functions **/
+        
+        /** Begin mp functions **/
+        // set the mp
+        void set_mp (int magic) {
+            
+        }
+        
+        /** End of mp functions **/
+        
+        /** Begin Ability Functions **/
+        // get abilities for warrior
+        int get_warrior_ability() {
+            return ind_ability[0].damage;
+        }
+        
       
         
         
