@@ -6,14 +6,22 @@
  */
 
 #include <cstdlib>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <fstream>
+
 
 using namespace std;
 
 /*
  * 
  */
-int main(int argc, char** argv) {
-
+int main() {
+    
+    
+    
+    
     return 0;
 }
 
