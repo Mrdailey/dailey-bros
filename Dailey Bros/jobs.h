@@ -110,7 +110,6 @@ class Warrior {
             return hp;
         }
         
-<<<<<<< HEAD
         /* warrior is damaged
          *
          * @return bool if warrior is killed
@@ -144,9 +143,8 @@ class Warrior {
         int get_warrior_ability() {
             return ind_ability[0].damage;
         }
-=======
+
         // warrior is damaged
->>>>>>> fc60bfb8af49f910b8c5ec00d85ac1308da8d102
         
       
         

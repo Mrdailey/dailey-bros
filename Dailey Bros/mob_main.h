@@ -11,15 +11,6 @@
 #include <iomanip>
 #include <string>
 using namespace std;
-<<<<<<< HEAD
-
-
-// hey there crakka
-
-//asdfasdf
-
-=======
->>>>>>> origin/beta
 /*class MobType
 {
     private:
@@ -72,11 +63,5 @@ class Goblins
         
         
 };
-<<<<<<< HEAD
-
 
 #endif	/* MOB_MAIN_H */
-
-=======
-#endif	/* MOB_MAIN_H */
->>>>>>> fc60bfb8af49f910b8c5ec00d85ac1308da8d102
