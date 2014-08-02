@@ -11,13 +11,6 @@
 #include <iomanip>
 #include <string>
 using namespace std;
-
-<<<<<<< HEAD
-
-// hey there crakka
-
-//asdfasdf
-=======
 /*class MobType
 {
     private:
