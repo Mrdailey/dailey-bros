@@ -79,17 +79,23 @@ class Goblins
          * 
          * @return bool if goblin is killed
          */
-        bool damage_hp(int dmg) {
-            hp = hp - dmg;
+        string damage_hp(int dmg) {
+            bool dead = false;
+            string result;
+            hp = hp - dmg;            
             if (hp > 0) {
-                return false;
-            }
-            return true;
+                result = " has defeated the Goblin!";
+                return result;
+            } else {
+                dead = true;
+                result = " Goblin took " + dmg + " points of damage!";
+                return result;
+            }                                 
         }
         
         /** End of hp functions **/
         
-        /** **/
+        /** Begin **/
         
 };
 
