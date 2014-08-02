@@ -21,8 +21,9 @@ int main() {
     Warrior Sedon;
     Goblins Mob;
     
-    cout << "The Goblin mob has" << Mob.get_hp() << " hit points!" << endl;
-    Mob.damage_hp(Sedon.get_warrior_ability());
+    cout << "The Goblin mob has " << Mob.get_hp() << " hit points!" << endl;
+    cout << Mob.damage_hp(Sedon.get_warrior_ability()) << endl;
+    cout << Mob.damage_hp(Sedon.get_warrior_ability()) << endl;
     
     cout << "The Goblin mob now has " << Mob.get_hp() << " hit points!!" << endl;
     

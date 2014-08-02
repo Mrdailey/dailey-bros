@@ -83,12 +83,12 @@ class Goblins
             bool dead = false;
             string result;
             hp = hp - dmg;            
-            if (hp > 0) {
+            if (hp <= 0) {
                 result = " has defeated the Goblin!";
                 return result;
             } else {
                 dead = true;
-                result = " Goblin took " + dmg + " points of damage!";
+                result = " Goblin took  points of damage!";
                 return result;
             }                                 
         }
