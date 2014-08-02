@@ -10,7 +10,6 @@
 #include <iomanip>
 #include <iostream>
 #include <fstream>
-#include <allego.h>
 
 using namespace std;
 
