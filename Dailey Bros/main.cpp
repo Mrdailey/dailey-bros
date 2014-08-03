@@ -22,13 +22,12 @@ int main() {
     while (true) {               
         system("cls");
 	
-//        cout << "   *************************************************\n";
-//        cout << "   *                                               *\n";
-//        cout << "   *                TEXT ADVENTURER                *\n";
-//        cout << "   *                   Main Menu                   *\n";
-//        cout << "   *************************************************\n";        
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-        cout << "Main Menu\n\n";
+        cout << "   *************************************************\n";
+        cout << "   *                                               *\n";
+        cout << "   *                TEXT ADVENTURER                *\n";
+        cout << "   *                   Main Menu                   *\n";
+        cout << "   *************************************************\n";        
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);        
 
         for (int i = 0; i < 3; ++i) {
             if (i == pointer) {
@@ -78,4 +77,15 @@ int main() {
 }
 
 
-// cd Documents\GitHub\mrd\dailey-bros\Dailey Bros
+// 
+
+/**
+ Notes: To compile and run:
+ * 1. Navigate in your command prompt to the folder that contains the project files.
+ * 2. type "g++ main.cpp -o "name of executable"
+ * Ex.
+ * cd Documents\GitHub\mrd\dailey-bros\Dailey Bros
+ * g++ main.cpp -o main
+ * 3. Then type the name of the executable to run.
+ * 
+ */
