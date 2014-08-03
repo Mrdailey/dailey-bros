@@ -10,7 +10,10 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <stdlib.h>
 using namespace std;
+
+int get_rand(int min, int max);
 
 class job {
     private:
@@ -42,18 +45,22 @@ class Warrior {
         
     public:
         Warrior() {
-            name = "Sedon";
-            description = "The brave warrior hails from the ancient land of Clouds.";
-            hp =  100.0;
-            mp = 20.0;
+            name = "Warrior";
+            description = "\n The brave warrior uses his strength and weapon "
+                    "skills to massacre his foes.\n Select this job? Hit 'y' or 'n' and enter: ";
+            hp =  50;
+            mp = 20;
             experience = 0;   
-            level = 1;
-            ind_ability[0].ability_name = "Sword Attack!";
+            level = 1;            
+            ind_ability[0].ability_name = "Sword attack";
             ind_ability[0].damage = 8;
             ind_ability[0].mp_cost = 0;            
             ind_ability[1].ability_name = "Head-bonk";
-            ind_ability[1].damage = 5; 
-            ind_ability[1].mp_cost = 5;
+            ind_ability[1].damage = get_rand(5, 9);
+            ind_ability[1].mp_cost = 2;
+            ind_ability[2].ability_name = "Flee";
+            ind_ability[2].damage = 0;
+            ind_ability[2].mp_cost = 0;
         }
         /** Begin Experience functions **/
         // add exp to warrior class upon defeating mob         
@@ -80,7 +87,7 @@ class Warrior {
         }
         
         // returns the description of the warrior class       
-        string getDescription() {
+        string get_description() {
             return description;
         }
         /** End Description functions **/
@@ -93,7 +100,7 @@ class Warrior {
         
         // get the name for the warrior 
         // the user can change this name
-        string get_name(string n) {
+        string get_name() {
             return name;
         }
         
@@ -132,24 +139,57 @@ class Warrior {
         
         /** Begin mp functions **/
         // set the mp
-        void set_mp (int magic) {
-            
+        void set_mp(int magic) {
+            mp = magic;
+        }
+        
+        // return the current mp of the warrior
+        int get_mp() {
+            return mp;
+        }
+        
+        // increase mp on battle win
+        void increase_mp(int mp_gained) {
+            mp += mp_gained;
+        }
+        
+        // decrease mp on ability usage
+        void decrease_mp(int mp_cost) {
+            mp = mp - mp_cost;
         }
         
         /** End of mp functions **/
         
         /** Begin Ability Functions **/
-        // get abilities for warrior
-        int get_warrior_ability() {
-            return ind_ability[0].damage;
+        // get  property for the warrior's abilities
+//        ability get_job_ability(int choice) {
+//            return ind_ability[choice];
+//        }
+        // get name for ability
+        int get_ability_damage(int choice) {
+            return ind_ability[choice].damage;
         }
-
-        // warrior is damaged
         
-      
+        // get damage for ability
+        string get_ability_name(int choice) {
+            return ind_ability[choice].ability_name;
+        }
         
+        // get mana cost for ability
+        int get_ability_mp_cost(int choice) {
+            return ind_ability[choice].mp_cost;
+        }
         
-        
+        // Add ability upon level up
+//        int add_job_ability(int num_ability, int lvl) {
+//            if (lvl == 2) {
+//                ind_ability[num_ability] {
+//                    name = "Power Strike";
+//                    damage = get_rand(9, 13);
+//                    mp_cost = 5;
+//                };
+//            }                      
+//        }                                                      
                
 };
 

@@ -4,7 +4,9 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>begin_adventure.h</itemPath>
       <itemPath>jobs.h</itemPath>
+      <itemPath>keys.h</itemPath>
       <itemPath>mob_main.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -38,7 +40,11 @@
       </toolsSet>
       <compileType>
       </compileType>
+      <item path="begin_adventure.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="jobs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="keys.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -65,7 +71,11 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="begin_adventure.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="jobs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="keys.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

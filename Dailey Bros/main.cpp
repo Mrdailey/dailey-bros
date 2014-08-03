@@ -5,36 +5,77 @@
  * Created on August 1, 2014, 9:10 PM
  */
 
-#include <cstdlib>
-#include <cmath>
 #include <iomanip>
 #include <iostream>
-#include <fstream>
+#include <windows.h>
+#include <string>
 #include "mob_main.h"
 #include "jobs.h"
+#include "begin_adventure.h"
+
 using namespace std;
 
-/*
- * 
- */
 int main() {
-    Warrior Sedon;
-    Goblins Mob;
-    
-    cout << "The Goblin mob has " << Mob.get_hp() << " hit points!" << endl;
-    cout << Mob.damage_hp(Sedon.get_warrior_ability()) << endl;
-    cout << Mob.damage_hp(Sedon.get_warrior_ability()) << endl;
-    
-    cout << "The Goblin mob now has " << Mob.get_hp() << " hit points!!" << endl;
-    
-    for(int i = 0; i<5; i++){
-        Sedon.increase_experience(Mob.get_reward_experience());
-    }
-    
-    cout << "Sedon has " << Sedon.get_experience() << " experience points!!!!!";
-    
-    
-    
+
+    string Menu[3] = {"Start Game", "Continue", "Exit"};
+    int pointer = 0;
+    while (true) {               
+        system("cls");
+	
+//        cout << "   *************************************************\n";
+//        cout << "   *                                               *\n";
+//        cout << "   *                TEXT ADVENTURER                *\n";
+//        cout << "   *                   Main Menu                   *\n";
+//        cout << "   *************************************************\n";        
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+        cout << "Main Menu\n\n";
+
+        for (int i = 0; i < 3; ++i) {
+            if (i == pointer) {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
+                cout << Menu[i] << endl;
+            } else {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+                cout << Menu[i] << endl;
+            }
+        }        
+
+        while (true) {
+            if (GetAsyncKeyState(VK_UP) != 0) {
+                pointer -= 1;
+                if (pointer == -1) {
+                    pointer = 2;
+                }
+                break;                
+            } else if (GetAsyncKeyState(VK_DOWN) != 0) {
+                pointer += 1;
+                if (pointer == 3) {
+                    pointer = 0;
+                }    
+                break;
+            } else if (GetAsyncKeyState(VK_RETURN) != 0) {
+                    switch (pointer) {
+                        case 0: {                                                                             
+                            cout << "Start new game?";
+                            Sleep(1000);         
+                            begin_adventure(); 
+                        } break;
+                        case 1: {
+                            cout << "\n\n\nNo file saved...";
+                            Sleep(1000);                                                                    
+                        } break;
+                        case 2: {  
+                            cout << "\n\n\n Exit the game...";                            
+                            return 0;           
+                        } break;
+                    }
+                break;
+            } 
+        }
+        Sleep(150);        
+    }        
     return 0;
 }
 
+
+// cd Documents\GitHub\mrd\dailey-bros\Dailey Bros

@@ -32,6 +32,7 @@ class Goblins
     struct ability{
         string ability_name;
         int damage;
+        int mp_cost;
     };
     
     private:
@@ -44,21 +45,53 @@ class Goblins
     public:
         Goblins(){
             name = "Goblin";
-            description = "The nasty Goblin race is after many things, but most of all\
-                            is after your money!";
-            hp = 15;
+            description = "The nasty Goblin race is after many things, but most of all"
+                    " is after your money!\n";
+            hp = 20;
             mp = 5;
-            exp_reward = 1;
+            exp_reward = 5;
             ind_ability[0].ability_name = "fire";
             ind_ability[0].damage = 2;
+            ind_ability[0].mp_cost = 3;
             ind_ability[1].ability_name = "goblin toss";
             ind_ability[1].damage = 5;
+            ind_ability[1].mp_cost = 0;
         }
+        
+        /** Begin Description functions **/
+        // retrieve goblin description string
+        string get_description() {
+            return description;
+        }
+        
+        // set the goblin description string
+        void set_description(string desc) {
+            description = desc;
+        }
+        /** End of Description functions **/
+        
+        /** Begin Name functions **/
+        // retreive the name of the goblin class
+        string get_name() {
+            return name;
+        }
+        
+        // set the name of the goblin class
+        void set_name(string n) {
+            name = n;
+        }
+        
+        /** End of Name functions **/
         
         /** Begin Experience fuctions **/
         // award exp to character that defeated goblin
         int get_reward_experience(){
             return exp_reward;
+        }
+        
+        // set the exp reward of the goblin class
+        void set_reward_experience(int exp) {
+            exp_reward = exp;
         }
         
         /** End of experience functions **/
@@ -79,23 +112,27 @@ class Goblins
          * 
          * @return bool if goblin is killed
          */
-        string damage_hp(int dmg) {
-            bool dead = false;
-            string result;
-            hp = hp - dmg;            
+        bool damage_hp(int dmg) {
+            bool dead = false;            
+            hp = hp - dmg;     
+            cout << " took " << dmg << " points of damage!\n";
             if (hp <= 0) {
-                result = " has defeated the Goblin!";
-                return result;
+                dead = true;                
             } else {
-                dead = true;
-                result = " Goblin took  points of damage!";
-                return result;
-            }                                 
+                dead = false;                                
+            }                
+            return dead;
         }
         
         /** End of hp functions **/
         
-        /** Begin **/
+        /** Begin mp functions **/
+        // get the mp of the goblin class
+        int get_mp() {
+            return mp;            
+        }
+        
+        // 
         
 };
 
