@@ -18,7 +18,7 @@ using namespace std;
 int main() {
 
     string Menu[3] = {"Start Game", "Continue", "Exit"};
-    int pointer = 0;
+    int pointer = 1;
     while (true) {               
         system("cls");
 	

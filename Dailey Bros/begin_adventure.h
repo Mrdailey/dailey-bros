@@ -61,7 +61,7 @@ void begin_adventure() {
         cout << " (thief)\n";
         cout << " (paladin)\n";    
         cout << "  What job do you choose? If you want to select warrior, \n type \'warrior\' and hit \'enter\': ";
-        cin >> response; cin.ignore(80, '\n');
+        getline(cin, response);
     
         if (response == "warrior" || response == "Warrior") {                         
             Warrior job;    
