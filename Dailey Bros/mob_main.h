@@ -59,7 +59,7 @@ class Goblins
             ind_ability[0].damage = get_rand(4,7);
             ind_ability[0].mp_cost = 3;
             ind_ability[1].ability_name = "Goblin Toss";
-            ind_ability[1].damage = 5;
+            ind_ability[1].damage = get_rand(3,6);
             ind_ability[1].mp_cost = 0;
         }
         
@@ -145,6 +145,11 @@ class Goblins
         // decrease mp based on cost
         void decrease_mp(int mp_cost)  {
             mp = mp - mp_cost;
+        }
+        
+        // increase mp, if spell fails
+        void increase_mp(int mp_cost) {
+            mp+= mp_cost;
         }
         
         /** End of mp functions **/

@@ -29,9 +29,9 @@ void battle_menu(string name, string mob_name);
 void edge_of_map();
 
 Warrior job;
-Black Mage job_2;
-Thief job_3;
-Paladin job_4;
+//Black Mage job_2;
+//Thief job_3;
+//Paladin job_4;
 
 /**
  * The adventure will take place in this function!
@@ -257,11 +257,11 @@ void encounter_goblin(string name) {
  */
 void battle_menu(string name, string mob_name) {    
     system("cls");
-//    Warrior job;
     Goblins mob;    
     string choice;      
     string job_ability_name;
     int job_ability_dmg;
+    int ability_type;
     int job_ability_mp_cost;
     bool battle_over = false;    
     cout << " " << name << " has encountered a " << mob_name << "!!\n\n";
@@ -271,13 +271,13 @@ void battle_menu(string name, string mob_name) {
         bool error = false;
         bool tried_to_run = false;
         do {            
-            cout << " Current MP: " << job.get_mp() << "   Current HP: " << job.get_hp() << "\n";            
+            cout << " " << name << " MP: " << job.get_mp() << "    HP: " << job.get_hp(); 
+            cout << " " << mob_name << " MP: " << mob.get_mp() << "    HP: " << mob.get_hp() << "\n\n";
             for (int i = 1; i < 4; i++) {                
                 cout << "[" << i << "]  " << job.get_ability_name(i-1) << "\n";        
             }
             cout << "What will " << name << " do?\n";
-//            getline(cin, choice);  
-            cin >> choice; cin.ignore(80, '\n');
+            getline(cin, choice);              
             string ab_1, ab_2, ab_3;
             ab_1 = job.get_ability_name(0);
             ab_2 = job.get_ability_name(1);
@@ -334,13 +334,17 @@ void battle_menu(string name, string mob_name) {
                     cout << " " << name << " has defeated the " << mob_name << "!!\n";
                     job.increase_experience(mob.get_reward_experience());
                     cout << " " << name << " has received " << job.get_experience() << " experience points!\n";                
-                } else {
-                    int ability_type = get_rand(0, 1);
+                } else {                  
+                    ability_type = 0;
+                    mob.decrease_mp(mob.get_ability_mp_cost(ability_type));   
+                    if (mob.get_mp() < 0) {
+                        mob.increase_mp(mob.get_ability_mp_cost(ability_type));
+                        ability_type = 1;                            
+                    }                             
                     cout << " " << mob_name << " uses " << mob.get_ability_name(ability_type) << "!\n";
                     cout << " " << name;
                     game_over = job.damage_hp((mob.get_ability_damage(ability_type)));
-                    cout << " " << name << " now has " << job.get_hp() << " hit points!\n";
-                    mob.decrease_mp(mob.get_ability_mp_cost(ability_type));                    
+                    cout << " " << name << " now has " << job.get_hp() << " hit points!\n";                                                                                                                                         
                 }
                 if (game_over) {
                     cout << " " << name << " has been defeated by " << mob_name << "!!\n";
