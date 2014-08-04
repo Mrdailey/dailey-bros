@@ -10,7 +10,12 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <stdlib.h>
+
 using namespace std;
+
+int get_rand(int min, int max);
+
 /*class MobType
 {
     private:
@@ -46,14 +51,14 @@ class Goblins
         Goblins(){
             name = "Goblin";
             description = "The nasty Goblin race is after many things, but most of all"
-                    " is after your money!\n";
+                    " is after   your money!\n";
             hp = 20;
             mp = 5;
             exp_reward = 5;
-            ind_ability[0].ability_name = "fire";
-            ind_ability[0].damage = 2;
+            ind_ability[0].ability_name = "Fire";
+            ind_ability[0].damage = get_rand(4,7);
             ind_ability[0].mp_cost = 3;
-            ind_ability[1].ability_name = "goblin toss";
+            ind_ability[1].ability_name = "Goblin Toss";
             ind_ability[1].damage = 5;
             ind_ability[1].mp_cost = 0;
         }
@@ -132,8 +137,34 @@ class Goblins
             return mp;            
         }
         
-        // 
+        // set the mp of the goblin
+        void set_mp(int magic) {
+            mp = magic;
+        }
         
+        // decrease mp based on cost
+        void decrease_mp(int mp_cost)  {
+            mp = mp - mp_cost;
+        }
+        
+        /** End of mp functions **/
+        
+        /** Begin Ability functions **/
+        // get the ability name of the goblin
+        string get_ability_name(int choice) {
+            return ind_ability[choice].ability_name;
+        }
+        
+        // get the ability damage
+        int get_ability_damage(int choice) {
+            return ind_ability[choice].damage;            
+        }
+        
+        // get the ability's mana cost
+        int get_ability_mp_cost (int choice) {
+            return ind_ability[choice].mp_cost;
+        }
+        /** End of Ability functions **/
 };
 
 #endif	/* MOB_MAIN_H */

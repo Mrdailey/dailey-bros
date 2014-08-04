@@ -10,22 +10,11 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-#include <stdlib.h>
+
 using namespace std;
 
 int get_rand(int min, int max);
 
-class job {
-    private:
-        string job_name;        
-    public:
-        // idk
-};
-/*
- * The warrior class. Has initial hp 100, mp 20.
- * 
- * 
- */
 class Warrior {
     
     struct ability {
@@ -41,7 +30,7 @@ class Warrior {
         int mp;
         int experience;    
         int level;
-        ability ind_ability[2];
+        ability ind_ability[3];
         
     public:
         Warrior() {
@@ -62,6 +51,7 @@ class Warrior {
             ind_ability[2].damage = 0;
             ind_ability[2].mp_cost = 0;
         }
+        
         /** Begin Experience functions **/
         // add exp to warrior class upon defeating mob         
         void increase_experience(int exp_rewarded) {
@@ -122,11 +112,15 @@ class Warrior {
          * @return bool if warrior is killed
          */
         bool damage_hp(int dmg) {
-            hp = hp - dmg;
-            if (hp > 0) {
-                return false;
-            } 
-            return true;
+            bool dead = false;            
+            hp = hp - dmg;     
+            cout << " took " << dmg << " points of damage!\n";
+            if (hp <= 0) {
+                dead = true;                
+            } else {
+                dead = false;                                
+            }                
+            return dead;
         }
         
         // warrior regains health upon level up or 
@@ -161,10 +155,6 @@ class Warrior {
         /** End of mp functions **/
         
         /** Begin Ability Functions **/
-        // get  property for the warrior's abilities
-//        ability get_job_ability(int choice) {
-//            return ind_ability[choice];
-//        }
         // get name for ability
         int get_ability_damage(int choice) {
             return ind_ability[choice].damage;

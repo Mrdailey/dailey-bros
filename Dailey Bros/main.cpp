@@ -9,18 +9,24 @@
 #include <iostream>
 #include <windows.h>
 #include <string>
+#include <cstdlib>
+#include <ctime>
 #include "mob_main.h"
 #include "jobs.h"
 #include "begin_adventure.h"
 
 using namespace std;
 
+int get_rand(int min, int max);
+
 int main() {
 
     string Menu[3] = {"Start Game", "Continue", "Exit"};
     int pointer = 1;
+
+    begin_adventure();
     while (true) {               
-        system("cls");
+//        system("cls");
 	
         cout << "   *************************************************\n";
         cout << "   *                                               *\n";
@@ -50,13 +56,14 @@ int main() {
                 pointer += 1;
                 if (pointer == 3) {
                     pointer = 0;
-                }    
+                }        
                 break;
             } else if (GetAsyncKeyState(VK_RETURN) != 0) {
                     switch (pointer) {
                         case 0: {                                                                             
                             cout << "Start new game?";
-                            Sleep(1000);         
+                            Sleep(1000);        
+                            pause();
                             begin_adventure(); 
                         } break;
                         case 1: {
