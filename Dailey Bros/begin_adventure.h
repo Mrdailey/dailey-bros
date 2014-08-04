@@ -20,13 +20,16 @@
 
 using namespace std;
 bool game_over = false;
+bool game_active = true;
 void pause();
-void movement(string name);
+void movement();
 void draw_map(char maze[][25]);
 int get_rand(int min, int max);
-void encounter_goblin(string name);
-void battle_menu(string name, string mob_name); 
+bool encounter_goblin();
+void battle_menu(string mob_name); 
 void edge_of_map();
+void exit_game();
+void display_info();
 
 Warrior job;
 //Black Mage job_2;
@@ -41,101 +44,106 @@ Warrior job;
  * 
  * "The Forest of the Dark Things That Hurt Good People"
  *  
- */
+ */    
 void begin_adventure() {
 //    system("cls");  // clears the screen
-    
-    string name;
-    char decision;
-    string response;
-    bool selected_job = false;    
-    
-    cout << "\n\n Your adventure has begun. You find yourself awakened all"
-        " of a sudden from a     dream-like state.";        
-    pause();
-    cout << "\n\n Surrounded by a dense fog, "
-        "you gaze around, wandering where you could be...";    
-    pause();
-    cout << " Mysterious Old Man: Welcome to the Dark Forest. My name is Gidian.\n"
-            " Gidian: I\'m the Keeper of this forest. Well, that's what I like to call myself.\n"
-            " Gidian: No one else really does...What is your name anyways?\n";    
-    cout << "\n\n Enter your name: "; cin >> name; cin.ignore(80, '\n');
-    cout << " " << name << ": My name is " << name;
-    pause();
-    cout << " Gidian: That\'s quite an interesting name...\n"
-            " Gidian: You are probably wondering why you are here.\n"
-            " Gidian: Well, so am I young adventurer.";    
-    pause();
-    cout << " Gidian: If you stick with me, you\'ll be able to skip stones"
-            " in any \n country before no time.";
-    pause();
-    // This is the loop where the user picks their job Class to load.
-    while (!selected_job) {
-        bool error = true;
-        cout << " Gidian: So, " << name << ", what kind of adventurer are you?\n\n";         
-        cout << " (warrior)\n";
-        cout << " (black mage)\n";        
-        cout << " (thief)\n";
-        cout << " (paladin)\n\n";    
-        cout << " What job do you choose?\n"
-                " If you want to select warrior, type \'warrior\' and hit \'enter\': ";
-//        getline(cin, response);
-        cin >> response; cin.ignore(80, '\n');
-        // case of the user picking a warrior.
-        if (response == "warrior" || response == "Warrior") {                         
-                         
-            string description = job.get_description();
-            while (error) {
-                cout << "\n You have selected the warrior job." << description;
-                cin >> decision; cin.ignore(80, '\n');
-                cout << "\n";
-                // confirm decision
-                if (decision == 'Y' || decision == 'y') {
-                    cout << " " << name << ": I'm a warrior.\n";
-//                    job.set_name(name);
-                    selected_job = true;
-                    error = false;
-                    cout << " Gidian: Warrior\'s are like mindless beasts.\n"
-                            " Gidian: But like all beasts, they too can be tamed.\n";
-                    // changing your mind is okay!
-                } else if (decision == 'N' || decision == 'n') {
-                    cout << " " << name << ": On second thought, I am definitely not a warrior.\n";  
-                    pause();
-                    error = false;
-                    selected_job = false;
-                    // Users are idiots, so...
-                } else {
-                    selected_job = false;
-                    cout << " You can\'t seem to follow simple instructions, can you?\n";                        
-                }     
-            }    
+    while (game_active) {
+        string name;
+        char decision;
+        string response;
+        bool selected_job = false;    
+
+        cout << "\n\n Your adventure has begun. You find yourself awakened all"
+            " of a sudden from a     dream-like state.";        
+        pause();
+        cout << "\n\n Surrounded by a dense fog, "
+            "you gaze around, wandering where you could be...";    
+        pause();
+        cout << " Mysterious Old Man: Welcome to the Dark Forest. My name is Gidian.\n"
+                " Gidian: I\'m the Keeper of this forest. Well, that's what I like to call myself.\n"
+                " Gidian: No one else really does...What is your name anyways?\n";    
+        cout << "\n\n Enter your name: "; cin >> name; cin.ignore(80, '\n');
+        cout << " " << name << ": My name is " << name;
+        pause();
+        cout << " Gidian: That\'s quite an interesting name...\n"
+                " Gidian: You are probably wondering why you are here.\n"
+                " Gidian: Well, so am I young adventurer.";    
+        pause();
+        cout << " Gidian: If you stick with me, you\'ll be able to skip stones"
+                " in any \n country before no time.";
+        pause();
+        // This is the loop where the user picks their job Class to load.
+        while (!selected_job) {
+            bool error = true;
+            cout << " Gidian: So, " << name << ", what kind of adventurer are you?\n\n";         
+            cout << " (warrior)\n";
+            cout << " (black mage)\n";        
+            cout << " (thief)\n";
+            cout << " (paladin)\n\n";    
+            cout << " What job do you choose?\n"
+                    " If you want to select warrior, type \'warrior\' and hit \'enter\': ";
+    //        getline(cin, response);
+            cin >> response; cin.ignore(80, '\n');
+            // case of the user picking a warrior.
+            if (response == "warrior" || response == "Warrior") {                         
+
+                string description = job.get_description();
+                while (error) {
+                    cout << "\n You have selected the warrior job." << description;
+                    cin >> decision; cin.ignore(80, '\n');
+                    cout << "\n";
+                    // confirm decision
+                    if (decision == 'Y' || decision == 'y') {
+                        cout << " " << name << ": I'm a warrior.\n";
+                        job.set_name(name);
+                        selected_job = true;
+                        error = false;
+                        cout << " Gidian: Warrior\'s are like mindless beasts.\n"
+                                " Gidian: But like all beasts, they too can be tamed.\n";
+                        // changing your mind is okay!
+                    } else if (decision == 'N' || decision == 'n') {
+                        cout << " " << name << ": On second thought, I am definitely not a warrior.\n";  
+                        pause();
+                        error = false;
+                        selected_job = false;
+                        // Users are idiots, so...
+                    } else {
+                        selected_job = false;
+                        cout << " You can\'t seem to follow simple instructions, can you?\n";                        
+                    }     
+                }    
+            } 
+    //            case "black mage": case "Black Mage": {
+    //
+    //            } break;
+    //            case "thief": case "Thief": {
+    //
+    //            } break;
+    //            case "paladin": case "Paladin": {
+    //
+    //            } break;
+            // They did something wrong.
+            else {
+                cout << "That\'s not a real job!\n";
+                pause();
+            }
         } 
-//            case "black mage": case "Black Mage": {
-//
-//            } break;
-//            case "thief": case "Thief": {
-//
-//            } break;
-//            case "paladin": case "Paladin": {
-//
-//            } break;
-        // They did something wrong.
-        else {
-            cout << "That\'s not a real job!\n";
-            pause();
+        cout << "\n Gidian: There\'s a random goblin just standing over there.\n"
+                " Gidian: How convenient. I wonder if he wants to play?";
+        pause();        
+        cout << " Gidian: Well let\'s just see what you can do, " << name << ".\n";
+        // begin first encounter with the goblin class!
+        if (encounter_goblin() == true) { // if the character is dead, return false!
+            cout << " Gidian: Wow. You really showed that goblin how to bake bread!\n";
+            cout << " Gidian: So where do you want to go from here?\n\n"; 
+            cout << " " << name << " has " << job.get_experience() << "\n";        
+        } else {
+            exit_game();
         }
-    } 
-    cout << "\n Gidian: There\'s a random goblin just standing over there.\n"
-            " Gidian: How convenient. I wonder if he wants to play?";
-    pause();        
-    cout << " Gidian: Well let\'s just see what you can do, " << name << ".\n";
-    // begin first encounter with the goblin class!
-    encounter_goblin(name);
-    pause();    
-    cout << " Gidian: Wow. You really showed that goblin how to bake bread!\n";
-    cout << " Gidian: So where do you want to go from here?\n\n"; 
-    cout << " " << name << " has " << job.get_experience() << "\n";
-    movement(name); // begin exploring the forest!        
+
+        pause();    
+        movement(); // begin exploring the forest!        
+    }
 }
 
 /**
@@ -156,73 +164,84 @@ void draw_map(char maze[][25]) {
  * Handles character movement and navigation of the map.
  * @param string name The name of the user.
  */
-void movement(string name) {
+void movement() {
     string move_to_position;
+    string name = job.get_name();
     char maze[25][25] = {'-'}; // build a 2D array of 25 by 25 o's
     int row,col;
     for (row = 0; row < 25; row++) {
         for (col = 0; col < 25; col++) {            
-            maze[col][row] = '-';
+            maze[col][row] = '-';            
         }
     }
     maze[10][10] = 'X';
     int x_pos = 10, y_pos = 10;
     draw_map(maze); // initialize map with o's, X being the character.
-    while (true) { //  empty loops runs indefinitely        
-        getline(cin, move_to_position); // choose which direction to go
-//        cin >> move_to_position; cin.ignore(80, '\n');
-        if (move_to_position == "move up") { // character moves up
-            if (y_pos - 1 >= 0) { // character cannot leave the grid with this here
-//                system("cls"); // clear the screen upon movement
-                maze[x_pos][y_pos] = '-'; // erase X where the character was
-                y_pos--;
-                maze[x_pos][y_pos] = 'X'; // move the x to new value
-                draw_map(maze);
-                cout << " " << name << " journeys to the distant north of the \n"
-                        "\"Forest of the Dark Things That Hurt Good People.\"\n";                    
-            } else {
-                edge_of_map();
-            } 
-        } else if (move_to_position == "move down") { // character moves down
-            if (y_pos + 1 < 25) {
-//                system("cls");
-                maze[x_pos][y_pos] = '-';
-                y_pos++;
-                maze[x_pos][y_pos] = 'X';
-                draw_map(maze);
-                cout << " " << name << " journeys further south into the \n"
-                        "\"Forest of the Dark Things That Hurt Good People.\"\n";                    
-            } else {
-                edge_of_map();
-            }
-        } else if (move_to_position == "move left") { // character moves to the left
-            if (x_pos - 1 >= 0) {
-//                system("cls");
-                maze[x_pos][y_pos] = '-';
-                x_pos--;
-                maze[x_pos][y_pos] = 'X';
-                draw_map(maze);
-                cout << " " << name << " journeys far west into the \n"
-                        "\"Forest of the Dark Things That Hurt Good People.\"\n"; 
-            } else {
-                edge_of_map();
-            }
-        } else if (move_to_position == "move right") { // character moves to the right
-            if (x_pos +1 < 25) {                
-                maze[x_pos][y_pos] = '-';
-                x_pos++;
-                maze[x_pos][y_pos] = 'X';
-                draw_map(maze);
-                cout << " " << name << " journeys deeper east into the \n"
-                        "\"Forest of the Dark Things That Hurt Good People.\"\n"; 
-            } else {
-                edge_of_map();
-            }
-        } else { // character movement invalid
-            if (move_to_position != "") {
-                cout << " Gidian: Up, Down, Left, or right! Let's move " << name << "!!\n\n";
+    while (true) { //  empty loops runs indefinitely  
+        int spaces = 0;
+        for (spaces = 0; spaces <= 5; spaces++) {
+            cout << " Gidian: Where to next, " << name << "?\n";
+            cout << " Type in either \'move left\', move \'right\', etc...\n";
+            cout << " Press \'C\' to display character information.\n";
+            getline(cin, move_to_position); // choose which direction to go
+    //        cin >> move_to_position; cin.ignore(80, '\n');
+            if (move_to_position == "move up") { // character moves up
+                if (y_pos - 1 >= 0) { // character cannot leave the grid with this here
+                    system("cls"); // clear the screen upon movement
+                    maze[x_pos][y_pos] = 'o'; // erase X where the character was
+                    y_pos--;
+                    maze[x_pos][y_pos] = 'X'; // move the x to new value
+                    draw_map(maze);
+                    cout << " " << name << " journeys to the distant north of the \n"
+                            "\"Forest of the Dark Things That Hurt Good People.\"\n";                    
+                } else {
+                    edge_of_map();
+                } 
+            } else if (move_to_position == "move down") { // character moves down
+                if (y_pos + 1 < 25) {
+                    system("cls");
+                    maze[x_pos][y_pos] = 'o';
+                    y_pos++;
+                    maze[x_pos][y_pos] = 'X';
+                    draw_map(maze);
+                    cout << " " << name << " journeys further south into the \n"
+                            "\"Forest of the Dark Things That Hurt Good People.\"\n";                    
+                } else {
+                    edge_of_map();
+                }
+            } else if (move_to_position == "move left") { // character moves to the left
+                if (x_pos - 1 >= 0) {
+                    system("cls");
+                    maze[x_pos][y_pos] = 'o';
+                    x_pos--;
+                    maze[x_pos][y_pos] = 'X';
+                    draw_map(maze);
+                    cout << " " << name << " journeys far west into the \n"
+                            "\"Forest of the Dark Things That Hurt Good People.\"\n"; 
+                } else {
+                    edge_of_map();
+                }
+            } else if (move_to_position == "move right") { // character moves to the right
+                if (x_pos +1 < 25) {   
+                    system("cls");
+                    maze[x_pos][y_pos] = 'o'; // where the character was
+                    x_pos++;
+                    maze[x_pos][y_pos] = 'X';
+                    draw_map(maze);
+                    cout << " " << name << " journeys deeper east into the \n"
+                            "\"Forest of the Dark Things That Hurt Good People.\"\n"; 
+                } else {
+                    edge_of_map();
+                }
+            } else if (move_to_position == "C" || move_to_position == "c") {
+                display_info();
+            } else { // character movement invalid
+                if (move_to_position != "") {
+                    cout << " Gidian: Up, Down, Left, or right! Let's move " << name << "!!\n\n";
+                }
             }
         }
+        encounter_goblin();
     }
 }
 
@@ -239,14 +258,26 @@ void edge_of_map () {
  * 
  * @param string name The name the user has set.
  */
-void encounter_goblin(string name) {    
+bool encounter_goblin() {    
     pause();
+    string name = job.get_name();
     Goblins goblin;    
     string goblin_name = goblin.get_name();
     cout << " Gidian: " << goblin.get_description();
     cout << " " << name << ": I better do something... this old guy just yells random things.\n";
     // Initiate the battle !!!
-    battle_menu(name, goblin_name);
+    battle_menu(goblin_name);
+    if (job.get_hp() <= 0) {        
+        cout << "*********************************\n";
+        cout << "*                               *\n";
+        cout << "*                               *\n";
+        cout << "*       G A M E  O V E R        *\n";
+        cout << "*                               *\n";
+        cout << "*                               *\n";
+        cout << "*********************************\n";
+        return false;
+    }
+    return true;
 }    
 
 /**
@@ -255,9 +286,10 @@ void encounter_goblin(string name) {
  * @param string name The name the user has set.
  * @param string mob_name The name of the mob being fought.
  */
-void battle_menu(string name, string mob_name) {    
+void battle_menu(string mob_name) {    
     system("cls");
-    Goblins mob;    
+    Goblins mob;   
+    string name = job.get_name();
     string choice;      
     string job_ability_name;
     int job_ability_dmg;
@@ -297,6 +329,7 @@ void battle_menu(string name, string mob_name) {
                 job_ability_name = job.get_ability_name(1);
                 job_ability_dmg = job.get_ability_damage(1);
                 job_ability_mp_cost = job.get_ability_mp_cost(1);
+                job.decrease_mp(job_ability_mp_cost);
                 if (job.get_mp() < 0) { // test to see if the character has enough mana first
                     cout << " Not enough mana to use that ability!\n";
                     job.increase_mp(job_ability_mp_cost); // if not then reset the mp
@@ -308,8 +341,8 @@ void battle_menu(string name, string mob_name) {
                 tried_to_run = true;                
                 job_ability_name = job.get_ability_name(2);
                 cout << " " << name << " uses " << job_ability_name << "\n";                
-                int chance_of_fleeing = (get_rand(95, 100));
-                if (chance_of_fleeing == 100) {
+                int chance_of_fleeing = (get_rand(1, 100));
+                if (chance_of_fleeing >= 30) {
                     battle_over = true;
                     flee = true;
                     cout << " " << name << " has fled the battle!\n What a noob!\n";        
@@ -322,7 +355,7 @@ void battle_menu(string name, string mob_name) {
                 error = true;                   
                 cout << " Invalid option... Please just do what I tell you to.\n\n";            
             } 
-            // if the user DIDNT flee
+            // if the user DIDNT flee AND DIDNT try to run AND there was no ERROR with ability mp cost
             if (flee == false && tried_to_run == false && error == false) {
                 cout << " " << name << " uses " << job_ability_name << "!\n";
                 cout << " " << mob_name;
@@ -333,10 +366,11 @@ void battle_menu(string name, string mob_name) {
                 if (battle_over) {
                     cout << " " << name << " has defeated the " << mob_name << "!!\n";
                     job.increase_experience(mob.get_reward_experience());
-                    cout << " " << name << " has received " << job.get_experience() << " experience points!\n";                
+                    cout << " " << name << " has received " << mob.get_reward_experience() << " experience points!\n";                
                 } else {                  
-                    ability_type = 0;
+                    ability_type = 0;// always uses fire unless out of mana
                     mob.decrease_mp(mob.get_ability_mp_cost(ability_type));   
+                    // if the goblin doesnt have enough mp for fire, use other ability
                     if (mob.get_mp() < 0) {
                         mob.increase_mp(mob.get_ability_mp_cost(ability_type));
                         ability_type = 1;                            
@@ -353,9 +387,32 @@ void battle_menu(string name, string mob_name) {
             }              
         } while (error); // end do while loop
     }  // end while (!battle_over) loop 
-//    system("cls");
+    system("cls");
 } // end of function
+
+// Gives information on character while exploring
+void display_info() {
+    string name = job.get_name();
+    cout << "                   " << name << "\n";
+    cout << " _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n";
+    cout << "  HP       : " << job.get_hp() << "\n";
+    cout << "  MP       : " << job.get_mp() << "\n";
+    cout << "  EXP      : " << job.get_experience() << "\n";
+    cout << "  LEVEL    : " << job.get_level() << "\n";
+    cout << "  JOB      : " << job.get_job() << "\n";
+    cout << "  ABILITIES: \n\n";     
+    cout << "  " << job.get_ability_name(0) << "          " << job.get_ability_name(1) << "\n";
+    cout << "  _____________       _____________\n";
+    cout << "  Damage : " << job.get_ability_damage(0) << "          Damage : " << job.get_ability_damage(1) << "\n";
+    cout << "  MP COST: " << job.get_ability_mp_cost(0) << "          MP_COST: " << job.get_ability_mp_cost(1) << "\n\n";        
     
+    cout << "  " << job.get_ability_name(2) << "\n";
+    cout << " ____________\n";
+    cout << "  Damage : " << job.get_ability_damage(2) << "\n";
+    cout << "  MP Cost: " << job.get_ability_damage(2) << "\n";
+    cout << " _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _";
+    pause();
+}
     
     
     
@@ -383,6 +440,9 @@ int get_rand(int min, int max){
     return(rand()% (max - min) + min); 
 } 
 
+void exit_game() {    
+    game_active = false;
+}
 
 #endif	/* BEGIN_ADVENTURE_H */
 

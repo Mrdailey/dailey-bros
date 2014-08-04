@@ -25,6 +25,7 @@ class Warrior {
     
     private:
         string name;
+        string job;
         string description;
         int hp;
         int mp;
@@ -34,7 +35,8 @@ class Warrior {
         
     public:
         Warrior() {
-            name = "Warrior";
+            name = "";
+            job = "Warrior";
             description = "\n The brave warrior uses his strength and weapon "
                     "skills to massacre his foes.\n Select this job? Hit 'y' or 'n' and enter: ";
             hp =  50;
@@ -52,6 +54,31 @@ class Warrior {
             ind_ability[2].mp_cost = 0;
         }
         
+        /** Begin name functions **/
+        // set the name of the warrior class
+        void set_name(string n) {
+            name = n;
+        }
+        
+        // get the name for the warrior 
+        // the user can change this name
+        string get_name() {
+            return name;
+        }        
+        /** End name functions **/
+        
+        /** Begin Job functions **/ 
+        // get the job title
+        string get_job() {
+            return job;
+        }
+        
+        // set the job title
+        void set_job(string s) {
+            job = s;
+        }
+        /** End of Job functions **/
+        
         /** Begin Experience functions **/
         // add exp to warrior class upon defeating mob         
         void increase_experience(int exp_rewarded) {
@@ -66,11 +93,22 @@ class Warrior {
         // gets the current exp the warrior has attained.
         int get_experience() {
             return experience;
+        }                
+        /** End experience functions **/
+       
+        /** Begin Level functions **/
+        // get the current level
+        int get_level() {
+            return level;
+        }
+        
+        // set the level of the character
+        void set_level(int lvl) {
+            level = lvl;
         }        
+        /** End of Level functions **/
         
-       /** End experience functions **/
-        
-       /** Begin Description functions **/ 
+        /** Begin Description functions **/ 
         // set the description of the warrior
         void set_description(string desc) {
             description = desc;
@@ -80,21 +118,7 @@ class Warrior {
         string get_description() {
             return description;
         }
-        /** End Description functions **/
-        
-        /** Begin name functions **/
-        // set the name of the warrior class
-        void set_name(string n) {
-            name = n;
-        }
-        
-        // get the name for the warrior 
-        // the user can change this name
-        string get_name() {
-            return name;
-        }
-        
-        /** End name functions **/
+        /** End Description functions **/        
         
         /** Begin hp functions **/
         // set the hp of the warrior
@@ -107,10 +131,7 @@ class Warrior {
             return hp;
         }
         
-        /* warrior is damaged
-         *
-         * @return bool if warrior is killed
-         */
+        // warrior is damaged; @return bool if warrior is killed        
         bool damage_hp(int dmg) {
             bool dead = false;            
             hp = hp - dmg;     
@@ -127,8 +148,7 @@ class Warrior {
         // end of fight.
         void gain_hp(int health) {
             hp += health;
-        }
-        
+        }        
         /** End of hp functions **/
         
         /** Begin mp functions **/
