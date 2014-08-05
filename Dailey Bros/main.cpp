@@ -22,7 +22,7 @@ int get_rand(int min, int max);
 int main() {
 
     string Menu[3] = {"Start Game", "Continue", "Exit"};
-    int pointer = 0;
+    int pointer = 1;
 
 //    begin_adventure();
     while (true) {               

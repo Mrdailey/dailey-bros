@@ -15,14 +15,17 @@ using namespace std;
 
 int get_rand(int min, int max);
 
-class Warrior {
-    
-    struct ability {
-        string ability_name;
-        int damage;        
-        int mp_cost;
-    };
-    
+struct ability {
+    string ability_name;
+    int damage;        
+    int mp_cost;
+    string ability_info;
+};
+
+typedef ability ab;
+
+class Jobs {
+      
     private:
         string name;
         string job;
@@ -31,36 +34,125 @@ class Warrior {
         int mp;
         int experience;    
         int level;
-        ability ind_ability[3];
+        ab ind_ability[3];
         
     public:
-        Warrior() {
+        Jobs() {
             name = "";
-            job = "Warrior";
-            description = "\n The brave warrior uses his strength and weapon "
-                    "skills to massacre his foes.\n Select this job? Hit 'y' or 'n' and enter: ";
-            hp =  50;
-            mp = 20;
-            experience = 0;   
-            level = 1;            
-            ind_ability[0].ability_name = "Sword attack";
-            ind_ability[0].damage = 8;
-            ind_ability[0].mp_cost = 0;            
-            ind_ability[1].ability_name = "Head-bonk";
-            ind_ability[1].damage = get_rand(5, 9);
-            ind_ability[1].mp_cost = 2;
-            ind_ability[2].ability_name = "Flee";
+            job = "";
+            description = "";
+            hp = 0;
+            mp = 0;
+            experience = 0;
+            level = 0;
+            ind_ability[0].ability_name = "";
+            ind_ability[0].damage = 0;
+            ind_ability[0].mp_cost = 0;
+            ind_ability[0].ability_info = "";
+            ind_ability[1].ability_name = "";
+            ind_ability[1].damage = 0;
+            ind_ability[1].mp_cost = 0;
+            ind_ability[1].ability_info = "";
+            ind_ability[2].ability_name = "";
             ind_ability[2].damage = 0;
             ind_ability[2].mp_cost = 0;
+            ind_ability[2].ability_info = "";
         }
-        
+        Jobs(string job_type) {
+            if (job_type == "Warrior") {
+                name = "";
+                job = "Warrior";
+                description = "\n The brave warrior uses his strength and weapon "
+                        "skills to massacre his foes.\n Select this job? Hit 'y' or 'n' and enter: ";
+                hp =  50;
+                mp = 20;
+                experience = 0;   
+                level = 1;            
+                ind_ability[0].ability_name = "Sword Attack";
+                ind_ability[0].damage = 8;
+                ind_ability[0].mp_cost = 0;            
+                ind_ability[0].ability_info = "A strong basic sword attack.";
+                ind_ability[1].ability_name = "Head-bonk";
+                ind_ability[1].damage = get_rand(5, 9);
+                ind_ability[1].mp_cost = 2;
+                ind_ability[1].ability_info = "A strong head bash. Ouch.";
+                ind_ability[2].ability_name = "Flee";
+                ind_ability[2].damage = 0;
+                ind_ability[2].mp_cost = 0;
+                ind_ability[2].ability_info = "Run from the battle.";
+            } else if (job_type == "Black Mage") {
+                name = "";
+                job = "Black Mage";
+                description = "\n The powerful black mage unleashes spells to devastate his foes.\n"
+                        " Select this job? Hit 'y' or 'n' and 'enter': ";
+                hp = 40;
+                mp = 40;
+                experience = 0;
+                level = 1;
+                ind_ability[0].ability_name = "Surge";
+                ind_ability[0].damage = get_rand(8,12);
+                ind_ability[0].mp_cost = 5;
+                ind_ability[0].ability_info = "Releases a powerful non-elemental burst of energy.";
+                ind_ability[1].ability_name = "Staff-yack";
+                ind_ability[1].damage = get_rand(3,5);
+                ind_ability[1].mp_cost = 0;
+                ind_ability[1].ability_info = "A forceful swing of the staff oughta do the trick.";
+                ind_ability[2].ability_name = "Flee";
+                ind_ability[2].damage = 0;
+                ind_ability[2].mp_cost = 0;
+                ind_ability[2].ability_info = "Run from the battle.";                
+            } else if (job_type == "Thief") {
+                name = "";
+                job = "Thief";
+                description = "\n The agile thief uses his cunning and agility to overcome his foes.\n"
+                        " Select this job? Hit 'y' or 'n' and 'enter': ";
+                hp = 44;
+                mp = 22;
+                experience = 0;
+                level = 1;
+                ind_ability[0].ability_name = "Double Stab-jab";
+                ind_ability[0].damage = get_rand(4,12);
+                ind_ability[0].mp_cost = 3;
+                ind_ability[0].ability_info = "A sudden two strikes that can be lethal.";
+                ind_ability[1].ability_name = "Stealth";
+                ind_ability[1].damage = 0;
+                ind_ability[1].mp_cost = 0;
+                ind_ability[1].ability_info = "Hide from sight and increase the damage of the next attack.";
+                ind_ability[2].ability_name = "Flee";
+                ind_ability[2].damage = 0;
+                ind_ability[2].mp_cost = 0;
+                ind_ability[2].ability_info = "Run from the battle.";
+            } else {
+                name = "";
+                job = "Paladin";
+                description = "\n The noble paladin is a master of both weaponry and holy magic.\n"
+                        " Select this job? Hit 'y' or 'n' and 'enter': ";
+                hp = 50;
+                mp = 25;
+                experience = 0;
+                level = 1;
+                ind_ability[0].ability_name = "Holy Strike";
+                ind_ability[0].damage = 8;
+                ind_ability[0].mp_cost = 0;
+                ind_ability[0].ability_info = "A magical strike that deals consistent damage.";
+                ind_ability[1].ability_name = "Atonement";
+                ind_ability[1].damage = get_rand(5,10);
+                ind_ability[1].mp_cost = 3;
+                ind_ability[1].ability_info = "Channels holy energy into a blade to damage enemies.";
+                ind_ability[2].ability_name = "Flee";
+                ind_ability[2].damage = 0;
+                ind_ability[2].mp_cost = 0;
+                ind_ability[2].ability_info = "Run from the battle.";                  
+            }
+        }              
+
         /** Begin name functions **/
-        // set the name of the warrior class
+        // set the name of the job class
         void set_name(string n) {
             name = n;
         }
         
-        // get the name for the warrior 
+        // get the name for the job 
         // the user can change this name
         string get_name() {
             return name;
@@ -80,17 +172,17 @@ class Warrior {
         /** End of Job functions **/
         
         /** Begin Experience functions **/
-        // add exp to warrior class upon defeating mob         
+        // add exp to job class upon defeating mob         
         void increase_experience(int exp_rewarded) {
             experience += exp_rewarded;
         }
         
-        // set exp to warrior class
+        // set exp to job class
         void set_experience (double exp) {
             experience = exp;
         }
         
-        // gets the current exp the warrior has attained.
+        // gets the current exp the job has attained.
         int get_experience() {
             return experience;
         }                
@@ -109,29 +201,29 @@ class Warrior {
         /** End of Level functions **/
         
         /** Begin Description functions **/ 
-        // set the description of the warrior
+        // set the description of the job
         void set_description(string desc) {
             description = desc;
         }
         
-        // returns the description of the warrior class       
+        // returns the description of the job class       
         string get_description() {
             return description;
         }
         /** End Description functions **/        
         
         /** Begin hp functions **/
-        // set the hp of the warrior
+        // set the hp of the job
         void set_hp(int health) {
             hp = health;
         }
         
-        // get the hp of the warrior
+        // get the hp of the job
         int get_hp() {
             return hp;
         }
         
-        // warrior is damaged; @return bool if warrior is killed        
+        // job is damaged; @return bool if job is killed        
         bool damage_hp(int dmg) {
             bool dead = false;            
             hp = hp - dmg;     
@@ -144,7 +236,7 @@ class Warrior {
             return dead;
         }
         
-        // warrior regains health upon level up or 
+        // job regains health upon level up or 
         // end of fight.
         void gain_hp(int health) {
             hp += health;
@@ -157,7 +249,7 @@ class Warrior {
             mp = magic;
         }
         
-        // return the current mp of the warrior
+        // return the current mp of the job
         int get_mp() {
             return mp;
         }
@@ -190,6 +282,10 @@ class Warrior {
             return ind_ability[choice].mp_cost;
         }
         
+        // get ability info
+        string get_ability_info(int choice) {
+            return ind_ability[choice].ability_info;
+        }
         // Add ability upon level up
 //        int add_job_ability(int num_ability, int lvl) {
 //            if (lvl == 2) {
@@ -203,18 +299,77 @@ class Warrior {
                
 };
 
-class BlackMage {
+class Warrior : public Jobs {
     
+    private:
+        string name;
+        string job;
+        string description;
+        int hp;
+        int mp;
+        int experience;    
+        int level;
+        ab ind_ability[3];
+        
+    public:
+        Warrior() : Jobs("Warrior") {
+
+        }
 };
 
-class Thief {
+class BlackMage : public Jobs {
     
+    private:
+        string name;
+        string job;
+        string description;
+        int hp;
+        int mp;
+        int experience;    
+        int level;
+        ab ind_ability[3];
+        
+    public:
+        BlackMage() : Jobs("Black Mage") {
+            
+        }
 };
 
-class Paladin {
-    
+class Thief : public Jobs {
+        
+    private:
+        string name;
+        string job;
+        string description;
+        int hp;
+        int mp;
+        int experience;    
+        int level;
+        ab ind_ability[3];
+        
+    public:
+        Thief() : Jobs("Thief") {
+            
+        }
 };
 
+class Paladin : public Jobs {
+        
+    private:
+        string name;
+        string job;
+        string description;
+        int hp;
+        int mp;
+        int experience;    
+        int level;
+        ab ind_ability[3];
+    
+    public:    
+        Paladin() : Jobs("Paladin") {
+                      
+        }
+};
 
 #endif	/* JOBS_H */
 

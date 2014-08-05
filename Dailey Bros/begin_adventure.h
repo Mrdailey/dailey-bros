@@ -32,10 +32,17 @@ void exit_game();
 void display_info();
 
 Warrior job;
-//Black Mage job_2;
-//Thief job_3;
-//Paladin job_4;
+//BlackMage job;
+//Thief job;
+//Paladin job;
 
+/**
+ * In order to test a certain class, simply comment out the Warrior job line above
+ * and take away the comment marks on the job you choose to test.
+ * Also change the first if (response == "warrior" || response == "Warrior") to
+ * the job name you are testing.
+ * 
+ */
 /**
  * The adventure will take place in this function!
  * Most of the story elements and decisions will be made here.
@@ -82,8 +89,8 @@ void begin_adventure() {
             cout << " (paladin)\n\n";    
             cout << " What job do you choose?\n"
                     " If you want to select warrior, type \'warrior\' and hit \'enter\': ";
-    //        getline(cin, response);
-            cin >> response; cin.ignore(80, '\n');
+            getline(cin, response);
+//            cin >> response; cin.ignore(80, '\n');
             // case of the user picking a warrior.
             if (response == "warrior" || response == "Warrior") {                         
 
@@ -112,18 +119,13 @@ void begin_adventure() {
                         cout << " You can\'t seem to follow simple instructions, can you?\n";                        
                     }     
                 }    
-            } 
-    //            case "black mage": case "Black Mage": {
-    //
-    //            } break;
-    //            case "thief": case "Thief": {
-    //
-    //            } break;
-    //            case "paladin": case "Paladin": {
-    //
-    //            } break;
-            // They did something wrong.
-            else {
+            } else if (response == "black mage" || response == "Black Mage") {
+                
+            } else if (response == "thief" || response == "Thief") {
+                
+            } else if (response == "paladin" || response == "Paladin") {
+                
+            } else { // They did something wrong.
                 cout << "That\'s not a real job!\n";
                 pause();
             }
@@ -346,6 +348,7 @@ void battle_menu(string mob_name) {
                     battle_over = true;
                     flee = true;
                     cout << " " << name << " has fled the battle!\n What a noob!\n";        
+                    pause();
                 } else {                    
                     cout << " Gidian: Man, you suck at running away.\n"
                             " Gidian: Guess you have to fight this one out.\n";                    
@@ -367,6 +370,7 @@ void battle_menu(string mob_name) {
                     cout << " " << name << " has defeated the " << mob_name << "!!\n";
                     job.increase_experience(mob.get_reward_experience());
                     cout << " " << name << " has received " << mob.get_reward_experience() << " experience points!\n";                
+                    pause();
                 } else {                  
                     ability_type = 0;// always uses fire unless out of mana
                     mob.decrease_mp(mob.get_ability_mp_cost(ability_type));   
@@ -386,7 +390,14 @@ void battle_menu(string mob_name) {
                 }
             }              
         } while (error); // end do while loop
+        if (flee == true) {
+            cout << "\n Successfully fled from the " << mob_name << "!!\n";
+            cout << "\n Gidian: Brave sir " << name << " ran away! Bravely ran away, away!\n"
+                    " Gidian: When danger reared it\'s ugly head, he bravely turned his tail and fled!\n";
+            cout << " " << name << ": No wonder this guy is all alone out here...\n";        
+        } 
     }  // end while (!battle_over) loop 
+   
     system("cls");
 } // end of function
 
@@ -400,16 +411,16 @@ void display_info() {
     cout << "  EXP      : " << job.get_experience() << "\n";
     cout << "  LEVEL    : " << job.get_level() << "\n";
     cout << "  JOB      : " << job.get_job() << "\n";
-    cout << "  ABILITIES: \n\n";     
-    cout << "  " << job.get_ability_name(0) << "          " << job.get_ability_name(1) << "\n";
-    cout << "  _____________       _____________\n";
-    cout << "  Damage : " << job.get_ability_damage(0) << "          Damage : " << job.get_ability_damage(1) << "\n";
-    cout << "  MP COST: " << job.get_ability_mp_cost(0) << "          MP_COST: " << job.get_ability_mp_cost(1) << "\n\n";        
+    cout << "  ABILITIES: \n\n";   
     
-    cout << "  " << job.get_ability_name(2) << "\n";
-    cout << " ____________\n";
-    cout << "  Damage : " << job.get_ability_damage(2) << "\n";
-    cout << "  MP Cost: " << job.get_ability_damage(2) << "\n";
+    for (int k = 0; k < 3; k++) { // for printing all ability props
+        cout << " " << job.get_ability_name(k) << "\n";
+        cout << " ____________\n";
+        cout << "  Damage : " << job.get_ability_damage(k) << "\n";
+        cout << "  MP Cost: " << job.get_ability_mp_cost(k) << "\n";
+        cout << "  Info   : " << job.get_ability_info(k) << "\n\n";
+    }
+    
     cout << " _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _";
     pause();
 }

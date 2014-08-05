@@ -38,6 +38,7 @@ class Goblins
         string ability_name;
         int damage;
         int mp_cost;
+        string ability_info;
     };
     
     private:
@@ -58,9 +59,11 @@ class Goblins
             ind_ability[0].ability_name = "Fire";
             ind_ability[0].damage = get_rand(4,7);
             ind_ability[0].mp_cost = 3;
+            ind_ability[0].ability_info = "The goblin unleashes a surge of fire!";
             ind_ability[1].ability_name = "Goblin Toss";
             ind_ability[1].damage = get_rand(3,6);
             ind_ability[1].mp_cost = 0;
+            ind_ability[1].ability_info = "The goblin grabs an item from his sack and tosses it!";
         }
         
         /** Begin Description functions **/
