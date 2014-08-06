@@ -19,10 +19,11 @@
 #include "mob_main.h"
 
 using namespace std;
+
 bool game_over = false;
 bool game_active = true;
 void pause();
-void movement();
+bool movement();
 void draw_map(char maze[][25]);
 int get_rand(int min, int max);
 bool encounter_goblin();
@@ -32,9 +33,9 @@ void exit_game();
 void display_info();
 
 Warrior job;
-//BlackMage job;
-//Thief job;
-//Paladin job;
+BlackMage job_2;
+Thief job_3;
+Paladin job_4;
 
 /**
  * In order to test a certain class, simply comment out the Warrior job line above
@@ -55,6 +56,7 @@ Warrior job;
 void begin_adventure() {
 //    system("cls");  // clears the screen
     while (game_active) {
+        string job_type;
         string name;
         char decision;
         string response;
@@ -90,12 +92,13 @@ void begin_adventure() {
             cout << " What job do you choose?\n"
                     " If you want to select warrior, type \'warrior\' and hit \'enter\': ";
             getline(cin, response);
-//            cin >> response; cin.ignore(80, '\n');
+            
             // case of the user picking a warrior.
             if (response == "warrior" || response == "Warrior") {                         
-
+//                job_type = "Warrior";
+//                Jobs *job(job_type);    
                 string description = job.get_description();
-                while (error) {
+                while (error) {                                
                     cout << "\n You have selected the warrior job." << description;
                     cin >> decision; cin.ignore(80, '\n');
                     cout << "\n";
@@ -104,7 +107,7 @@ void begin_adventure() {
                         cout << " " << name << ": I'm a warrior.\n";
                         job.set_name(name);
                         selected_job = true;
-                        error = false;
+                        error = false;                        
                         cout << " Gidian: Warrior\'s are like mindless beasts.\n"
                                 " Gidian: But like all beasts, they too can be tamed.\n";
                         // changing your mind is okay!
@@ -133,7 +136,7 @@ void begin_adventure() {
         cout << "\n Gidian: There\'s a random goblin just standing over there.\n"
                 " Gidian: How convenient. I wonder if he wants to play?";
         pause();        
-        cout << " Gidian: Well let\'s just see what you can do, " << name << ".\n";
+        cout << " Gidian: Well let\'s just see what you can do, " << name << ".";
         // begin first encounter with the goblin class!
         if (encounter_goblin() == true) { // if the character is dead, return false!
             cout << " Gidian: Wow. You really showed that goblin how to bake bread!\n";
@@ -144,7 +147,8 @@ void begin_adventure() {
         }
 
         pause();    
-        movement(); // begin exploring the forest!        
+        game_active = movement(); // begin exploring the forest!
+        // If false, return to main menu
     }
 }
 
@@ -166,10 +170,11 @@ void draw_map(char maze[][25]) {
  * Handles character movement and navigation of the map.
  * @param string name The name of the user.
  */
-void movement() {
+bool movement() {
     string move_to_position;
     string name = job.get_name();
-    char maze[25][25] = {'-'}; // build a 2D array of 25 by 25 o's
+    bool exploring = true;
+    char maze[25][25] = {'-'}; // build a 2D array of 25 by 25 -'s
     int row,col;
     for (row = 0; row < 25; row++) {
         for (col = 0; col < 25; col++) {            
@@ -179,72 +184,103 @@ void movement() {
     maze[10][10] = 'X';
     int x_pos = 10, y_pos = 10;
     draw_map(maze); // initialize map with o's, X being the character.
-    while (true) { //  empty loops runs indefinitely  
+    while (exploring) { // until user types exit or quit 
         int spaces = 0;
-        for (spaces = 0; spaces <= 5; spaces++) {
-            cout << " Gidian: Where to next, " << name << "?\n";
-            cout << " Type in either \'move left\', move \'right\', etc...\n";
-            cout << " Press \'C\' to display character information.\n";
-            getline(cin, move_to_position); // choose which direction to go
-    //        cin >> move_to_position; cin.ignore(80, '\n');
-            if (move_to_position == "move up") { // character moves up
-                if (y_pos - 1 >= 0) { // character cannot leave the grid with this here
-                    system("cls"); // clear the screen upon movement
-                    maze[x_pos][y_pos] = 'o'; // erase X where the character was
-                    y_pos--;
-                    maze[x_pos][y_pos] = 'X'; // move the x to new value
-                    draw_map(maze);
-                    cout << " " << name << " journeys to the distant north of the \n"
-                            "\"Forest of the Dark Things That Hurt Good People.\"\n";                    
-                } else {
-                    edge_of_map();
-                } 
-            } else if (move_to_position == "move down") { // character moves down
-                if (y_pos + 1 < 25) {
-                    system("cls");
-                    maze[x_pos][y_pos] = 'o';
-                    y_pos++;
-                    maze[x_pos][y_pos] = 'X';
-                    draw_map(maze);
-                    cout << " " << name << " journeys further south into the \n"
-                            "\"Forest of the Dark Things That Hurt Good People.\"\n";                    
-                } else {
-                    edge_of_map();
-                }
-            } else if (move_to_position == "move left") { // character moves to the left
-                if (x_pos - 1 >= 0) {
-                    system("cls");
-                    maze[x_pos][y_pos] = 'o';
-                    x_pos--;
-                    maze[x_pos][y_pos] = 'X';
-                    draw_map(maze);
-                    cout << " " << name << " journeys far west into the \n"
-                            "\"Forest of the Dark Things That Hurt Good People.\"\n"; 
-                } else {
-                    edge_of_map();
-                }
-            } else if (move_to_position == "move right") { // character moves to the right
-                if (x_pos +1 < 25) {   
-                    system("cls");
-                    maze[x_pos][y_pos] = 'o'; // where the character was
-                    x_pos++;
-                    maze[x_pos][y_pos] = 'X';
-                    draw_map(maze);
-                    cout << " " << name << " journeys deeper east into the \n"
-                            "\"Forest of the Dark Things That Hurt Good People.\"\n"; 
-                } else {
-                    edge_of_map();
-                }
-            } else if (move_to_position == "C" || move_to_position == "c") {
-                display_info();
-            } else { // character movement invalid
-                if (move_to_position != "") {
-                    cout << " Gidian: Up, Down, Left, or right! Let's move " << name << "!!\n\n";
-                }
+        cout << " Gidian: Where to next, " << name << "?\n";
+        cout << " Type in either \'move left\', move \'right\', etc...\n";
+        cout << " Press \'C\' to display character information.\n";
+        getline(cin, move_to_position); // choose which direction to go
+
+        if (move_to_position == "move up") { // character moves up
+            
+            if (y_pos - 1 >= 0) { // character cannot leave the grid with this here
+                system("cls"); // clear the screen upon movement
+                maze[x_pos][y_pos] = 'o'; // trace your movement with circles
+                y_pos--;
+                maze[x_pos][y_pos] = 'X'; // move the x to new value
+                draw_map(maze);
+                spaces++;
+                cout << " " << name << " journeys to the distant north of the \n"
+                        "\"Forest of the Dark Things That Hurt Good People.\"\n";                    
+            } else {
+                edge_of_map();
+            } 
+            
+        } else if (move_to_position == "move down") { // character moves down
+            if (y_pos + 1 < 25) {
+                system("cls");
+                maze[x_pos][y_pos] = 'o';
+                y_pos++;
+                maze[x_pos][y_pos] = 'X';
+                draw_map(maze);
+                spaces++; // increment spaces to generate battles!
+                cout << " " << name << " journeys further south into the \n"
+                        "\"Forest of the Dark Things That Hurt Good People.\"\n";                    
+            } else {
+                edge_of_map();
             }
-        }
-        encounter_goblin();
-    }
+            
+        } else if (move_to_position == "move left") { // character moves to the left
+            if (x_pos - 1 >= 0) {
+                system("cls");
+                maze[x_pos][y_pos] = 'o';
+                x_pos--;
+                maze[x_pos][y_pos] = 'X';
+                draw_map(maze); // calls function draw_map to construct a new maze.               
+                spaces++;
+                cout << " " << name << " journeys far west into the \n"
+                        "\"Forest of the Dark Things That Hurt Good People.\"\n"; 
+            } else {
+                edge_of_map();
+            }
+            
+        } else if (move_to_position == "move right") { // character moves to the right
+            if (x_pos +1 < 25) {   
+                system("cls");
+                maze[x_pos][y_pos] = 'o'; // where the character was
+                x_pos++;
+                maze[x_pos][y_pos] = 'X';
+                draw_map(maze);
+                spaces++;
+                cout << " " << name << " journeys deeper east into the \n"
+                        "\"Forest of the Dark Things That Hurt Good People.\"\n"; 
+            } else {
+                edge_of_map();
+            }
+            
+        } else if (move_to_position == "C" || move_to_position == "c") {
+            display_info(); // all character info that is currently in the system
+            
+        } else if (move_to_position == "quit" || move_to_position == "exit") {// user types quit or exit
+            char goodbye;
+            bool error;
+            do { 
+                error = true;                
+                cout << " Are you sure you want to exit the game?\n";
+                cout << " Y/N: ";
+                cin >> goodbye; cin.ignore(80, '\n');
+                if (goodbye == 'Y' || goodbye == 'y') { // if they're sure they want to leave
+                    exploring = false;
+                    error = false;
+                } else if (goodbye == 'N' || goodbye == 'n') { // they changed their mind, np
+                    exploring = true;
+                    error = false;
+                } else { // they pressed an incorrect key                                                                      
+                    exploring = true;
+                    error = true;                        
+                }
+            } while (error);   
+            
+        } else { // character movement invalid
+            if (move_to_position != "") {
+                cout << " Gidian: Up, Down, Left, or right! Let's move " << name << "!!\n\n";
+            }
+        }    
+        if (spaces == 5 && exploring == true) {
+            encounter_goblin();
+        }    
+    }    
+    return exploring;
 }
 
 /**

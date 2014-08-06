@@ -17,14 +17,15 @@
 
 using namespace std;
 
+//string job_type;
+//Jobs job;
 int get_rand(int min, int max);
 
 int main() {
 
     string Menu[3] = {"Start Game", "Continue", "Exit"};
     int pointer = 1;
-
-//    begin_adventure();
+        
     while (true) {               
         system("cls");
 	
