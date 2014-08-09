@@ -17,8 +17,6 @@
 
 using namespace std;
 
-//string job_type;
-//Jobs job;
 int get_rand(int min, int max);
 
 int main() {
