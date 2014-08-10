@@ -12,6 +12,7 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <itemPath>jobs_mobs.info</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -44,6 +45,8 @@
       </item>
       <item path="jobs.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="jobs_mobs.info" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="keys.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
@@ -74,6 +77,8 @@
       <item path="begin_adventure.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="jobs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="jobs_mobs.info" ex="false" tool="3" flavor2="0">
       </item>
       <item path="keys.h" ex="false" tool="3" flavor2="0">
       </item>

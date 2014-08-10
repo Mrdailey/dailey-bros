@@ -1,0 +1,40 @@
+
+
+To Do List 
+
+Levels (Save and read file implementation once levels are coded).
+- At the end of every battle, check exp to see if level up should be called.
+- Increment level if exp is a certain number. Increase threshold for level up.
+- Add abilities on level up.
+- Add stats on level.
+- Reset hp/mp on level up.
+
+Mobs
+- Add more mobs.
+- Define them in mob_main.h
+- Define abilities, stats, different names, etc.
+
+Map
+- Add randomized events to the map structure
+- Make a battle happen on a random space
+
+Items
+- Develop a use for items.
+- Give mobs a structure items that contains their possible loot and randomize the drop
+- Give an item to user upon defeating the mob.
+
+General 
+- Work on creating structs to make items, abilities, map travel, etc. simpler.
+- Can functions be refactored and made to be more clear? (This involves detail work
+and determining what should be passed into the function).
+- File input and save still not implemented. Once levels are working, consider looking into this.
+- Work on more story elements. Script, events, etc.
+
+
+Levels
+1 - 50 exp required ...
+level_exp = 50;
+for (int i = 1; i < 21; i++) {
+    cout << i << ": " << level_exp << endl;
+    level_exp = level_exp + 50 + i * 25;
+}

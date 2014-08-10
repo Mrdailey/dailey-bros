@@ -11,16 +11,18 @@
 #include <string>
 #include <iomanip>
 
+#include "mob_main.h"
+
 using namespace std;
 
 int get_rand(int min, int max);
 
-struct ability {
-    string ability_name;
-    int damage;        
-    int mp_cost;
-    string ability_info;
-};
+//struct ability {
+//    string ability_name;
+//    int damage;        
+//    int mp_cost;
+//    string ability_info;
+//};
 
 typedef ability ab;
 
@@ -28,7 +30,7 @@ class Jobs {
       
     private:
         string name;
-        string job;
+        string job_type;
         string description;
         int hp;
         int mp;
@@ -39,7 +41,7 @@ class Jobs {
     public:
         Jobs() {
             name = "";
-            job = "";
+            job_type = "";
             description = "";
             hp = 0;
             mp = 0;
@@ -59,18 +61,6 @@ class Jobs {
             ind_ability[2].ability_info = "";
         }          
 
-        // choose class
-        void choose_class(string job_type) {
-            if (job_type == "Warrior") {
-
-            } else if (job_type == "Black Mage") {
-                              
-            } else if (job_type == "Thief") {
-
-            } else {
-                            
-            }
-        }
         /** Begin name functions **/
         // set the name of the job class
         void set_name(string n) {
@@ -87,12 +77,12 @@ class Jobs {
         /** Begin Job functions **/ 
         // get the job title
         string get_job() {
-            return job;
+            return job_type;
         }
         
         // set the job title
         void set_job(string s) {
-            job = s;
+            job_type = s;
         }
         /** End of Job functions **/
         
@@ -123,6 +113,10 @@ class Jobs {
         void set_level(int lvl) {
             level = lvl;
         }        
+        
+        void increase_level() {
+            experience ++;
+        }
         /** End of Level functions **/
         
         /** Begin Description functions **/ 
@@ -245,8 +239,28 @@ class Jobs {
 //                    mp_cost = 5;
 //                };
 //            }                      
-//        }                                                      
-               
+//        } 
+        // Gives information on character while exploring
+        void display_info() {            
+            cout << "                   " << name << "\n";
+            cout << " _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n";
+            cout << "  HP       : " << hp << "\n";
+            cout << "  MP       : " << mp << "\n";
+            cout << "  EXP      : " << experience << "\n";
+            cout << "  LEVEL    : " << level << "\n";
+            cout << "  JOB      : " << job_type << "\n";
+            cout << "  ABILITIES: \n\n";   
+
+            for (int k = 0; k < 3; k++) { // for printing all ability props
+                cout << " " << ind_ability[k].ability_name << "\n";
+                cout << " ____________\n";
+                cout << "  Damage : " << ind_ability[k].damage << "\n";
+                cout << "  MP Cost: " << ind_ability[k].mp_cost << "\n";
+                cout << "  Info   : " << ind_ability[k].ability_info << "\n\n";
+            }
+
+            cout << " _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _";            
+        }               
 };
 
 #endif	/* JOBS_H */
