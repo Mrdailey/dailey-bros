@@ -3,11 +3,10 @@
 To Do List 
 
 Levels (Save and read file implementation once levels are coded).
-- At the end of every battle, check exp to see if level up should be called.
-- Increment level if exp is a certain number. Increase threshold for level up.
-- Add abilities on level up.
-- Add stats on level.
-- Reset hp/mp on level up.
+
+Abilities
+- Overhealing ??
+- 
 
 Mobs
 - Add more mobs.

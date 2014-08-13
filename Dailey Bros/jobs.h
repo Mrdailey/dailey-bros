@@ -36,7 +36,7 @@ class Jobs {
         int mp;
         int experience;    
         int level;
-        ab ind_ability[3];
+        ab ind_ability[10];
         
     public:
         Jobs() {
@@ -46,19 +46,15 @@ class Jobs {
             hp = 0;
             mp = 0;
             experience = 0;
-            level = 0;
-            ind_ability[0].ability_name = "";
-            ind_ability[0].damage = 0;
-            ind_ability[0].mp_cost = 0;
-            ind_ability[0].ability_info = "";
-            ind_ability[1].ability_name = "";
-            ind_ability[1].damage = 0;
-            ind_ability[1].mp_cost = 0;
-            ind_ability[1].ability_info = "";
-            ind_ability[2].ability_name = "";
-            ind_ability[2].damage = 0;
-            ind_ability[2].mp_cost = 0;
-            ind_ability[2].ability_info = "";
+            level = 1;
+
+            for (int i = 0; i < 10; i++) {
+                ind_ability[i].ability_name = "";
+                ind_ability[i].damage = 0;
+                ind_ability[i].mp_cost = 0;
+                ind_ability[i].ability_info = "";  
+                ind_ability[i].heal = 0;
+            }
         }          
 
         /** Begin name functions **/
@@ -114,9 +110,11 @@ class Jobs {
             level = lvl;
         }        
         
+        // for levelling up
         void increase_level() {
-            experience ++;
+            level++;
         }
+        
         /** End of Level functions **/
         
         /** Begin Description functions **/ 
@@ -157,7 +155,7 @@ class Jobs {
         
         // job regains health upon level up or 
         // end of fight.
-        void gain_hp(int health) {
+        void increase_hp(int health) {
             hp += health;
         }        
         /** End of hp functions **/
@@ -194,6 +192,11 @@ class Jobs {
             return ind_ability[choice].damage;
         }
         
+        // get the amount of the heal the ability does
+        int get_ability_heal(int choice) {
+            return ind_ability[choice].heal;
+        }                
+        
         // get damage for ability
         string get_ability_name(int choice) {
             return ind_ability[choice].ability_name;
@@ -215,6 +218,11 @@ class Jobs {
 //                ind_ability[choice].damage = get_rand(low, high);
 //            }
             ind_ability[choice].damage = dmg;
+        }
+        
+        // set the amount the ability heals
+        int set_ability_heal(int choice, int health) {
+            ind_ability[choice].heal = health;
         }
         
         int set_ability_name(int choice, string name) {
@@ -241,7 +249,8 @@ class Jobs {
 //            }                      
 //        } 
         // Gives information on character while exploring
-        void display_info() {            
+        void display_info() {       
+            int cap = 3;
             cout << "                   " << name << "\n";
             cout << " _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n";
             cout << "  HP       : " << hp << "\n";
@@ -250,8 +259,11 @@ class Jobs {
             cout << "  LEVEL    : " << level << "\n";
             cout << "  JOB      : " << job_type << "\n";
             cout << "  ABILITIES: \n\n";   
-
-            for (int k = 0; k < 3; k++) { // for printing all ability props
+            
+            if (level == 2) {
+                cap = 4;
+            }
+            for (int k = 0; k < cap; k++) { // for printing all ability props
                 cout << " " << ind_ability[k].ability_name << "\n";
                 cout << " ____________\n";
                 cout << "  Damage : " << ind_ability[k].damage << "\n";

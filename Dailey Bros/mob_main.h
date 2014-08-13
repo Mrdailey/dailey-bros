@@ -21,6 +21,7 @@ struct ability {
     int damage;
     int mp_cost;
     string ability_info;
+    int heal;
 };
 
 //struct mob_stats {
@@ -62,7 +63,8 @@ class Mobs {
                 ind_ability[i].ability_name = "";
                 ind_ability[i].damage = 0;
                 ind_ability[i].mp_cost = 0;
-                ind_ability[i].ability_info = "";                   
+                ind_ability[i].ability_info = "";    
+                ind_ability[i].heal = 0;
             }
         }
         
@@ -142,6 +144,11 @@ class Mobs {
             return dead;
         }
         
+        // increase hp for healing and such
+        void increase_hp(int health) {
+            hp += health;
+        }
+        
         /** End of hp functions **/
         
         /** Begin mp functions **/
@@ -182,6 +189,10 @@ class Mobs {
             return ind_ability[choice].damage;            
         }
         
+        int get_ability_heal(int choice) {
+            return ind_ability[choice].heal;
+        }
+        
         // get the ability's mana cost
         int get_ability_mp_cost (int choice) {
             return ind_ability[choice].mp_cost;
@@ -197,6 +208,10 @@ class Mobs {
 //                ind_ability[choice].damage = get_rand(low, high);
 //            }
             ind_ability[choice].damage = dmg;
+        }
+        
+        int set_ability_heal(int choice, int health) {
+            ind_ability[choice].heal = health;
         }
         
         int set_ability_name(int choice, string name) {
