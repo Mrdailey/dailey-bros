@@ -233,7 +233,7 @@ void begin_adventure() {
         cout << " Gidian: Well let\'s just see what you can do, " << name << ".";
         
         // begin first encounter with the goblin class!
-        if (encounter_skeleton_warrior() == true) { // if the character is dead, return false!
+        if (encounter_goblin() == true) { // if the character is dead, return false!
             cout << " Gidian: Wow. You really showed that goblin how to bake bread!\n";
             cout << " Gidian: So where do you want to go from here?\n\n";             
             
@@ -386,14 +386,17 @@ bool movement() {
         }    
         if (exploring) {
             if (spaces % 12 == 0 && spaces != 0) {
+                system("cls");
                 cout << " Gidian: Here we go " << name << "!\n"
                         " Gidian: Let\'s show \'em what we\'re made of!\n";
                 exploring = encounter_goblin();
             } else if (spaces % 7 == 0 && spaces != 0) {
+                system("cls");
                 cout << " Gidian: No more picking berries " << name << "!\n"
                         " Gidian: I am an old man, remember!\n";
                 exploring = encounter_skeleton_warrior();
-            } else if (spaces % 9 == 0 && spaces !=0) {
+            } else if (spaces % 9 == 0 && spaces !=0) {                
+               system("cls");
                exploring = encounter_giant_tree_frog(); 
             } else if (spaces == 19 || spaces == 17 || spaces == 23) {
 //                found_item();
@@ -425,6 +428,7 @@ bool encounter_goblin() {
     string goblin_name = mob.get_name();
     cout << " Gidian: " << mob.get_description();
     cout << " " << name << ": I better do something... this goblin looks like he's mad.\n";
+    pause();
     // Initiate the battle !!!
     battle_menu(goblin_name);
     if (your_dead()) {
@@ -447,6 +451,7 @@ bool encounter_skeleton_warrior() {
     string skeleton_name = mob.get_name();
     cout << " Gidian: " << mob.get_description();
     cout << " " << name << ": Time to turn these dry bones to dust!\n";
+    pause();
     // Initiate the battle!
     battle_menu(skeleton_name);
     if (your_dead()) {
@@ -465,6 +470,7 @@ bool encounter_giant_tree_frog() {
     string giant_tree_frog_name = mob.get_name();
     cout << " Gidian: " << mob.get_description();
     cout << " " << name << ": Is that a hippo or a frog?!?!\n";
+    pause();
     // Start the battle!
     battle_menu(giant_tree_frog_name);
     if (your_dead()) {
@@ -513,7 +519,7 @@ void battle_menu(string mob_name) {
     bool battle_over = false;    
     // reset the thief's damage on his boosted ability
     if (job.get_job() == "Thief") {
-         job.set_ability_damage(0, 10);
+         job.set_ability_damage(0, 7);
     }
     cout << " " << name << " has encountered a " << mob_name << "!!\n\n";
     // if mob is dead battle is over
@@ -806,17 +812,17 @@ void set_mob(string mob_type) {
                     "can swing a sword like nobody's business!\n");
         mob.set_hp(25);
         mob.set_mp(8);
-        mob.set_exp_reward(51);
+        mob.set_exp_reward(15);
 
         mob.set_ability_name(0, "Bone Hammer");
         mob.set_ability_damage(0, get_rand(4, 7));
         mob.set_ability_mp_cost(0, 4);
-        mob.set_ability_info(0, "The skeleton warrior snaps his leg off and hammers it down!\n"); 
+        mob.set_ability_info(0, " The skeleton warrior snaps his leg off and hammers it down!\n"); 
         
         mob.set_ability_name(1, "Bone Sword");
         mob.set_ability_damage(1, get_rand(3, 6));
         mob.set_ability_mp_cost(1, 0);
-        mob.set_ability_info(1, "Skeleton Warrior breaks off his arm and uses it as a sword!\n");
+        mob.set_ability_info(1, " Skeleton Warrior breaks off his arm and uses it as a sword!\n");
         // The Goblin mob type
     } else if (mob_type == "Goblins") {
     mob.set_name("Goblin");
@@ -829,17 +835,17 @@ void set_mob(string mob_type) {
     mob.set_ability_name(0, "Fire");
     mob.set_ability_damage(0, get_rand(4, 6));
     mob.set_ability_mp_cost(0, 3);
-    mob.set_ability_info(0, "The goblin unleashes a surge of fire!\n");
+    mob.set_ability_info(0, " The goblin unleashes a surge of fire!\n");
     
     mob.set_ability_name(1, "Goblin Toss");    
     mob.set_ability_damage(1, get_rand(3, 4));
     mob.set_ability_mp_cost(1,0);    
-    mob.set_ability_info(1, "The goblin grabs an item from his sack and tosses it!\n");      
+    mob.set_ability_info(1, " The goblin grabs an item from his sack and tosses it!\n");      
     // The Giant Tree Frog mob type
     } else if (mob_type == "Giant Tree Frog") {
         mob.set_name("Giant Tree Frog");
         mob.set_description("This strange creature is both intimidating and extremely fond of"
-        "small bugs.\n");
+        " small bugs.\n");
         mob.set_hp(22);
         mob.set_mp(0);
         mob.set_exp_reward(15);
@@ -848,13 +854,13 @@ void set_mob(string mob_type) {
         mob.set_ability_damage(0, get_rand(4, 6));
         mob.set_ability_heal(0, 6);
         mob.set_ability_mp_cost(0, 0);
-        mob.set_ability_info(0, "The Giant Tree Frog leaps forward and lands on it's belly!\n");
+        mob.set_ability_info(0, " The Giant Tree Frog leaps forward and lands on it's belly!\n");
         
         mob.set_ability_name(1, "Consume");
         mob.set_ability_damage(1, 0);
         mob.set_ability_heal(1, 12);
         mob.set_ability_mp_cost(1, 0);
-        mob.set_ability_info(1, "The Giant Tree Frog consumes a nearby bug and restores its health!\n");
+        mob.set_ability_info(1, " The Giant Tree Frog consumes a nearby bug and restores its health!\n");
         
     }
 }
