@@ -89,7 +89,7 @@ class Jobs {
         }
         
         // set exp to job class
-        void set_experience (double exp) {
+        void set_experience (int exp) {
             experience = exp;
         }
         

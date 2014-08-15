@@ -520,7 +520,7 @@ void battle_menu(string mob_name) {
     bool battle_over = false;    
     // reset the thief's damage on his boosted ability
     if (job.get_job() == "Thief") {
-         job.set_ability_damage(0, 7);
+        job.set_ability_damage(0, 7);
     }
     cout << " " << name << " has encountered a " << mob_name << "!!\n\n";
     // if mob is dead battle is over
