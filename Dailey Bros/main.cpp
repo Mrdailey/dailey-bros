@@ -14,6 +14,7 @@
 #include "mob_main.h"
 #include "jobs.h"
 #include "begin_adventure.h"
+//#include "items.h"
 
 using namespace std;
 
@@ -23,7 +24,7 @@ int main() {
 
     string Menu[3] = {"Start Game", "Continue", "Exit"};
     int pointer = 1;   
-
+    begin_adventure();
     while (true) {               
         system("cls");
 	

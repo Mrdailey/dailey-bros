@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>begin_adventure.h</itemPath>
+      <itemPath>items.h</itemPath>
       <itemPath>jobs.h</itemPath>
       <itemPath>keys.h</itemPath>
       <itemPath>mob_main.h</itemPath>
@@ -43,6 +44,8 @@
       </compileType>
       <item path="begin_adventure.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="items.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="jobs.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="jobs_mobs.info" ex="false" tool="3" flavor2="0">
@@ -75,6 +78,8 @@
         </asmTool>
       </compileType>
       <item path="begin_adventure.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="items.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="jobs.h" ex="false" tool="3" flavor2="0">
       </item>

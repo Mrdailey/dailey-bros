@@ -372,7 +372,8 @@ bool movement() {
                     exploring = true;
                     error = false;
                     
-                } else { // they pressed an incorrect key                                                                      
+                } else { // they pressed an incorrect key          
+                    cout << error_message;
                     exploring = true;
                     error = true;                        
                 }
