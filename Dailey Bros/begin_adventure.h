@@ -848,7 +848,7 @@ void set_mob(string mob_type) {
         mob.set_description("This strange creature is both intimidating and extremely fond of"
         " small bugs.\n");
         mob.set_hp(22);
-        mob.set_mp(0);
+        mob.set_mp(10);
         mob.set_exp_reward(15);
         
         mob.set_ability_name(0, "Leap of Death");
@@ -859,8 +859,8 @@ void set_mob(string mob_type) {
         
         mob.set_ability_name(1, "Consume");
         mob.set_ability_damage(1, 0);
-        mob.set_ability_heal(1, 12);
-        mob.set_ability_mp_cost(1, 0);
+        mob.set_ability_heal(1, 6);
+        mob.set_ability_mp_cost(1, 3);
         mob.set_ability_info(1, " The Giant Tree Frog consumes a nearby bug and restores its health!\n");
         
     }
@@ -878,7 +878,7 @@ void level_up() {
         
         // If their experience is higher than the experience required and they 
         // are not already that level.
-        if (job.get_experience() > level_exp[k] && job.get_level() != k+1) {
+        if (job.get_experience() >= level_exp[k] && job.get_level() != k+1) {
             job.increase_level();
 
             cout << " " << job.get_name() << " is now level " << job.get_level() << "!\n";        
