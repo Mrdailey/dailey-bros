@@ -15,13 +15,13 @@ CND_PACKAGE_DIR_Debug=dist/Debug/Cygwin-Windows/package
 CND_PACKAGE_NAME_Debug=daileybros.tar
 CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin-Windows/package/daileybros.tar
 # Release configuration
-CND_PLATFORM_Release=Cygwin-Windows
-CND_ARTIFACT_DIR_Release=dist/Release/Cygwin-Windows
+CND_PLATFORM_Release=MinGW-Windows
+CND_ARTIFACT_DIR_Release=dist/Release/MinGW-Windows
 CND_ARTIFACT_NAME_Release=dailey_bros
-CND_ARTIFACT_PATH_Release=dist/Release/Cygwin-Windows/dailey_bros
-CND_PACKAGE_DIR_Release=dist/Release/Cygwin-Windows/package
+CND_ARTIFACT_PATH_Release=dist/Release/MinGW-Windows/dailey_bros
+CND_PACKAGE_DIR_Release=dist/Release/MinGW-Windows/package
 CND_PACKAGE_NAME_Release=daileybros.tar
-CND_PACKAGE_PATH_Release=dist/Release/Cygwin-Windows/package/daileybros.tar
+CND_PACKAGE_PATH_Release=dist/Release/MinGW-Windows/package/daileybros.tar
 #
 # include compiler specific variables
 #

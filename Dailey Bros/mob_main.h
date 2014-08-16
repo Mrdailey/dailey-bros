@@ -43,11 +43,12 @@ typedef ability ab;
 class Mobs {
 
     private:
-//        ms stat[0]; // define stats struct
         string name;
         string description;
         int hp;
         int mp;
+        int max_hp;
+        int max_mp;
         int exp_reward;
         ab ind_ability[3]; // mobs can have 5 abilities
     public:
@@ -58,7 +59,9 @@ class Mobs {
             description = "";
             hp = 0;
             mp = 0;
-    
+            max_hp = 0;
+            max_mp = 0;
+            
             for (int i = 0; i < 3; i++) {
                 ind_ability[i].ability_name = "";
                 ind_ability[i].damage = 0;
@@ -69,59 +72,44 @@ class Mobs {
         }
         
         /** Begin Description functions **/
-        // retrieve goblin description string
+
         string get_description() {
-//            return stat[0].description;
             return description;
         }
         
-        // set the goblin description string
         void set_description(string desc) {
-//            stat[0].description = desc;
             description = desc;
         }
         /** End of Description functions **/
         
         /** Begin Name functions **/
-        // retreive the name of the goblin class
         string get_name() {
-//            return stat[0].name;
             return name;
         }
         
-        // set the name of the goblin class
         void set_name(string n) {
-//            stat[0].name = n;
             name = n;
         }
         
         /** End of Name functions **/
         
-        /** Begin Experience fuctions **/
-        // award exp to character that defeated goblin
+        /** Begin Experience fuctions **/        
         int get_exp_reward() {
-//            return stat[0].exp_reward;
             return exp_reward;
         }
-        
-        // set the exp reward of the goblin class
+                
         void set_exp_reward(int exp) {
-//            stat[0].exp_reward = exp;
             exp_reward = exp;
         }
         
         /** End of experience functions **/
         
         /** Begin hp functions **/
-        // set hp of goblin
         void set_hp(int health) {
-//            stat[0].hp = health;
             hp = health;
         }
         
-        // get hp of goblin class
         int get_hp() {
-//            return stat[0].hp;
             return hp;
         }
         
@@ -131,11 +119,10 @@ class Mobs {
          * @return bool if goblin is killed
          */
         bool damage_hp(int dmg) {
-            bool dead = false;            
-//            stat[0].hp = stat[0].hp - dmg;     
+            bool dead = false;             
             hp = hp - dmg;
             cout << " took " << dmg << " points of damage!\n";
-//            if (stat[0].hp <= 0) {
+
             if (hp <= 0) {
                 dead = true;                
             } else {
@@ -144,7 +131,6 @@ class Mobs {
             return dead;
         }
         
-        // increase hp for healing and such
         void increase_hp(int health) {
             hp += health;
         }
@@ -152,39 +138,50 @@ class Mobs {
         /** End of hp functions **/
         
         /** Begin mp functions **/
-        // get the mp of the goblin class
         int get_mp() {
-//            return stat[0].mp;            
             return mp;
         }
         
-        // set the mp of the goblin
         void set_mp(int magic) {
-//            stat[0].mp = magic;
             mp = magic;
         }
         
-        // decrease mp based on cost
         void decrease_mp(int mp_cost)  {
-//            stat[0].mp = stat[0].mp - mp_cost;
             mp = mp - mp_cost;
         }
         
-        // increase mp, if spell fails
         void increase_mp(int mp_cost) {
-//            stat[0].mp += mp_cost;
             mp += mp_cost;
         }
         
         /** End of mp functions **/
         
+        /** Begin max hp and mp functions **/
+        
+        void set_max_hp(int max) {
+            max_hp = max;
+        }
+        
+        void set_max_mp(int max) {
+            max_mp = max;
+        }    
+        
+        int get_max_hp() {
+            return max_hp;
+        }
+        
+        int get_max_mp() {
+            return max_mp;
+        }
+        
+        /** End of max hp and mp functions **/
+        
         /** Begin Ability functions **/
-        // get the ability name of the goblin
+        
         string get_ability_name(int choice) {
             return ind_ability[choice].ability_name;
         }
         
-        // get the ability damage
         int get_ability_damage(int choice) {
             return ind_ability[choice].damage;            
         }
@@ -193,7 +190,6 @@ class Mobs {
             return ind_ability[choice].heal;
         }
         
-        // get the ability's mana cost
         int get_ability_mp_cost (int choice) {
             return ind_ability[choice].mp_cost;
         }
@@ -202,11 +198,7 @@ class Mobs {
             return ind_ability[choice].ability_info;
         }
         
-        // set the ability attributes in the following functions
         int set_ability_damage(int choice, int dmg) {
-//            if (ind_ability[choice].damage == 0) {
-//                ind_ability[choice].damage = get_rand(low, high);
-//            }
             ind_ability[choice].damage = dmg;
         }
         
@@ -226,6 +218,8 @@ class Mobs {
             ind_ability[choice].ability_info = info;
         }
         /** End of Ability functions **/
+        
+        
 };
         
 //class Goblins : public Mobs {

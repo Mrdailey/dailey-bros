@@ -34,7 +34,6 @@ void edge_of_map();
 void exit_game();
 void set_job(string job_type);
 void set_mob(string mob_type);
-void level_up();
 
 //declare booleans for exiting purposes.
 bool game_over = false;
@@ -268,6 +267,7 @@ void draw_map(char maze[][25]) {
 bool movement() {
     string move_to_position;
     string name = job.get_name();
+    bool not_in_menu = true;
     bool exploring = true;
     char maze[25][25] = {'-'}; // build a 2D array of 25 by 25 -'s
     int row,col;
@@ -289,6 +289,7 @@ bool movement() {
         getline(cin, move_to_position); // choose which direction to go
 
         if (move_to_position == "move up") { // character moves up
+            not_in_menu = true;
             
             if (y_pos - 1 >= 0) { // character cannot leave the grid with this here
                 system("cls"); // clear the screen upon movement
@@ -305,6 +306,7 @@ bool movement() {
             } 
             
         } else if (move_to_position == "move down") { // character moves down
+            not_in_menu = true;
             
             if (y_pos + 1 < 25) {
                 system("cls");
@@ -321,6 +323,7 @@ bool movement() {
             }
             
         } else if (move_to_position == "move left") { // character moves to the left
+            not_in_menu = true;
             
             if (x_pos - 1 >= 0) {
                 system("cls");
@@ -337,6 +340,8 @@ bool movement() {
             }
             
         } else if (move_to_position == "move right") { // character moves to the right
+            not_in_menu = true;
+            
             if (x_pos +1 < 25) {   
                 system("cls");
                 maze[x_pos][y_pos] = 'o'; // where the character was
@@ -352,6 +357,7 @@ bool movement() {
             
         } else if (move_to_position == "C" || move_to_position == "c") {
             job.display_info(); // all character info that is currently in the system
+            not_in_menu = false;
             pause();
             
         } else if (move_to_position == "quit" || move_to_position == "exit") {// user types quit or exit
@@ -385,7 +391,7 @@ bool movement() {
                 cout << " Gidian: Up, Down, Left, or right! Let's move " << name << "!!\n\n";
             }
         }    
-        if (exploring) {
+        if (exploring && not_in_menu) {
             if (spaces % 12 == 0 && spaces != 0) {
                 system("cls");
                 cout << " Gidian: Here we go " << name << "!\n"
@@ -435,7 +441,7 @@ bool encounter_goblin() {
     if (your_dead()) {
         return false;        
     }
-    level_up();
+    job.level_up();
     return true;
 }    
 
@@ -458,7 +464,7 @@ bool encounter_skeleton_warrior() {
     if (your_dead()) {
         return false;
     }
-    level_up();
+    job.level_up();
     return true;
 }
 
@@ -477,7 +483,7 @@ bool encounter_giant_tree_frog() {
     if (your_dead()) {
         return false;        
     }
-    level_up();
+    job.level_up();
     return true;
 }
 
@@ -517,7 +523,11 @@ void battle_menu(string mob_name) {
     int job_ability_mp_cost;
     string job_ability_info;
     int job_ability_heal;
-    bool battle_over = false;    
+    bool battle_over = false;   
+    int max_hp = job.get_max_hp();
+    int max_mp = job.get_max_mp();
+    int mob_max_hp = mob.get_max_hp();
+    int mob_max_mp = mob.get_max_mp();
     // reset the thief's damage on his boosted ability
     if (job.get_job() == "Thief") {
         job.set_ability_damage(0, 7);
@@ -530,16 +540,20 @@ void battle_menu(string mob_name) {
         bool error = false;
         bool tried_to_run = false;
         do {            
-            cout << " " << name << " HP: " << job.get_hp() << "    MP: " << job.get_mp(); 
-            cout << " " << mob_name << " HP: " << mob.get_hp() << "    MP: " << mob.get_mp() << "\n\n";
+            cout << "\n " << name << " HP: " << job.get_hp() << " / " << max_hp << "    MP: " << job.get_mp() << " / " << max_mp << "  "; 
+            cout << " " << mob_name << " HP: " << mob.get_hp() << " / " << mob_max_hp << "    MP: " << mob.get_mp() << " / " << mob_max_mp << "\n\n";
             int cap = 4;
-            if (job.get_level() == 2) {
+            
+            if (job.get_level() >= 2) {
                 cap = 5;
+            } else if (job.get_level() >= 6) {
+                cap = 6;
             }
+            
             for (int i = 1; i < cap; i++) {                
-                cout << "[" << i << "]  " << job.get_ability_name(i-1) << "\n";        
+                cout << " [" << i << "]  " << job.get_ability_name(i-1) << "\n";        
             }
-            cout << "What will " << name << " do?\n";
+            cout << "\n What will " << name << " do?\n";
             getline(cin, choice);              
             string ab_1, ab_2, ab_3, ab_4;
             ab_1 = job.get_ability_name(0);
@@ -612,7 +626,7 @@ void battle_menu(string mob_name) {
             } 
             // if the user DIDNT flee AND DIDNT try to run AND there was no ERROR with ability mp cost
             if (flee == false && tried_to_run == false && error == false) {
-                cout << " " << name << " uses " << job_ability_name << "!\n";
+                cout << "\n " << name << " uses " << job_ability_name << "!\n";
                 if (job_ability_name == "Stealth") {
                     cout << " " << name << " enters the shadows unseen.\n";
                 } else if (job_ability_name == "Defend") {
@@ -620,11 +634,16 @@ void battle_menu(string mob_name) {
                 } else if(job_ability_name == "Redemptive Light") {
                     cout << " " << name << " calls down the light of Redemption!\n";
                     job.increase_hp(job_ability_heal);
-                    cout << " " << name << " gains " << job_ability_heal << " health!\n";
+                    
+                    // Check for overheal
+                    if (job.get_hp() > max_hp) {
+                        job_ability_heal = job_ability_heal - job.get_hp() - max_hp;
+                        job.set_hp(max_hp);                        
+                    }
+                    
                 } else {
                     cout << " " << mob_name;
-                    battle_over = mob.damage_hp(job_ability_dmg);
-                    cout << " The " << mob_name << " now has " << mob.get_hp() << " hit points!\n";
+                    battle_over = mob.damage_hp(job_ability_dmg);                    
                 }
                 // if the mob is dead!
                 if (battle_over) {
@@ -633,16 +652,24 @@ void battle_menu(string mob_name) {
                     cout << " " << name << " has received " << mob.get_exp_reward() << " experience points!\n";                
                     job.increase_hp(hp_gained);
                     job.increase_mp(mp_gained);
+                    
+                    // Check for overheal
+                    if (job.get_hp() > max_hp) {
+                        job.set_hp(max_hp);
+                    }
+                    // Check for TOO much mana
+                    if (job.get_mp() > max_mp) {
+                        job.set_mp(max_mp);
+                    }
                     pause();
                 } else {                  
                     // giant tree frog will use consume to heal below 10 hp
                     if (mob_name == "Giant Tree Frog" && mob.get_hp() < 10) {
-                        ability_type = 1;
-                        mob.increase_hp(mob.get_ability_heal(1));
+                        ability_type = 1;                        
                     } else {
-                        ability_type = 0;// always uses first ability unless out of mana                                            
+                        ability_type = 0;
                     }
-                    mob.decrease_mp(mob.get_ability_mp_cost(ability_type));  
+                    mob.decrease_mp(mob.get_ability_mp_cost(ability_type));                      
                      // if the mob doesnt have enough mp for first ability, use other ability
                     if (mob.get_mp() < 0) {
                         mob.increase_mp(mob.get_ability_mp_cost(ability_type));
@@ -650,21 +677,20 @@ void battle_menu(string mob_name) {
                         if (mob_name == "Giant Tree Frog") {
                             ability_type = 0;
                         }
-                    }                             
+                    }
                     cout << mob.get_ability_info(ability_type);
+                    mob.increase_hp(mob.get_ability_heal(ability_type));
                     if (job_ability_name == "Stealth") {
-                        stealth_counter ++;
+                        stealth_counter += 2;
                         cout << " " << mob_name << " cannot find " << name << "!\n";
                         cout << " " << name << " is hiding in the shadows.\n";
                         job.set_ability_damage(0, job.get_ability_damage(0) + stealth_counter);                        
-                    } else if(job_ability_name == "Defend") {
+                    } else if (job_ability_name == "Defend") {
                         cout << " " << name;
                         game_over = job.damage_hp((mob.get_ability_damage(ability_type)) * .50);
-                        cout << " " << name << " now has " << job.get_hp() << " hit points!\n\n";    
                     } else {
                         cout << " " << name;
-                        game_over = job.damage_hp((mob.get_ability_damage(ability_type)));
-                        cout << " " << name << " now has " << job.get_hp() << " hit points!\n\n";                          
+                        game_over = job.damage_hp((mob.get_ability_damage(ability_type)));                                               
                     }
                                                                                                                                        
                 }
@@ -728,6 +754,8 @@ void set_job(string job_type) {
                 "skills to massacre his foes.\n Select this job? Hit 'y' or 'n' and 'enter': ");          
         job.set_hp(50);                    
         job.set_mp(20);
+        job.set_max_hp(50);
+        job.set_max_mp(20);
         job.set_experience(0);
         job.set_level(1);
 
@@ -747,6 +775,8 @@ void set_job(string job_type) {
                     " Select this job? Hit 'y' or 'n' and 'enter': ");          
         job.set_hp(40);                    
         job.set_mp(40);
+        job.set_max_hp(40);
+        job.set_max_mp(40);
         job.set_experience(0);
         job.set_level(1);
 
@@ -766,17 +796,17 @@ void set_job(string job_type) {
                     " Select this job? Hit 'y' or 'n' and 'enter': ");          
         job.set_hp(44);                    
         job.set_mp(22);
+        job.set_max_hp(44);
+        job.set_max_mp(22);
         job.set_experience(0);
         job.set_level(1);
 
         job.set_ability_name(0, "Double Stab-jab");
         job.set_ability_damage(0, 7);
-        job.set_ability_mp_cost(0, 0);
         job.set_ability_info(0, "A sudden two strikes that can be lethal.");
 
         job.set_ability_name(1, "Stealth");
-        job.set_ability_damage(1, 0);
-        job.set_ability_mp_cost(1, 5);
+        job.set_ability_mp_cost(1, 3);
         job.set_ability_info(1, "Hide from sight and increase the damage of the next attack. Can be used additively.");    
         // The Paladin Job
     } else if (job_type == "Paladin") {        
@@ -785,12 +815,13 @@ void set_job(string job_type) {
                     " Select this job? Hit 'y' or 'n' and 'enter': ");          
         job.set_hp(50);                    
         job.set_mp(25);
+        job.set_max_hp(50);
+        job.set_max_mp(25);
         job.set_experience(0);
         job.set_level(1);
 
         job.set_ability_name(0, "Holy Slash");
         job.set_ability_damage(0, 8);
-        job.set_ability_mp_cost(0, 0);
         job.set_ability_info(0, "A magical strike that deals consistent damage.");
 
         job.set_ability_name(1, "Atonement");
@@ -813,35 +844,43 @@ void set_mob(string mob_type) {
                     "can swing a sword like nobody's business!\n");
         mob.set_hp(25);
         mob.set_mp(8);
+        mob.set_max_hp(25);
+        mob.set_max_mp(8);
         mob.set_exp_reward(15);
 
         mob.set_ability_name(0, "Bone Hammer");
         mob.set_ability_damage(0, get_rand(4, 7));
+        mob.set_ability_heal(0, 0);
         mob.set_ability_mp_cost(0, 4);
         mob.set_ability_info(0, " The skeleton warrior snaps his leg off and hammers it down!\n"); 
         
         mob.set_ability_name(1, "Bone Sword");
         mob.set_ability_damage(1, get_rand(3, 6));
+        mob.set_ability_heal(1, 0);
         mob.set_ability_mp_cost(1, 0);
         mob.set_ability_info(1, " Skeleton Warrior breaks off his arm and uses it as a sword!\n");
         // The Goblin mob type
     } else if (mob_type == "Goblins") {
-    mob.set_name("Goblin");
-    mob.set_description("The nasty Goblin race is after many things, but most of all"
-            " is after   your money!\n");
-    mob.set_hp(20);
-    mob.set_mp(5);
-    mob.set_exp_reward(10);
+        mob.set_name("Goblin");
+        mob.set_description("The nasty Goblin race is after many things, but most of all"
+                " is after   your money!\n");
+        mob.set_hp(20);
+        mob.set_mp(5);
+        mob.set_max_hp(20);
+        mob.set_max_mp(5);
+        mob.set_exp_reward(10);
 
-    mob.set_ability_name(0, "Fire");
-    mob.set_ability_damage(0, get_rand(4, 6));
-    mob.set_ability_mp_cost(0, 3);
-    mob.set_ability_info(0, " The goblin unleashes a surge of fire!\n");
-    
-    mob.set_ability_name(1, "Goblin Toss");    
-    mob.set_ability_damage(1, get_rand(3, 4));
-    mob.set_ability_mp_cost(1,0);    
-    mob.set_ability_info(1, " The goblin grabs an item from his sack and tosses it!\n");      
+        mob.set_ability_name(0, "Fire");
+        mob.set_ability_damage(0, get_rand(4, 6));
+        mob.set_ability_heal(0, 0);
+        mob.set_ability_mp_cost(0, 3);
+        mob.set_ability_info(0, " The goblin unleashes a surge of fire!\n");
+
+        mob.set_ability_name(1, "Goblin Toss");    
+        mob.set_ability_damage(1, get_rand(3, 4));   
+        mob.set_ability_heal(1, 0);
+        mob.set_ability_mp_cost(1, 0);
+        mob.set_ability_info(1, " The goblin grabs an item from his sack and tosses it!\n");      
     // The Giant Tree Frog mob type
     } else if (mob_type == "Giant Tree Frog") {
         mob.set_name("Giant Tree Frog");
@@ -849,11 +888,13 @@ void set_mob(string mob_type) {
         " small bugs.\n");
         mob.set_hp(22);
         mob.set_mp(10);
+        mob.set_max_hp(22);
+        mob.set_max_mp(10);
         mob.set_exp_reward(15);
         
         mob.set_ability_name(0, "Leap of Death");
-        mob.set_ability_damage(0, get_rand(4, 6));
-        mob.set_ability_heal(0, 6);
+        mob.set_ability_damage(0, get_rand(4, 6));  
+        mob.set_ability_heal(0, 0);
         mob.set_ability_mp_cost(0, 0);
         mob.set_ability_info(0, " The Giant Tree Frog leaps forward and lands on it's belly!\n");
         
@@ -861,76 +902,9 @@ void set_mob(string mob_type) {
         mob.set_ability_damage(1, 0);
         mob.set_ability_heal(1, 6);
         mob.set_ability_mp_cost(1, 3);
-        mob.set_ability_info(1, " The Giant Tree Frog consumes a nearby bug and restores its health!\n");
-        
+        mob.set_ability_info(1, " The Giant Tree Frog consumes a nearby bug and restores its health!\n");        
     }
 }
 
-void level_up() {
-    // initialize levels from 1-20
-
-    int level_exp[21] = {
-        0, 50, 125, 225, 350, 500, 675, 875, 1100, 1350, 1625,
-        1925, 2250, 2600, 2975, 3375, 3800, 4250, 4725, 5525, 6050
-    };            
-            
-    for (int k = 1; k < 21; k++) {                                                                                                                                                                                                                                                         
-        
-        // If their experience is higher than the experience required and they 
-        // are not already that level.
-        if (job.get_experience() >= level_exp[k] && job.get_level() != k+1) {
-            job.increase_level();
-
-            cout << " " << job.get_name() << " is now level " << job.get_level() << "!\n";        
-            // Level 2
-            if (job.get_level() == 2) {
-                
-                // Warrior levels up
-                if (job.get_job() == "Warrior") {
-                                     
-                    job.set_hp(60);
-                    job.set_mp(23);
-                    // NEW ABILITY!!                    
-                    job.set_ability_name(3, "Defend");
-                    job.set_ability_damage(3, 0);
-                    job.set_ability_mp_cost(3, 0);
-                    job.set_ability_info(3, "Braces for next attack and reduces incoming damage.\n");                
-                    
-            // Black Mage level up stuffs
-                } else if (job.get_job() == "Black Mage") {                                      
-                    job.set_hp(45);
-                    job.set_mp(48);      
-                    // NEW ABILITY!~
-                    job.set_ability_name(3, "Flame");
-                    job.set_ability_damage(3, 16);
-                    job.set_ability_mp_cost(3, 6);
-                    job.set_ability_info(3, "Engulfs the enemy in flames.\n");
-                    
-                // Thief levels up 
-                } else if (job.get_job() == "Thief") {
-                    job.set_hp(50);
-                    job.set_mp(25);
-                    // NEW ABILITY!!
-                    job.set_ability_name(3, "Low Blow");
-                    job.set_ability_damage(3, 10);
-                    job.set_ability_mp_cost(3, 2);
-                    job.set_ability_info(3, "Dashes quickly to deliver a sudden cheap shot.\n");                        
-                    
-                // Pally levels up 
-                } else if(job.get_job() == "Paladin") {
-                    job.set_hp(60);
-                    job.set_mp(35);
-                    // NEW ABILITY!!
-                    job.set_ability_name(3, "Redemptive Light");
-                    job.set_ability_damage(3, 0);
-                    job.set_ability_heal(3, 15);
-                    job.set_ability_mp_cost(3, 5);
-                    job.set_ability_info(3, "The power of redemption restores the Paladin's health.");
-                }
-                cout << " " << job.get_name() << " has learned the new ability " << job.get_ability_name(3) << "!\n";
-            }
-        }                                
-    }
-}    
 #endif	/* BEGIN_ADVENTURE_H */
 
