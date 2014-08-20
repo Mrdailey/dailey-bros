@@ -11,19 +11,15 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
-#include "mob_main.h"
-#include "jobs.h"
 #include "begin_adventure.h"
-//#include "items.h"
 
 using namespace std;
 
-int get_rand(int min, int max);
 
 int main() {
 
     string Menu[3] = {"Start Game", "Continue", "Exit"};
-    int pointer = 0;   
+    int pointer = 1;   
     
     while (true) {               
         system("cls");

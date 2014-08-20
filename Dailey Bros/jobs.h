@@ -10,12 +10,11 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-
+//#include "items.h"
+//#include "begin_adventure.h"
 #include "mob_main.h"
 
 using namespace std;
-
-int get_rand(int min, int max);
 
 // initialize levels from 1-20
 int level_exp[21] = {
@@ -24,7 +23,7 @@ int level_exp[21] = {
 };  
 
 typedef ability ab;
-
+typedef item_bag items;
 class Jobs {
       
     private:
@@ -38,6 +37,7 @@ class Jobs {
         int experience;    
         int level;
         ab ind_ability[10];
+        items item[20];
         
     public:
         Jobs() {
@@ -51,12 +51,21 @@ class Jobs {
             experience = 0;
             level = 1;            
             
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 9; i++) {
                 ind_ability[i].ability_name = "";
                 ind_ability[i].damage = 0;
                 ind_ability[i].mp_cost = 0;
                 ind_ability[i].ability_info = "";  
                 ind_ability[i].heal = 0;
+            }
+            
+            for (int k = 0; k < 2; k++) {
+                item[k].item.set_description("");
+                item[k].item.set_cost(0);
+                item[k].item.set_name("");    
+                item[k].item.set_value(0);
+                item[k].item.set_drop_rate(0);
+                item[k].quantity = 0;
             }
         }          
 
@@ -213,40 +222,73 @@ class Jobs {
             return ind_ability[choice].ability_info;
         }
         
-        int set_ability_damage(int choice, int dmg) {
+        void set_ability_damage(int choice, int dmg) {
             ind_ability[choice].damage = dmg;
         }
         
-        int set_ability_heal(int choice, int health) {
+        void set_ability_heal(int choice, int health) {
             ind_ability[choice].heal = health;
         }
         
-        int set_ability_name(int choice, string name) {
+        void set_ability_name(int choice, string name) {
             ind_ability[choice].ability_name = name;
         }
         
-        int set_ability_mp_cost(int choice, int magic) {
+        void set_ability_mp_cost(int choice, int magic) {
             ind_ability[choice].mp_cost = magic;
         }
         
-        int set_ability_info(int choice, string info) {
+        void set_ability_info(int choice, string info) {
             ind_ability[choice].ability_info = info;
         }
         
         /** End of all ability functions **/
         
-        // Add ability upon level up
-//        int add_job_ability(int num_ability, int lvl) {
-//            if (lvl == 2) {
-//                ind_ability[num_ability] {
-//                    name = "Power Strike";
-//                    damage = get_rand(9, 13);
-//                    mp_cost = 5;
-//                };
-//            }                      
-//        } 
+        /** Begin Item Functions **/
+        
+        void set_item_name(int choice, string item_name) {
+            item[choice].item.set_name(item_name);
+        }
+        
+        void set_item_cost(int choice, int cost) {
+            item[choice].item.set_cost(cost);
+        }
+                 
+        void set_item_value(int choice, int val) {
+            item[choice].item.set_value(val);
+        }
+        
+        int get_item_value(int choice) {
+            return item[choice].item.get_value();
+        }
+        
+        void set_item_description(int choice, string desc) {
+            item[choice].item.set_description(desc);
+        }
+        
+        void set_item_quantity(int choice, int quantity) {
+            item[choice].quantity = quantity;
+        }
+        
+        string get_item_name(int choice) {
+            return item[choice].item.get_name();
+        }
+        
+        int get_item_cost(int choice) {
+            return item[choice].item.get_cost();            
+        }
+        
+        int get_item_quantity(int choice) {
+            return item[choice].quantity;
+        }
+        
+        string get_item_description(int choice) {
+            return item[choice].item.get_description();
+        }
+        
         // Gives information on character while exploring
-        void display_info() {       
+        void display_info() {    
+            int items = sizeof(item)/sizeof(item[0]);
             int cap = 3;
             cout << "                   " << name << "\n";
             cout << " _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n";
@@ -255,6 +297,12 @@ class Jobs {
             cout << "  EXP      : " << experience << " / " << level_exp[level] << "\n";
             cout << "  LEVEL    : " << level << "\n";
             cout << "  JOB      : " << job_type << "\n";
+            cout << "  ITEMS    : ";
+            for (int i = 0; i < items; i++) {
+                if (item[i].quantity != 0) {
+                    cout << setw(19) << right << item[i].item.get_name() << " - " << item[i].quantity<< "\n";
+                }                
+            }    
             cout << "  ABILITIES: \n\n";   
             
             if (level >= 2) {
@@ -326,7 +374,7 @@ class Jobs {
                                 // NEW ABILITY!!                    
                                 ind_ability[3].ability_name = "Defend";
                                 ind_ability[3].ability_info = "Braces for next attack and reduces incoming damage.\n";                
-
+                                // reduces damage of the next attack by 50% 
                         // Black Mage level up stuffs
                             } else if (job_type == "Black Mage") {                                      
                                 // NEW ABILITY!~
@@ -352,7 +400,16 @@ class Jobs {
                                 ind_ability[3].ability_info = "The power of redemption restores the Paladin's health.\n";
                             }
                             cout << " " << name << " has learned the new ability " << ind_ability[3].ability_name << "!\n\n";
-                        } 
+                        }
+                        
+                        if (level == 6) {
+                            
+                            if (job_type == "Warrior") {
+                                ind_ability[4].ability_name = "";
+                                ind_ability[4].ability_info = "";
+                                
+                            }
+                        }
                     } else if (level % 2 == 1) {
 
                         if (job_type == "Warrior") {
@@ -360,24 +417,34 @@ class Jobs {
                             max_mp += 2;
                             hp = max_hp;
                             mp = max_mp;
+                            ind_ability[0].damage += hp * 0.05;
                             
                         } else if (job_type == "Black Mage") {
                             max_hp += 5;
                             max_mp += 6;
                             hp = max_hp;
                             mp = max_mp;
+                            ind_ability[0].damage += mp * 0.04;
+                            ind_ability[0].mp_cost += 1;
+                            ind_ability[3].damage += mp * 0.05;
+                            ind_ability[3].mp_cost += 1;
                             
                         } else if (job_type == "Thief") {
                             max_hp += 5;
                             max_mp += 3;
                             hp = max_hp;
                             mp = max_mp;
+                            ind_ability[0].damage += hp * 0.04;
+                            ind_ability[3].damage += hp * 0.05;
                             
                         } else if (job_type == "Paladin") {
                             max_hp += 7;
                             max_mp += 4;
                             hp = max_hp;
-                            mp = max_mp;                            
+                            mp = max_mp;     
+                            ind_ability[0].damage += hp * .04;
+                            ind_ability[1].damage += hp * .05;
+                            ind_ability[3].heal += mp * .04;
                         }
                     }
                 }                                

@@ -13,8 +13,12 @@
 #include <ctime>
 #include <cstdlib>
 #include <windows.h>
+#include "begin_adventure.h"
+//#include "jobs.h"
+//#include "mob_main.h"
 
 using namespace std;
+int get_rand(int min, int max);
 
 class Items {
     
@@ -23,12 +27,14 @@ class Items {
         string description;
         int cost;
         int drop_rate;
+        int value;
     public:
         Items() {
             name = "";
             description = "";
             cost = 0;
             drop_rate = 0;
+            value = 0;
         }
         
         void set_name(string n) {
@@ -39,8 +45,8 @@ class Items {
             return name;
         }
         
-        void set_description(string n) {
-            name = n;            
+        void set_description(string desc) {
+            description = desc;            
         }
         
         string get_description() {
@@ -62,24 +68,43 @@ class Items {
         int get_drop_rate() {
             return drop_rate;
         }           
-};
-
-class Potions : public Items {
-    
-    public:
-        Items health_potion() {
-            health_potion.name = set_name("Basic Health Potion");
-            health_potion.description = set_description("A basic health potion that restores 30 hp.\n");
-            health_potion.cost = 10;
-            health_potion.drop_rate = .10;
-            return health_potion;
-        }    
-        Items mana_potion() {
-            mana_potion.name = set_name("Basic Mana Potion");
-            mana_potion.description = set_description("A basic mana potion that restores 20 mp.");
-            mana_poition.cost = 10;
-            mana_potion.drop_rate = .08;
+        
+        void set_value(int val) {
+            value = val;
         }
+        
+        int get_value() {
+            return value;
+        }
+        
+        bool drop_item(int rate) {
+            int percent = get_rand(0, 100);
+                        
+            if (percent <= rate) {                
+                return true;
+            } else {                
+                return false;
+            }    
+        }               
+        
+        void health_potion() {
+        
+            name = "Basic Health Potion";
+            description = "A basic health potion that restores 30 hp.\n";
+            cost = 10;
+            drop_rate = 50;
+            value = 30;
+        }    
+            
+        void mana_potion() {
+                    
+            name = "Basic Mana Potion";
+            description = "A basic mana potion that restores 20 mp.";
+            cost = 10;
+            drop_rate = 40;
+            value = 15;
+        }    
+        
 };
 
 
