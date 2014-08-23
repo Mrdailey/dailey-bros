@@ -273,8 +273,7 @@ bool movement() {
     bool exploring = true;
     char maze[25][25] = {'-'}; // build a 2D array of 25 by 25 -'s
     int row,col;
-    for (row = 0; row < 25; row++) {
-        
+    for (row = 0; row < 25; row++) {        
         for (col = 0; col < 25; col++) {            
             maze[col][row] = '-';              
         }
@@ -283,16 +282,15 @@ bool movement() {
     maze[10][10] = 'X';
     int x_pos = 10, y_pos = 10;
     draw_map(maze); // initialize map with o's, X being the character.
-    while (exploring) { // until user types exit or quit 
-        
+    while (exploring) { // until user types exit or quit         
         cout << " Gidian: Where to next, " << name << "?\n";
         cout << " Type in either \'move left\', move \'right\', etc...\n";
         cout << " Press \'C\' to display character information.\n";
+        cout << " Press 'I' to display item info.\n";
         getline(cin, move_to_position); // choose which direction to go
 
         if (move_to_position == "move up") { // character moves up
-            not_in_menu = true;
-            
+            not_in_menu = true;            
             if (y_pos - 1 >= 0) { // character cannot leave the grid with this here
                 system("cls"); // clear the screen upon movement
                 maze[x_pos][y_pos] = 'o'; // trace your movement with circles
@@ -301,15 +299,13 @@ bool movement() {
                 draw_map(maze);
                 spaces++;
                 cout << " " << name << " journeys to the distant north of the \n"
-                        "\"Forest of the Dark Things That Hurt Good People.\"\n";      
-                
+                        "\"Forest of the Dark Things That Hurt Good People.\"\n";                      
             } else {
                 edge_of_map();
             } 
             
         } else if (move_to_position == "move down") { // character moves down
-            not_in_menu = true;
-            
+            not_in_menu = true;            
             if (y_pos + 1 < 25) {
                 system("cls");
                 maze[x_pos][y_pos] = 'o';
@@ -318,15 +314,13 @@ bool movement() {
                 draw_map(maze);
                 spaces++; // increment spaces to generate battles!
                 cout << " " << name << " journeys further south into the \n"
-                        "\"Forest of the Dark Things That Hurt Good People.\"\n";    
-                
+                        "\"Forest of the Dark Things That Hurt Good People.\"\n";                    
             } else {
                 edge_of_map();
             }
             
         } else if (move_to_position == "move left") { // character moves to the left
-            not_in_menu = true;
-            
+            not_in_menu = true;            
             if (x_pos - 1 >= 0) {
                 system("cls");
                 maze[x_pos][y_pos] = 'o';
@@ -335,16 +329,14 @@ bool movement() {
                 draw_map(maze); // calls function draw_map to construct a new maze.               
                 spaces++;
                 cout << " " << name << " journeys far west into the \n"
-                        "\"Forest of the Dark Things That Hurt Good People.\"\n"; 
-                
+                        "\"Forest of the Dark Things That Hurt Good People.\"\n";                 
             } else {
                 edge_of_map();
             }
             
         } else if (move_to_position == "move right") { // character moves to the right
-            not_in_menu = true;
-            
-            if (x_pos +1 < 25) {   
+            not_in_menu = true;            
+            if (x_pos + 1 < 25) {   
                 system("cls");
                 maze[x_pos][y_pos] = 'o'; // where the character was
                 x_pos++;
@@ -385,14 +377,14 @@ bool movement() {
                     exploring = true;
                     error = true;                        
                 }
-            } while (error);   
-            
-        } else { // character movement invalid
-            
-            if (move_to_position != "") {
-                cout << " Gidian: Up, Down, Left, or right! Let's move " << name << "!!\n\n";
-            }
-        }    
+            } while (error);               
+        } else if(move_to_position == "I" || move_to_position == "i") {
+            job.display_items(); 
+            not_in_menu = false;
+            pause();
+        } else {   
+            cout << " Gidian: Up, Down, Left, or right! Let's move " << name << "!!\n\n";        
+        }          
         if (exploring && not_in_menu) {
             if (spaces % 12 == 0 && spaces != 0) {
                 system("cls");
@@ -569,8 +561,8 @@ void loot_items(string name) {
             job.set_item_value(i, item_value[i]);
             job.set_item_description(i, item_description[i]);
             job.set_item_quantity(i, item_quantity[i]);
-            cout << " " << name << " received " << job.get_item_quantity(i) << " " << job.get_item_name(i) << ".\n";
-        } else if (item_dropped == FALSE || job.get_item_quantity(i) == 0 || printed == FALSE) {            
+            cout << " " << name << " received " << mob.get_item_quantity(i) << " " << job.get_item_name(i) << ".\n";
+        } else if (item_dropped == FALSE && printed == FALSE) {            
             cout << " " << name << " found no items!\n";
             printed = TRUE;
         }
@@ -798,7 +790,6 @@ void pause () {
     cout << "  \n\n <Enter to continue> \n";
     cin.ignore();
 }    
-
 
 /**
  * @param int min

@@ -267,7 +267,7 @@ class Jobs {
         }
         
         void set_item_quantity(int choice, int quantity) {
-            item[choice].quantity = quantity;
+            item[choice].quantity += quantity;
         }
         
         string get_item_name(int choice) {
@@ -288,7 +288,7 @@ class Jobs {
         
         // Gives information on character while exploring
         void display_info() {    
-            int items = sizeof(item)/sizeof(item[0]);
+//            int items = sizeof(item)/sizeof(item[0]);
             int cap = 3;
             cout << "                   " << name << "\n";
             cout << " _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n";
@@ -297,13 +297,13 @@ class Jobs {
             cout << "  EXP      : " << experience << " / " << level_exp[level] << "\n";
             cout << "  LEVEL    : " << level << "\n";
             cout << "  JOB      : " << job_type << "\n";
-            cout << "  ITEMS    : ";
-            for (int i = 0; i < items; i++) {
-                if (item[i].quantity != 0) {
-                    cout << setw(19) << right << item[i].item.get_name() << " - " << item[i].quantity<< "\n";
-                }                
-            }    
-            cout << "  ABILITIES: \n\n";   
+//            cout << "  ITEMS    : \n";
+//            for (int i = 0; i < items; i++) {
+//                if (item[i].quantity != 0) {
+//                    cout << right << "  " << item[i].item.get_name() << "   " << item[i].quantity << "\n";
+//                }                
+//            }    
+            cout << "   ABILITIES: \n\n";   
             
             if (level >= 2) {
                 cap = 4;
@@ -328,6 +328,18 @@ class Jobs {
             cout << " _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _";            
         }
         
+        void display_items() {
+            system("cls");
+            int items = sizeof(item)/sizeof(item[0]);
+            cout << "      ITEMS\n";
+            cout << "_ _ _ _ _ _ _ _ _\n\n";
+            for (int i = 0; i < items; i++) {
+                if (item[i].quantity != 0) {
+                    cout << "  " << item[i].item.get_name() << "  Quantity: " << item[i].quantity << "\n\n";
+                    cout << "  Description: " << item[i].item.get_description() << "\n\n";
+                }    
+            }            
+        }
         // For Leveling up 
         void level_up() {          
 
@@ -379,7 +391,7 @@ class Jobs {
                             } else if (job_type == "Black Mage") {                                      
                                 // NEW ABILITY!~
                                 ind_ability[3].ability_name = "Flame";
-                                ind_ability[3].damage = 6;
+                                ind_ability[3].damage = get_rand(16,18);
                                 ind_ability[3].mp_cost = 6;
                                 ind_ability[3].ability_info = "Engulfs the enemy in flames.\n";
 

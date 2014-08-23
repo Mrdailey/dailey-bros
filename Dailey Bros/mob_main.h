@@ -364,8 +364,7 @@ class Mobs {
                 ind_ability[1].ability_name = "Consume";
                 ind_ability[1].damage = 0;
                 ind_ability[1].heal = 6;
-                ind_ability[1].mp_cost = 3;
-                ind_ability[1].heal = 0;
+                ind_ability[1].mp_cost = 3;                
                 ind_ability[1].ability_info = " The Giant Tree Frog consumes a nearby bug and restores its health!\n";        
                 
             // First Boss Encounter!!    
