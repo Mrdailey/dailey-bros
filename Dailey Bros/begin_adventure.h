@@ -280,15 +280,15 @@ bool movement() {
     }
     int spaces = 0;
     maze[10][10] = 'X';
-    int x_pos = 10, y_pos = 10;
-    draw_map(maze); // initialize map with o's, X being the character.
+    int x_pos = 10, y_pos = 10;    
     while (exploring) { // until user types exit or quit         
+        draw_map(maze); // initialize map with o's, X being the character.
         cout << " Gidian: Where to next, " << name << "?\n";
         cout << " Type in either \'move left\', move \'right\', etc...\n";
         cout << " Press \'C\' to display character information.\n";
         cout << " Press 'I' to display item info.\n";
         getline(cin, move_to_position); // choose which direction to go
-
+        
         if (move_to_position == "move up") { // character moves up
             not_in_menu = true;            
             if (y_pos - 1 >= 0) { // character cannot leave the grid with this here
@@ -390,13 +390,13 @@ bool movement() {
                 system("cls");
                 cout << " Gidian: Here we go " << name << "!\n"
                         " Gidian: Let\'s show \'em what we\'re made of!\n";
-                exploring = encounter_goblin();
+                exploring = encounter_goblin();                
                 
             } else if (spaces % 7 == 0 && spaces != 0) {
                 system("cls");
                 cout << " Gidian: No more picking berries " << name << "!\n"
                         " Gidian: I am an old man, remember!\n";
-                exploring = encounter_skeleton_warrior();
+                exploring = encounter_skeleton_warrior();               
                 
             } else if (spaces % 9 == 0 && spaces !=0) {                
                system("cls");
@@ -405,13 +405,14 @@ bool movement() {
                exploring = encounter_giant_tree_frog(); 
                
             } else if (spaces == 19 || spaces == 17 || spaces == 23) {
-//                found_item();
+                
+            } else if (spaces == 30) {
                 // FIRST BOSS ENCOUNTER
-            } else if (spaces == 16) {
                 system("cls");
                 exploring = encounter_forest_feral();
             }
-        }        
+        }       
+        spaces++;
     }    
     return exploring;
 }
@@ -895,81 +896,5 @@ void set_job(string job_type) {
         job.set_ability_info(1, "Channels holy energy into a blade to damage enemies.");        
     }
 }
-
-/**
- * Will set all the values necessary to load the mob.
- * 
- * @param string mob_type The mob to be loaded.
- */
-//void set_mob(string mob_type) {
-//    // The Skeleton Warrior mob type
-//    if (mob_type == "Skeleton Warrior") {
-//        mob.set_name("Skeleton Warrior");
-//        mob.set_description("Skeleton Warriors may be small and bony, but they "
-//                    "can swing a sword like nobody's business!\n");
-//        mob.set_hp(25);
-//        mob.set_mp(8);
-//        mob.set_max_hp(25);
-//        mob.set_max_mp(8);
-//        mob.set_exp_reward(15);
-//
-//        mob.set_ability_name(0, "Bone Hammer");
-//        mob.set_ability_damage(0, get_rand(4, 7));
-//        mob.set_ability_heal(0, 0);
-//        mob.set_ability_mp_cost(0, 4);
-//        mob.set_ability_info(0, " The skeleton warrior snaps his leg off and hammers it down!\n"); 
-//        
-//        mob.set_ability_name(1, "Bone Sword");
-//        mob.set_ability_damage(1, get_rand(3, 6));
-//        mob.set_ability_heal(1, 0);
-//        mob.set_ability_mp_cost(1, 0);
-//        mob.set_ability_info(1, " Skeleton Warrior breaks off his arm and uses it as a sword!\n");
-//        // The Goblin mob type
-//    } else if (mob_type == "Goblins") {
-//        mob.set_name("Goblin");
-//        mob.set_description("The nasty Goblin race is after many things, but most of all"
-//                " is after   your money!\n");
-//        mob.set_hp(20);
-//        mob.set_mp(5);
-//        mob.set_max_hp(20);
-//        mob.set_max_mp(5);
-//        mob.set_exp_reward(10);
-//
-//        mob.set_ability_name(0, "Fire");
-//        mob.set_ability_damage(0, get_rand(4, 6));
-//        mob.set_ability_heal(0, 0);
-//        mob.set_ability_mp_cost(0, 3);
-//        mob.set_ability_info(0, " The goblin unleashes a surge of fire!\n");
-//
-//        mob.set_ability_name(1, "Goblin Toss");    
-//        mob.set_ability_damage(1, get_rand(3, 4));   
-//        mob.set_ability_heal(1, 0);
-//        mob.set_ability_mp_cost(1, 0);
-//        mob.set_ability_info(1, " The goblin grabs an item from his sack and tosses it!\n");      
-//    // The Giant Tree Frog mob type
-//    } else if (mob_type == "Giant Tree Frog") {
-//        mob.set_name("Giant Tree Frog");
-//        mob.set_description("This strange creature is both intimidating and extremely fond of"
-//        " small bugs.\n");
-//        mob.set_hp(22);
-//        mob.set_mp(10);
-//        mob.set_max_hp(22);
-//        mob.set_max_mp(10);
-//        mob.set_exp_reward(15);
-//        
-//        mob.set_ability_name(0, "Leap of Death");
-//        mob.set_ability_damage(0, get_rand(4, 6));  
-//        mob.set_ability_heal(0, 0);
-//        mob.set_ability_mp_cost(0, 0);
-//        mob.set_ability_info(0, " The Giant Tree Frog leaps forward and lands on it's belly!\n");
-//        
-//        mob.set_ability_name(1, "Consume");
-//        mob.set_ability_damage(1, 0);
-//        mob.set_ability_heal(1, 6);
-//        mob.set_ability_mp_cost(1, 3);
-//        mob.set_ability_info(1, " The Giant Tree Frog consumes a nearby bug and restores its health!\n");        
-//    }
-//}
-
 #endif	/* BEGIN_ADVENTURE_H */
 
