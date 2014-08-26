@@ -301,7 +301,7 @@ public:
         cout << "  LEVEL    : " << level << "\n";
         cout << "  JOB      : " << job_type << "\n";
 
-        cout << "   ABILITIES: \n\n";
+        cout << "  ABILITIES: \n\n";
 
         if (level >= 2) {
             cap = 4;
@@ -336,6 +336,42 @@ public:
                 cout << "  " << item[i].item.get_name() << "  Quantity: " << item[i].quantity << "\n\n";
                 cout << "  Description: " << item[i].item.get_description() << "\n\n";
             }
+        }
+    }
+    
+    int item_selection(string item_choice) {
+        string a; 
+        int items = sizeof (item) / sizeof (item[0]);
+        for (int i = 0; i < items; i++) {
+            if (item[i].quantity != 0) {
+                a = item[i].item.get_name();
+                if (a == item_choice) {
+                    return i;
+                }
+            }
+        }
+    }
+    
+    bool item_activate(string item_name, int item_value) {
+        cout << " " << name << " consumes a " << item_name << "!\n";
+        if (item_name == "Basic Health Potion") {
+            hp += item_value;
+            if (hp > max_hp) {
+                item_value = item_value - hp - max_hp;
+                hp = max_hp;
+            }
+            cout << " " <<  name << " restored " << item_value << " hp!\n";            
+            return true;
+        } else if (item_name == "Basic Mana Potion") {
+            mp += item_value;     
+            if (mp > max_mp) {
+                item_value = item_value - mp - max_mp;
+                mp = max_mp;
+            }            
+            cout << " " << name << " restores " << item_value << " mp!\n";            
+            return true;
+        } else {
+            return false;
         }
     }
     // For Leveling up 
@@ -456,6 +492,8 @@ public:
                 } else {
 
                 }
+            } else {
+                
             }
         }
     }

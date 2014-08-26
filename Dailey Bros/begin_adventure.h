@@ -15,6 +15,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <windows.h>
+#include <map>
 #include "jobs.h"
 #include "items.h"
 
@@ -281,8 +282,8 @@ bool movement() {
     int spaces = 0;
     maze[10][10] = 'X';
     int x_pos = 10, y_pos = 10;    
+    draw_map(maze); // initialize map with o's, X being the character.
     while (exploring) { // until user types exit or quit         
-        draw_map(maze); // initialize map with o's, X being the character.
         cout << " Gidian: Where to next, " << name << "?\n";
         cout << " Type in either \'move left\', move \'right\', etc...\n";
         cout << " Press \'C\' to display character information.\n";
@@ -497,7 +498,6 @@ bool encounter_giant_tree_frog() {
 
 bool encounter_forest_feral() {
     pause();
-//    system("cls"); 
     string mob_type = "The Forest Feral";
     mob.set_mob(mob_type);
     string name = job.get_name();
@@ -579,15 +579,12 @@ void loot_items(string name) {
 void battle_menu(string mob_name) {    
     system("cls");    
     string name = job.get_name();
-    string choice;      
-    string job_ability_name;
-    int hp_gained = mob.get_hp() * .20;
-    int mp_gained = mob.get_mp() * .15;
-    int job_ability_dmg;
-    int ability_type;
-    int job_ability_mp_cost;
+    string choice, job_ability_name;
+    bool used_item = false;
+    int hp_gained = mob.get_hp() * .15;
+    int mp_gained = mob.get_mp() * .12;
+    int job_ability_dmg, ability_type, job_ability_mp_cost, job_ability_heal;
     string job_ability_info;
-    int job_ability_heal;
     bool battle_over = false;   
     int max_hp = job.get_max_hp();
     int max_mp = job.get_max_mp();
@@ -618,6 +615,7 @@ void battle_menu(string mob_name) {
             for (int i = 1; i < cap; i++) {                
                 cout << " [" << i << "]  " << job.get_ability_name(i-1) << "\n";        
             }
+            cout << " [I] Use Item \n";
             cout << "\n What will " << name << " do?\n";
             getline(cin, choice);              
             string ab_1, ab_2, ab_3, ab_4;
@@ -671,54 +669,71 @@ void battle_menu(string mob_name) {
                 }                   
                 
             } else if (choice == ab_4 || choice == "4") {
-              error = false;
-              tried_to_run = false;
-              job_ability_name = job.get_ability_name(3);
-              job_ability_dmg = job.get_ability_damage(3);
-              job_ability_mp_cost = job.get_ability_mp_cost(3);
-              job_ability_info = job.get_ability_info(3);
-              job_ability_heal = job.get_ability_heal(3);
-              job.decrease_mp(job_ability_mp_cost);
-              if (job.get_mp() < 0) {
-                  cout << " Not enough mana to use that ability!\n";
-                  job.increase_mp(job_ability_mp_cost);
-                  error = true;
-              }
-              // You don't know what you're doing anymore.
+                error = false;
+                tried_to_run = false;
+                job_ability_name = job.get_ability_name(3);
+                job_ability_dmg = job.get_ability_damage(3);
+                job_ability_mp_cost = job.get_ability_mp_cost(3);
+                job_ability_info = job.get_ability_info(3);
+                job_ability_heal = job.get_ability_heal(3);
+                job.decrease_mp(job_ability_mp_cost);
+                if (job.get_mp() < 0) {
+                    cout << " Not enough mana to use that ability!\n";
+                    job.increase_mp(job_ability_mp_cost);
+                    error = true;
+                }
+                
+            } else if (choice == "i" || choice == "I") {
+                error = false;
+                tried_to_run = false;
+                string item_name;
+                int item_value;
+                string item_choice;
+                job.display_items();
+                cout << "\n\n  Choose an item to use by typing it's name: ";
+                getline(cin, item_choice);
+                int item_to_use = job.item_selection(item_choice);
+                item_value = job.get_item_value(item_to_use);
+                item_name = job.get_item_name(item_to_use);
+                if (job.item_activate(item_name, item_value)) {
+                    used_item = true;
+                }
+                
             } else {        
                 error = true;                   
                 cout << " Invalid option... Please just do what I tell you to.\n\n";            
             } 
             // if the user DIDNT flee AND DIDNT try to run AND there was no ERROR with ability mp cost
             if (flee == false && tried_to_run == false && error == false) {
-                cout << "\n " << name << " uses " << job_ability_name << "!\n";
-                if (job_ability_name == "Stealth") {
-                    cout << " " << name << " enters the shadows unseen.\n";
-                } else if (job_ability_name == "Defend") {
-                    cout << " " << name << " raises his shield for the next blow!\n";                    
-                } else if(job_ability_name == "Redemptive Light") {
-                    cout << " " << name << " calls down the light of Redemption!\n";
-                    job.increase_hp(job_ability_heal);
-                    
-                    // Check for overheal
-                    if (job.get_hp() > max_hp) {
-                        job_ability_heal = job_ability_heal - job.get_hp() - max_hp;
-                        job.set_hp(max_hp);                        
-                    }
-                    
-                } else {
-                    cout << " " << mob_name;
-                    battle_over = mob.damage_hp(job_ability_dmg);                    
-                }
+                if (!used_item) {
+                    cout << "\n " << name << " uses " << job_ability_name << "!\n";
+                    if (job_ability_name == "Stealth") {
+                        cout << " " << name << " enters the shadows unseen.\n";
+                    } else if (job_ability_name == "Defend") {
+                        cout << " " << name << " raises his shield for the next blow!\n";                    
+                    } else if(job_ability_name == "Redemptive Light") {
+                        cout << " " << name << " calls down the light of Redemption!\n";
+                        job.increase_hp(job_ability_heal);                    
+                        // Check for overheal
+                        if (job.get_hp() > max_hp) {
+                            job_ability_heal = job_ability_heal - job.get_hp() - max_hp;
+                            job.set_hp(max_hp);                        
+                        }                    
+                    } else {
+                        cout << " " << mob_name;
+                        battle_over = mob.damage_hp(job_ability_dmg);                    
+                    }                    
+                    used_item = false;
+                }    
                 // if the mob is dead!
-                if (battle_over == true && flee == false) {
+                if (battle_over == true && flee == false) {                    
                     cout << " " << name << " has defeated the " << mob_name << "!!\n";
                     job.increase_experience(mob.get_exp_reward());
-                
+
                     cout << " " << name << " has received " << mob.get_exp_reward() << " experience points!\n";                
                     job.increase_hp(hp_gained);
                     job.increase_mp(mp_gained);
-                    
+
                     // Check for overheal
                     if (job.get_hp() > max_hp) {
                         job.set_hp(max_hp);

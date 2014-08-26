@@ -59,7 +59,7 @@ int main() {
                         case 0: {                                                                             
                             cout << "Start new game?";
                             Sleep(1000);        
-                            pause();
+//                            pause();
                             begin_adventure(); 
                         } break;
                         case 1: {

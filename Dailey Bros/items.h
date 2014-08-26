@@ -14,8 +14,6 @@
 #include <cstdlib>
 #include <windows.h>
 #include "begin_adventure.h"
-//#include "jobs.h"
-//#include "mob_main.h"
 
 using namespace std;
 int get_rand(int min, int max);
@@ -106,7 +104,5 @@ class Items {
         }    
         
 };
-
-
 #endif	/* ITEMS_H */
 

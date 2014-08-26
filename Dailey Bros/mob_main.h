@@ -1,6 +1,7 @@
 /* 
  * File:   mob_main.h
- * Author: rcsda_000
+ * Authors: rcsda_000
+ *         Michael Dailey
  *
  * Created on August 1, 2014, 9:59 PM
  */
