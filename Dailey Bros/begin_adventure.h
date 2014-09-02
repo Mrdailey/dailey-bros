@@ -35,7 +35,6 @@ bool your_dead();
 void battle_menu(string mob_name); 
 void edge_of_map();
 void exit_game();
-void set_job(string job_type);
 
 //declare booleans for exiting purposes.
 bool game_over = false;
@@ -101,7 +100,7 @@ void begin_adventure() {
             // case of the user picking a warrior.
             if (response == "warrior" || response == "Warrior") {                                         
                 job_type = "Warrior";
-                set_job(job_type);
+                job.set_job(job_type);
                 description = job.get_description();
                 
                 do {                                
@@ -133,7 +132,7 @@ void begin_adventure() {
                 
             } else if (response == "black mage" || response == "Black Mage") {    
                 job_type = "Black Mage";
-                set_job(job_type);
+                job.set_job(job_type);
                 description = job.get_description();
                 do {
                     cout << "\n You have selected the black mage job." << description;
@@ -163,7 +162,7 @@ void begin_adventure() {
                 
             } else if (response == "thief" || response == "Thief") {
                 job_type = "Thief";
-                set_job(job_type);
+                job.set_job(job_type);
                 description = job.get_description();
                 do {
                     cout << "\n You have selected the thief job." << description;
@@ -193,7 +192,7 @@ void begin_adventure() {
                 
             } else if (response == "paladin" || response == "Paladin") {
                 job_type = "Paladin";
-                set_job(job_type);
+                job.set_job(job_type);
                 description = job.get_description();
                 do {
                     cout << "\n You have selected the paladin job." << description;
@@ -579,11 +578,10 @@ void loot_items(string name) {
 void battle_menu(string mob_name) {    
     system("cls");    
     string name = job.get_name();
-    string choice, job_ability_name;
-    bool used_item = false;
+    string choice, job_ability_name;    
     int hp_gained = mob.get_hp() * .15;
     int mp_gained = mob.get_mp() * .12;
-    int job_ability_dmg, ability_type, job_ability_mp_cost, job_ability_heal;
+    int job_ability_dmg, ability_type, job_ability_mp_cost, job_ability_heal, job_ability_defend;
     string job_ability_info;
     bool battle_over = false;   
     int max_hp = job.get_max_hp();
@@ -591,7 +589,7 @@ void battle_menu(string mob_name) {
     int mob_max_hp = mob.get_max_hp();
     int mob_max_mp = mob.get_max_mp();
     // reset the thief's damage on his boosted ability
-    if (job.get_job() == "Thief") {
+    if (job.get_job_type() == "Thief") {
         job.set_ability_damage(0, 7);
     }
     cout << " " << name << " has encountered a " << mob_name << "!!\n\n";
@@ -600,6 +598,7 @@ void battle_menu(string mob_name) {
         int stealth_counter = 0;
         bool flee = false;    
         bool error = false;
+        bool used_item = false;
         bool tried_to_run = false;
         do {            
             cout << "\n " << name << " HP: " << job.get_hp() << " / " << max_hp << "    MP: " << job.get_mp() << " / " << max_mp << "  "; 
@@ -615,7 +614,7 @@ void battle_menu(string mob_name) {
             for (int i = 1; i < cap; i++) {                
                 cout << " [" << i << "]  " << job.get_ability_name(i-1) << "\n";        
             }
-            cout << " [I] Use Item \n";
+            cout << " [I]  Use Item \n";
             cout << "\n What will " << name << " do?\n";
             getline(cin, choice);              
             string ab_1, ab_2, ab_3, ab_4;
@@ -676,29 +675,45 @@ void battle_menu(string mob_name) {
                 job_ability_mp_cost = job.get_ability_mp_cost(3);
                 job_ability_info = job.get_ability_info(3);
                 job_ability_heal = job.get_ability_heal(3);
+                job_ability_defend = job.get_ability_defend(3);
                 job.decrease_mp(job_ability_mp_cost);
                 if (job.get_mp() < 0) {
                     cout << " Not enough mana to use that ability!\n";
                     job.increase_mp(job_ability_mp_cost);
                     error = true;
                 }
-                
+            // Use an item    
             } else if (choice == "i" || choice == "I") {
                 error = false;
-                tried_to_run = false;
+                tried_to_run = false;                
+                bool real_item  = true;
+                int item_to_use;
                 string item_name;
                 int item_value;
                 string item_choice;
                 job.display_items();
                 cout << "\n\n  Choose an item to use by typing it's name: ";
                 getline(cin, item_choice);
-                int item_to_use = job.item_selection(item_choice);
-                item_value = job.get_item_value(item_to_use);
-                item_name = job.get_item_name(item_to_use);
-                if (job.item_activate(item_name, item_value)) {
-                    used_item = true;
-                }
+                real_item = job.item_validation(item_choice);
+                if (real_item) {
+                    item_to_use = job.item_selection(item_choice);
+                    item_value = job.get_item_value(item_to_use);
+                    item_name = job.get_item_name(item_to_use);
+                    used_item = job.item_activate(item_name, item_value);                                        
+                } else {
+                    cout << " That is not a real item!\n";
+                    error = true;
+                }                     
                 
+                if (used_item) {
+                    error = false;
+                    job.decrease_item_quantity(item_to_use);
+                } else if (!real_item) {
+                    error = true;
+                    cout << " You have no " << item_choice << "s available to use!\n";
+                } else {
+                    
+                }                                
             } else {        
                 error = true;                   
                 cout << " Invalid option... Please just do what I tell you to.\n\n";            
@@ -716,9 +731,12 @@ void battle_menu(string mob_name) {
                         job.increase_hp(job_ability_heal);                    
                         // Check for overheal
                         if (job.get_hp() > max_hp) {
-                            job_ability_heal = job_ability_heal - job.get_hp() - max_hp;
+                            int val;
+                            val = job.get_hp() - max_hp;
+                            job_ability_heal = job_ability_heal - val;
                             job.set_hp(max_hp);                        
                         }                    
+                        cout << " " << name << " restored "  << job_ability_heal << " hit points!\n";
                     } else {
                         cout << " " << mob_name;
                         battle_over = mob.damage_hp(job_ability_dmg);                    
@@ -729,7 +747,6 @@ void battle_menu(string mob_name) {
                 if (battle_over == true && flee == false) {                    
                     cout << " " << name << " has defeated the " << mob_name << "!!\n";
                     job.increase_experience(mob.get_exp_reward());
-
                     cout << " " << name << " has received " << mob.get_exp_reward() << " experience points!\n";                
                     job.increase_hp(hp_gained);
                     job.increase_mp(mp_gained);
@@ -768,7 +785,7 @@ void battle_menu(string mob_name) {
                         job.set_ability_damage(0, job.get_ability_damage(0) + stealth_counter);                        
                     } else if (job_ability_name == "Defend") {
                         cout << " " << name;
-                        game_over = job.damage_hp((mob.get_ability_damage(ability_type)) * .50);
+                        game_over = job.damage_hp((mob.get_ability_damage(ability_type)) - job_ability_defend);
                     } else {
                         cout << " " << name;
                         game_over = job.damage_hp((mob.get_ability_damage(ability_type)));                                               
@@ -793,7 +810,7 @@ void battle_menu(string mob_name) {
         } 
         
         // after double stab is used reset it's damage boost.
-        if (job.get_job() == "Thief" && job_ability_name == "Double Stab-jab") {
+        if (job.get_job_type() == "Thief" && job_ability_name == "Double Stab-jab") {
             job.set_ability_damage(0, 7);
         }
     }  // end while (!battle_over) loop 
@@ -822,94 +839,5 @@ void exit_game() {
     game_active = false;
 }
 
-/**
- * Sets all of the values for the job the user has selected.
- * 
- * @param string job_type The name of the job to pass in
- */
-void set_job(string job_type) {
-    // The Warrior job
-    if (job_type == "Warrior") {        
-        job.set_job(job_type);
-        job.set_description("\n The brave warrior uses his strength and weapon "
-                "skills to massacre his foes.\n Select this job? Hit 'y' or 'n' and 'enter': ");          
-        job.set_hp(50);                    
-        job.set_mp(20);
-        job.set_max_hp(50);
-        job.set_max_mp(20);
-        job.set_experience(0);
-        job.set_level(1);
-
-        job.set_ability_name(0, "Sword Attack");
-        job.set_ability_damage(0, 8);
-        job.set_ability_mp_cost(0, 0);
-        job.set_ability_info(0, "A strong basic sword attack.");
-
-        job.set_ability_name(1, "Head-bonk");
-        job.set_ability_damage(1, 9); // dmg 5-9
-        job.set_ability_mp_cost(1, 2);
-        job.set_ability_info(1, "A strong head bash. Ouch.");
-        // The Black Mage Job
-    } else if (job_type == "Black Mage") {        
-        job.set_job(job_type);
-        job.set_description("\n The powerful black mage unleashes spells to devastate his foes.\n"
-                    " Select this job? Hit 'y' or 'n' and 'enter': ");          
-        job.set_hp(40);                    
-        job.set_mp(40);
-        job.set_max_hp(40);
-        job.set_max_mp(40);
-        job.set_experience(0);
-        job.set_level(1);
-
-        job.set_ability_name(0, "Surge");
-        job.set_ability_damage(0, 15); // dmg 7-15
-        job.set_ability_mp_cost(0, 5);
-        job.set_ability_info(0, "Releases a powerful non-elemental burst of energy.");
-
-        job.set_ability_name(1, "Staff-yack");
-        job.set_ability_damage(1, 4);
-        job.set_ability_mp_cost(1, 0);
-        job.set_ability_info(1, "A forceful swing of the staff oughta do the trick.");  
-        // The Thief Job
-    } else if (job_type == "Thief") {        
-        job.set_job(job_type);
-        job.set_description("\n The agile thief uses his cunning and agility to overcome his foes.\n"
-                    " Select this job? Hit 'y' or 'n' and 'enter': ");          
-        job.set_hp(44);                    
-        job.set_mp(22);
-        job.set_max_hp(44);
-        job.set_max_mp(22);
-        job.set_experience(0);
-        job.set_level(1);
-
-        job.set_ability_name(0, "Double Stab-jab");
-        job.set_ability_damage(0, 7);
-        job.set_ability_info(0, "A sudden two strikes that can be lethal.");
-
-        job.set_ability_name(1, "Stealth");
-        job.set_ability_mp_cost(1, 3);
-        job.set_ability_info(1, "Hide from sight and increase the damage of the next attack. Can be used additively.");    
-        // The Paladin Job
-    } else if (job_type == "Paladin") {        
-        job.set_job(job_type);
-        job.set_description("\n The noble paladin is a master of both weaponry and holy magic.\n"
-                    " Select this job? Hit 'y' or 'n' and 'enter': ");          
-        job.set_hp(50);                    
-        job.set_mp(25);
-        job.set_max_hp(50);
-        job.set_max_mp(25);
-        job.set_experience(0);
-        job.set_level(1);
-
-        job.set_ability_name(0, "Holy Slash");
-        job.set_ability_damage(0, 8);
-        job.set_ability_info(0, "A magical strike that deals consistent damage.");
-
-        job.set_ability_name(1, "Atonement");
-        job.set_ability_damage(1, 11);
-        job.set_ability_mp_cost(1, 3);
-        job.set_ability_info(1, "Channels holy energy into a blade to damage enemies.");        
-    }
-}
 #endif	/* BEGIN_ADVENTURE_H */
 

@@ -25,6 +25,7 @@ struct ability {
     int mp_cost;
     string ability_info;
     int heal;
+    int defend;
 };
 
 struct item_bag {
@@ -69,6 +70,7 @@ class Mobs {
                 ind_ability[i].mp_cost = 0;
                 ind_ability[i].ability_info = "";    
                 ind_ability[i].heal = 0;
+                ind_ability[i].defend = 0;
             }
             // item bag for mob
             for (int k = 0; k < 9; k++) {
