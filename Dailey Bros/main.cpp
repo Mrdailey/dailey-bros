@@ -24,11 +24,12 @@ int main() {
     while (true) {               
         system("cls");
 	
-        cout << "   *************************************************\n";
-        cout << "   *                                               *\n";
-        cout << "   *                TEXT ADVENTURER                *\n";
-        cout << "   *                   Main Menu                   *\n";
-        cout << "   *************************************************\n";        
+        cout << "   ***************************************************\n";
+        cout << "   *                                                 *\n";
+        cout << "   * Forest of the Dark Things That Hurt Good People *\n";
+        cout << "   *                   FotDTTHGP                     *\n";
+        cout << "   *                   Main Menu                     *\n";
+        cout << "   ***************************************************\n";        
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);        
 
         for (int i = 0; i < 3; ++i) {

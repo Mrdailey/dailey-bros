@@ -10,8 +10,6 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-//#include "items.h"
-//#include "begin_adventure.h"
 #include "mob_main.h"
 
 using namespace std;
@@ -320,10 +318,10 @@ public:
 
     void set_job(string job_name) {
         job_type = job_name;
-         // The Warrior job        
-        if (job_type == "Warrior") {        
-            description = "\n The brave warrior uses his strength and weapon "
-                "skills to massacre his foes.\n Select this job? Hit 'y' or 'n' and 'enter': ";            
+         // The Protector job        
+        if (job_type == "Protector") {        
+            description = "\n The brave protector uses his strength and skills "
+                    "in earthen might to massacre his foes.\n Select this job? Hit 'y' or 'n' and 'enter': ";            
             hp = 50;
             mp = 20;
             max_hp = 50;
@@ -334,17 +332,18 @@ public:
             dexterity = 15;
             defense = 28;
             
-            ind_ability[0].ability_name = "Sword Attack";
+            ind_ability[0].ability_name = "Defender's Strike";
             ind_ability[0].damage = 8;
             ind_ability[0].ability_info = "A strong basic sword attack.";
             
-            ind_ability[1].ability_name = "Head-bonk";
+            ind_ability[1].ability_name = "Might of Gaia";
             ind_ability[1].damage = 10;
             ind_ability[1].mp_cost = 2;
-            ind_ability[1].ability_info = "A strong head bash. Ouch.";            
-            // The Black Mage Job
-        } else if (job_type == "Black Mage") {                    
-            description = "\n The powerful black mage unleashes spells to devastate his foes.\n"
+            ind_ability[1].ability_info = "Protector calls upon the might of the earth to"
+                                          " crush his foes. Ouch.";            
+            // The Elementalist
+        } else if (job_type == "Elementalist") {                    
+            description = "\n The powerful Elementalist unleashes spells to devastate his foes.\n"
                 " Select this job? Hit 'y' or 'n' and 'enter': ";
             hp = 40;
             mp = 40;
@@ -366,7 +365,7 @@ public:
             ind_ability[1].mp_cost = 0;
             ind_ability[1].ability_info = "A forceful swing of the staff oughta do the trick.";
             // The Thief Job
-        } else if (job_type == "Thief") {        
+        } else if (job_type == "") {        
             description = "\n The agile thief uses his cunning and agility to overcome his foes.\n"
                 " Select this job? Hit 'y' or 'n' and 'enter': ";
             hp = 44;
@@ -460,13 +459,13 @@ public:
         system("cls");
         cout << "                 " << name << "\n";
         cout << "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\n";
-        if (job_type == "Warrior") {            
+        if (job_type == "Protector") {            
             cout << " STRENGTH     : " << strength << "\n Increases damage of attacks by 2 for every 1 strength.\n\n";
             cout << " INTELLIGENCE : " << intelligence << "\n\n";
             cout << " DEXTERITY    : " << dexterity << "\n\n";
             cout << " STAMINA      : " << stamina << "\n Increases health by 2 for every 1 stamina.\n\n";
             cout << " DEFENSE      : " << defense << "\n Reduces damage taken from all sources.\n\n";
-        } else if (job_type == "Black Mage") {
+        } else if (job_type == "Elementalist") {
             cout << " STRENGTH     : " << strength << "\n\n";
             cout << " INTELLIGENCE : " << intelligence << "\n Increases damage done by magic by 2 for every 1 intelligence.\n\n";
             cout << " DEXTERITY    : " << dexterity << "\n\n";
@@ -546,8 +545,8 @@ public:
             return false;
         }
     }
+    
     // For Leveling up 
-
     void level_up() {
         for (int k = 1; k < 21; k++) {
             // If their experience is higher than the experience required and they 
@@ -555,9 +554,9 @@ public:
             if (experience >= level_exp[k] && level != k + 1) {
                 level++;
                 cout << " " << name << " is now level " << level << "!\n";
-
+                // all even levels gain stats etc.
                 if (level % 2 == 0) {
-                    if (job_type == "Warrior") {
+                    if (job_type == "Protector") {
                         max_hp += 10;
                         max_mp += 3;
                         hp = max_hp;
@@ -568,7 +567,7 @@ public:
                         dexterity += 1;
                         defense += 2;
 
-                    } else if (job_type == "Black Mage") {
+                    } else if (job_type == "Elementalist") {
                         max_hp += 6;
                         max_mp += 8;
                         hp = max_hp;
@@ -603,18 +602,18 @@ public:
 
                     if (level == 2) {
 
-                        // Warrior levels up
-                        if (job_type == "Warrior") {
+                        // Protector levels up
+                        if (job_type == "Protector") {
                             // NEW ABILITY!!                    
-                            ind_ability[3].ability_name = "Defend";
+                            ind_ability[3].ability_name = "Earth's Shell";
                             ind_ability[3].defend = defense / 8;
                             ind_ability[3].mp_cost = 5;
                             ind_ability[3].ability_info = "Braces for next attack and reduces incoming damage.\n";
-                            // reduces damage of the next attack by 50% 
-                            // Black Mage level up stuffs
-                        } else if (job_type == "Black Mage") {
+                            
+                            // Elementalist level up stuffs
+                        } else if (job_type == "Elementalist") {
                             // NEW ABILITY!~
-                            ind_ability[3].ability_name = "Flame";
+                            ind_ability[3].ability_name = "Flames of Lucidia";
                             ind_ability[3].damage = get_rand(16, 18);
                             ind_ability[3].mp_cost = 6;
                             ind_ability[3].ability_info = "Engulfs the enemy in flames.\n";
@@ -638,7 +637,7 @@ public:
                         cout << " " << name << " has learned the new ability " << ind_ability[3].ability_name << "!\n\n";
                     } else if (level == 6) {
 
-                        if (job_type == "Warrior") {
+                        if (job_type == "Protector") {
                             ind_ability[4].ability_name = "";
                             ind_ability[4].ability_info = "";
 
@@ -646,9 +645,10 @@ public:
                     } else {
                         
                     }
+                // all odd levels gain stats and ability upgrades
                 } else if (level % 2 == 1) {
 
-                    if (job_type == "Warrior") {
+                    if (job_type == "Protector") {
                         max_hp += 7;
                         max_mp += 2;
                         hp = max_hp;
@@ -663,7 +663,7 @@ public:
                         ind_ability[3].mp_cost += 1;
                         ind_ability[3].defend += defense / 10;
 
-                    } else if (job_type == "Black Mage") {
+                    } else if (job_type == "Elementalist") {
                         max_hp += 5;
                         max_mp += 6;
                         hp = max_hp;

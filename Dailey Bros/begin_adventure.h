@@ -89,36 +89,36 @@ void begin_adventure() {
         while (!selected_job) {
             bool error = true;
             cout << " Gidian: So, " << name << ", what kind of adventurer are you?\n\n";         
-            cout << " (warrior)\n";
-            cout << " (black mage)\n";        
+            cout << " (protector)\n";
+            cout << " (elementalist)\n";        
             cout << " (thief)\n";
             cout << " (paladin)\n\n";    
             cout << " What job do you choose?\n"
-                    " If you want to select warrior, type 'warrior' and hit 'enter': ";
+                    " If you want to select protector, type 'protector' and hit 'enter': ";
             getline(cin, response);
             
-            // case of the user picking a warrior.
-            if (response == "warrior" || response == "Warrior") {                                         
-                job_type = "Warrior";
+            // case of the user picking a protector.
+            if (response == "protector" || response == "Protector") {                                         
+                job_type = "Protector";
                 job.set_job(job_type);
                 description = job.get_description();
                 
                 do {                                
-                    cout << "\n You have selected the warrior job." << description;
+                    cout << "\n You have selected the protector job." << description;
                     cin >> decision; cin.ignore(80, '\n');
                     cout << "\n";
                     
                     // confirm decision
                     if (decision == 'Y' || decision == 'y') {
-                        cout << " " << name << ": I'm a warrior.\n";                        
+                        cout << " " << name << ": I'm a protector.\n";                        
                         selected_job = true;
                         error = false;                        
-                        cout << " Gidian: Warrior's are like mindless beasts.\n"
+                        cout << " Gidian: Protector's are like mindless beasts.\n"
                                 " Gidian: But like all beasts, they too can be tamed.\n";
                         
                         // changing your mind is okay!
                     } else if (decision == 'N' || decision == 'n') {
-                        cout << " " << name << ": On second thought, I am definitely not a warrior.\n";  
+                        cout << " " << name << ": On second thought, I am definitely not a protector.\n";  
                         pause();
                         error = false;
                         selected_job = false;
@@ -405,8 +405,8 @@ bool movement() {
                exploring = encounter_giant_tree_frog(); 
                
             } else if (spaces == 19 || spaces == 17 || spaces == 23) {
-                
-            } else if (spaces == 30) {
+             
+            } else if (spaces == 50) {
                 // FIRST BOSS ENCOUNTER
                 system("cls");
                 exploring = encounter_forest_feral();
@@ -724,7 +724,7 @@ void battle_menu(string mob_name) {
                     cout << "\n " << name << " uses " << job_ability_name << "!\n";
                     if (job_ability_name == "Stealth") {
                         cout << " " << name << " enters the shadows unseen.\n";
-                    } else if (job_ability_name == "Defend") {
+                    } else if (job_ability_name == "Earth's Shell") {
                         cout << " " << name << " raises his shield for the next blow!\n";                    
                     } else if(job_ability_name == "Redemptive Light") {
                         cout << " " << name << " calls down the light of Redemption!\n";
@@ -762,7 +762,8 @@ void battle_menu(string mob_name) {
                     pause();
                 } else {                  
                     // giant tree frog will use consume to heal below 10 hp
-                    if (mob_name == "Giant Tree Frog" && mob.get_hp() < 10) {
+                    if ((mob_name == "Giant Tree Frog" && mob.get_hp() < 10) 
+                        || mob_name == "The Forest Feral" && mob.get_hp() < 20) {
                         ability_type = 1;                        
                     } else {
                         ability_type = 0;
@@ -774,6 +775,8 @@ void battle_menu(string mob_name) {
                         ability_type = 1;          
                         if (mob_name == "Giant Tree Frog") {
                             ability_type = 0;
+                        } else if (mob_name == "The Forest Feral") {
+                            ability_type = 2;
                         }
                     }
                     cout << mob.get_ability_info(ability_type);
@@ -783,7 +786,7 @@ void battle_menu(string mob_name) {
                         cout << " " << mob_name << " cannot find " << name << "!\n";
                         cout << " " << name << " is hiding in the shadows.\n";
                         job.set_ability_damage(0, job.get_ability_damage(0) + stealth_counter);                        
-                    } else if (job_ability_name == "Defend") {
+                    } else if (job_ability_name == "Earth's Shell") {
                         cout << " " << name;
                         game_over = job.damage_hp((mob.get_ability_damage(ability_type)) - job_ability_defend);
                     } else {
