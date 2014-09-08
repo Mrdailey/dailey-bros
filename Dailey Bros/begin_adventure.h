@@ -91,8 +91,8 @@ void begin_adventure() {
             cout << " Gidian: So, " << name << ", what kind of adventurer are you?\n\n";         
             cout << " (protector)\n";
             cout << " (elementalist)\n";        
-            cout << " (thief)\n";
-            cout << " (paladin)\n\n";    
+            cout << " (prowler)\n";
+            cout << " (crusader)\n\n";    
             cout << " What job do you choose?\n"
                     " If you want to select protector, type 'protector' and hit 'enter': ";
             getline(cin, response);
@@ -130,26 +130,26 @@ void begin_adventure() {
                     }     
                 } while (error);    
                 
-            } else if (response == "black mage" || response == "Black Mage") {    
-                job_type = "Black Mage";
+            } else if (response == "elementalist" || response == "Elementalist") {    
+                job_type = "Elementalist";
                 job.set_job(job_type);
                 description = job.get_description();
                 do {
-                    cout << "\n You have selected the black mage job." << description;
+                    cout << "\n You have selected the elementalist job." << description;
                     cin >> decision; cin.ignore(80, '\n');
                     cout << "\n";
                     // confirm job choice
                     if (decision == 'Y' || decision == 'y') {
                         
-                        cout << " " << name << ": I'm a black mage.\n";                        
+                        cout << " " << name << ": I'm a elementalist.\n";                        
                         selected_job = true;
                         error = false;
-                        cout << " Gidian: Black Mage\'s are very powerful beings!\n"
+                        cout << " Gidian: Elementalists are very powerful beings!\n"
                                 " Gidian: You should go first.\n";
                         // changing of the mind
                     } else if (decision == 'N' || decision == 'n') {
                         
-                        cout << " " << name << ": Gotcha! I'm not a black mage.\n";
+                        cout << " " << name << ": Gotcha! I'm not a elementalist.\n";
                         pause();                        
                         error = false;
                         selected_job = false;                        
@@ -160,26 +160,26 @@ void begin_adventure() {
                     }
                 } while (error);                
                 
-            } else if (response == "thief" || response == "Thief") {
-                job_type = "Thief";
+            } else if (response == "prowler" || response == "Prowler") {
+                job_type = "Prowler";
                 job.set_job(job_type);
                 description = job.get_description();
                 do {
-                    cout << "\n You have selected the thief job." << description;
+                    cout << "\n You have selected the prowler job." << description;
                     cin >> decision; cin.ignore(80, '\n');
                     cout << "\n";
                     
                     // confirm job choice
                     if (decision == 'Y' || decision == 'y') {
-                        cout << " " << name << ": I'm a thief.\n";                        
+                        cout << " " << name << ": I'm a prowler.\n";                        
                         selected_job = true;
                         error = false;
-                        cout << " Gidian: A thief, how wonderful! I may have a use for you.\n"
+                        cout << " Gidian: A prowler, how wonderful! I may have a use for you.\n"
                                 " Gidian: Have you ever tried stealing from a king? *winks*\n";
                         
                         // changing of the mind
                     } else if (decision == 'N' || decision == 'n') {
-                        cout << " " << name << ": There\'s no way I\'m a thief!\n";
+                        cout << " " << name << ": There\'s no way I\'m a prowler!\n";
                         pause();                        
                         error = false;
                         selected_job = false;     
@@ -190,26 +190,26 @@ void begin_adventure() {
                     }                    
                 } while (error);
                 
-            } else if (response == "paladin" || response == "Paladin") {
-                job_type = "Paladin";
+            } else if (response == "crusader" || response == "Crusader") {
+                job_type = "Crusader";
                 job.set_job(job_type);
                 description = job.get_description();
                 do {
-                    cout << "\n You have selected the paladin job." << description;
+                    cout << "\n You have selected the Crusader job." << description;
                     cin >> decision; cin.ignore(80, '\n');
                     cout << "\n";
                     
                     // confirm job choice
                     if (decision == 'Y' || decision == 'y') {
-                        cout << " " << name << ": I'm a paladin.\n";                        
+                        cout << " " << name << ": I'm a crusader.\n";                        
                         selected_job = true;
                         error = false;
-                        cout << " Gidian: A Mister Goody-Two-Shoes, eh?\n"
+                        cout << " Gidian: A purist eh?\n"
                                 " Gidian: Listen, you answer to me now, got it?!\n";
                         // changing of the mind
                         
                     } else if (decision == 'N' || decision == 'n') {
-                        cout << " " << name << ": You fell for it! I\'m no paladin!\n";
+                        cout << " " << name << ": You fell for it! I'm no crusader!\n";
                         pause();                        
                         error = false;
                         selected_job = false;         
@@ -588,9 +588,9 @@ void battle_menu(string mob_name) {
     int max_mp = job.get_max_mp();
     int mob_max_hp = mob.get_max_hp();
     int mob_max_mp = mob.get_max_mp();
-    // reset the thief's damage on his boosted ability
-    if (job.get_job_type() == "Thief") {
-        job.set_ability_damage(0, 7);
+    // reset the prowler's damage on his boosted ability
+    if (job.get_job_type() == "Prowler") {
+        job.set_ability_damage(0, job.get_ability_base_dmg(0));
     }
     cout << " " << name << " has encountered a " << mob_name << "!!\n\n";
     // if mob is dead battle is over
@@ -725,7 +725,7 @@ void battle_menu(string mob_name) {
                     if (job_ability_name == "Stealth") {
                         cout << " " << name << " enters the shadows unseen.\n";
                     } else if (job_ability_name == "Earth's Shell") {
-                        cout << " " << name << " raises his shield for the next blow!\n";                    
+                        cout << " " << name << " surrounds himself with an earthen shield!\n";                    
                     } else if(job_ability_name == "Redemptive Light") {
                         cout << " " << name << " calls down the light of Redemption!\n";
                         job.increase_hp(job_ability_heal);                    
@@ -813,8 +813,8 @@ void battle_menu(string mob_name) {
         } 
         
         // after double stab is used reset it's damage boost.
-        if (job.get_job_type() == "Thief" && job_ability_name == "Double Stab-jab") {
-            job.set_ability_damage(0, 7);
+        if (job_ability_name == "Double Stab") {            
+            job.set_ability_damage(0, job.get_ability_base_dmg(0));
         }
     }  // end while (!battle_over) loop 
    

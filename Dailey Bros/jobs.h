@@ -56,13 +56,14 @@ public:
         level = 1;
         strength = 0;
         stamina = 0;
-        intelligence = 0;        
+        intelligence = 0;
         dexterity = 0;
         defense = 0;
-        
+
         for (int i = 0; i < 9; i++) {
             ind_ability[i].ability_name = "";
             ind_ability[i].damage = 0;
+            ind_ability[i].base_dmg = 0;
             ind_ability[i].mp_cost = 0;
             ind_ability[i].ability_info = "";
             ind_ability[i].heal = 0;
@@ -159,7 +160,7 @@ public:
         bool dead = false;
         int temp_hp;
         temp_hp = hp;
-        hp = hp - dmg;        
+        hp = hp - dmg;
         if (hp > temp_hp) {
             hp = temp_hp;
             dmg = 0;
@@ -223,7 +224,11 @@ public:
     int get_ability_damage(int choice) {
         return ind_ability[choice].damage;
     }
-
+    
+    int get_ability_base_dmg(int choice) {
+        return ind_ability[choice].base_dmg;
+    }
+    
     int get_ability_heal(int choice) {
         return ind_ability[choice].heal;
     }
@@ -239,7 +244,7 @@ public:
     string get_ability_info(int choice) {
         return ind_ability[choice].ability_info;
     }
-    
+
     int get_ability_defend(int choice) {
         return ind_ability[choice].defend;
     }
@@ -248,6 +253,10 @@ public:
         ind_ability[choice].damage = dmg;
     }
 
+    void set_ability_base_dmg(int choice, int dmg) {
+        ind_ability[choice].base_dmg = dmg;
+    }
+    
     void set_ability_heal(int choice, int health) {
         ind_ability[choice].heal = health;
     }
@@ -263,7 +272,7 @@ public:
     void set_ability_info(int choice, string info) {
         ind_ability[choice].ability_info = info;
     }
-    
+
     void set_ability_defend(int choice, int defend_value) {
         ind_ability[choice].defend = defend_value;
     }
@@ -295,9 +304,9 @@ public:
     void set_item_quantity(int choice, int quantity) {
         item[choice].quantity += quantity;
     }
-    
+
     void decrease_item_quantity(int choice) {
-        item[choice].quantity --;
+        item[choice].quantity--;
     }
 
     string get_item_name(int choice) {
@@ -318,10 +327,10 @@ public:
 
     void set_job(string job_name) {
         job_type = job_name;
-         // The Protector job        
-        if (job_type == "Protector") {        
+        // The Protector job        
+        if (job_type == "Protector") {
             description = "\n The brave protector uses his strength and skills "
-                    "in earthen might to massacre his foes.\n Select this job? Hit 'y' or 'n' and 'enter': ";            
+                    "in earthen might to massacre his foes.\n Select this job? Hit 'y' or 'n' and 'enter': ";
             hp = 50;
             mp = 20;
             max_hp = 50;
@@ -331,20 +340,20 @@ public:
             stamina = 25;
             dexterity = 15;
             defense = 28;
-            
+
             ind_ability[0].ability_name = "Defender's Strike";
             ind_ability[0].damage = 8;
             ind_ability[0].ability_info = "A strong basic sword attack.";
-            
+
             ind_ability[1].ability_name = "Might of Gaia";
             ind_ability[1].damage = 10;
             ind_ability[1].mp_cost = 2;
             ind_ability[1].ability_info = "Protector calls upon the might of the earth to"
-                                          " crush his foes. Ouch.";            
+                    " crush his foes. Ouch.";
             // The Elementalist
-        } else if (job_type == "Elementalist") {                    
+        } else if (job_type == "Elementalist") {
             description = "\n The powerful Elementalist unleashes spells to devastate his foes.\n"
-                " Select this job? Hit 'y' or 'n' and 'enter': ";
+                    " Select this job? Hit 'y' or 'n' and 'enter': ";
             hp = 40;
             mp = 40;
             max_hp = 40;
@@ -357,17 +366,18 @@ public:
 
             ind_ability[0].ability_name = "Surge";
             ind_ability[0].damage = 15;
-            ind_ability[0].mp_cost = 5;            
+            ind_ability[0].base_dmg = 15;
+            ind_ability[0].mp_cost = 5;
             ind_ability[0].ability_info = "Releases a powerful non-elemental burst of energy.";
-            
-            ind_ability[1].ability_name = "Staff-yack";            
+
+            ind_ability[1].ability_name = "Staff-yack";
             ind_ability[1].damage = 4;
             ind_ability[1].mp_cost = 0;
             ind_ability[1].ability_info = "A forceful swing of the staff oughta do the trick.";
-            // The Thief Job
-        } else if (job_type == "") {        
-            description = "\n The agile thief uses his cunning and agility to overcome his foes.\n"
-                " Select this job? Hit 'y' or 'n' and 'enter': ";
+            // The prowler Job
+        } else if (job_type == "Prowler") {
+            description = "\n The agile prowler uses his cunning and shadow techniques to overcome his foes.\n"
+                    " Select this job? Hit 'y' or 'n' and 'enter': ";
             hp = 44;
             mp = 22;
             max_hp = 44;
@@ -377,18 +387,19 @@ public:
             stamina = 24;
             dexterity = 30;
             defense = 25;
-            
-            ind_ability[0].ability_name = "Double stab-jab";
+
+            ind_ability[0].ability_name = "Double Stab";
             ind_ability[0].damage = 7;
-            ind_ability[0].ability_info = "A sudden two strikes that can be lethal.";            
+            ind_ability[0].base_dmg = 7;
+            ind_ability[0].ability_info = "A sudden two strikes that can be lethal.";
 
             ind_ability[1].ability_name = "Stealth";
             ind_ability[1].mp_cost = 3;
             ind_ability[1].ability_info = "Hide from sight and increase the damage of the next attack. Can be used additively.";
-            // The Paladin Job
-        } else if (job_type == "Paladin") {        
-            description = "\n The noble paladin is a master of both weaponry and holy magic.\n"
-                " Select this job? Hit 'y' or 'n' and 'enter': ";
+            // The Crusader Job
+        } else if (job_type == "Crusader") {
+            description = "\n The unrelenting crusader is a master of both weaponry and holy magic.\n"
+                    " Select this job? Hit 'y' or 'n' and 'enter': ";
             hp = 50;
             mp = 25;
             max_hp = 50;
@@ -398,10 +409,10 @@ public:
             stamina = 25;
             dexterity = 10;
             defense = 25;
-            
+
             ind_ability[0].ability_name = "Holy Slash";
             ind_ability[0].damage = 8;
-            ind_ability[0].ability_info = "A magical strike that deals consistent damage.";            
+            ind_ability[0].ability_info = "A magical strike that deals consistent damage.";
 
             ind_ability[1].ability_name = "Atonement";
             ind_ability[1].damage = 11;
@@ -409,8 +420,9 @@ public:
             ind_ability[1].ability_info = "Channels holy energy into a blade to damage enemies.";
         }
     }
-    
+
     // Gives information on character while exploring
+
     void display_info() {
         char choice;
         int cap = 3;
@@ -435,53 +447,58 @@ public:
             cout << " ____________\n";
 
             if (ind_ability[k].heal > 0) {
-                cout << "  Heal   : " << ind_ability[k].heal << "\n";
-            } else {
-                cout << "  Damage : " << ind_ability[k].damage << "\n";
+                cout << "  Heal    : " << ind_ability[k].heal << "\n";
+            } else if (ind_ability[k].defend > 0) {
+                cout << "  Defensive Value : " << ind_ability[k].defend << "\n";
+            } else {    
+                cout << "  Damage  : " << ind_ability[k].damage << "\n";
             }
 
-            cout << "  MP Cost: " << ind_ability[k].mp_cost << "\n";
-            cout << "  Info   : " << ind_ability[k].ability_info << "\n\n";
+            cout << "  MP Cost : " << ind_ability[k].mp_cost << "\n";
+            cout << "  Info    : " << ind_ability[k].ability_info << "\n\n";
         }
 
         cout << " _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _";
         // View Stats?
-        cin >> choice; toupper(choice); cin.ignore(80, '\n');
+        cin >> choice; toupper(choice);
         switch (choice) {
-            case 's': case 'S': {                
+            case 's': case 'S': {
                 display_stats();
-            } break;
-            default: {}               
+            }
+            break;      
+            default:
+            {
+            }
         }
     }
-    
-    void display_stats() {    
+
+    void display_stats() {
         system("cls");
         cout << "                 " << name << "\n";
         cout << "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\n";
-        if (job_type == "Protector") {            
-            cout << " STRENGTH     : " << strength << "\n Increases damage of attacks by 2 for every 1 strength.\n\n";
+        if (job_type == "Protector") {
+            cout << " STRENGTH     : " << strength << "\n Increases damage of all attacks.\n\n";
             cout << " INTELLIGENCE : " << intelligence << "\n\n";
             cout << " DEXTERITY    : " << dexterity << "\n\n";
-            cout << " STAMINA      : " << stamina << "\n Increases health by 2 for every 1 stamina.\n\n";
+            cout << " STAMINA      : " << stamina << "\n Increases health. \n\n";
             cout << " DEFENSE      : " << defense << "\n Reduces damage taken from all sources.\n\n";
         } else if (job_type == "Elementalist") {
             cout << " STRENGTH     : " << strength << "\n\n";
-            cout << " INTELLIGENCE : " << intelligence << "\n Increases damage done by magic by 2 for every 1 intelligence.\n\n";
+            cout << " INTELLIGENCE : " << intelligence << "\n Increases damage of all spells. \n\n";
             cout << " DEXTERITY    : " << dexterity << "\n\n";
-            cout << " STAMINA      : " << stamina << "\n Increases health by 1.5 for every 1 stamina.\n\n";
+            cout << " STAMINA      : " << stamina << "\n Increases health. \n\n";
             cout << " DEFENSE      : " << defense << "\n Reduces damage taken from all sources.\n";
-        } else if (job_type == "Thief") {
-            cout << " STRENGTH     : " << strength << "\n Increases damage done by attacks by 1 for every 1 strength.\n\n";
+        } else if (job_type == "Prowler") {
+            cout << " STRENGTH     : " << strength << "\n Increases damage done by physical attacks. \n\n";
             cout << " INTELLIGENCE : " << intelligence << "\n\n";
-            cout << " DEXTERITY    : " << dexterity << "\n Increases damage done by attacks by 2 for every 1 dexterity.\n\n";
-            cout << " STAMINA      : " << stamina << "\n Increases health by 1.5 for every 1 stamina.\n\n";
-            cout << " DEFENSE      : " << defense << "\n Reduces damage taken from all sources.\n\n";            
-        } else if (job_type == "Paladin") {
-            cout << " STRENGTH     : " << strength << "\n Increases damage done by attacks by 1.5 for every 1 strength.\n\n";
-            cout << " INTELLIGENCE : " << intelligence << "\n Increases damage done by magic by 1.5 for every 1 intelligence.\n\n";
+            cout << " DEXTERITY    : " << dexterity << "\n Increases damage done by all attacks. \n\n";
+            cout << " STAMINA      : " << stamina << "\n Increases health. \n\n";
+            cout << " DEFENSE      : " << defense << "\n Reduces damage taken from all sources.\n\n";
+        } else if (job_type == "Crusader") {
+            cout << " STRENGTH     : " << strength << "\n Increases damage done by physical attacks. \n\n";
+            cout << " INTELLIGENCE : " << intelligence << "\n Increases damage and healing by spells. \n\n";
             cout << " DEXTERITY    : " << dexterity << "\n\n";
-            cout << " STAMINA      : " << stamina << "\n Increases health by 2 for every 1 stamina.\n\n";
+            cout << " STAMINA      : " << stamina << "\n Increases health. \n\n";
             cout << " DEFENSE      : " << defense << "\n Reduces damage taken from all sources.\n\n";
         }
     }
@@ -498,7 +515,7 @@ public:
             }
         }
     }
-    
+
     bool item_validation(string item_choice) {
         if (item_choice == "Basic Health Potion" || item_choice == "Basic Mana Potion") {
             return true;
@@ -506,9 +523,9 @@ public:
             return false;
         }
     }
-    
+
     int item_selection(string item_choice) {
-        string a; 
+        string a;
         int items = sizeof (item) / sizeof (item[0]);
         for (int i = 0; i < items; i++) {
             if (item[i].quantity != 0) {
@@ -519,39 +536,40 @@ public:
             }
         }
     }
-    
+
     bool item_activate(string item_name, int item_value) {
         int val;
         cout << " " << name << " consumes a " << item_name << "!\n";
-        if (item_name == "Basic Health Potion") {            
+        if (item_name == "Basic Health Potion") {
             hp += item_value;
             if (hp > max_hp) {
                 val = hp - max_hp;
                 item_value = item_value - val;
                 hp = max_hp;
             }
-            cout << " " <<  name << " restored " << item_value << " hp!\n";            
+            cout << " " << name << " restored " << item_value << " hp!\n";
             return true;
         } else if (item_name == "Basic Mana Potion") {
-            mp += item_value;     
+            mp += item_value;
             if (mp > max_mp) {
-                val = mp - max_mp;                
+                val = mp - max_mp;
                 item_value = item_value - val;
                 mp = max_mp;
-            }            
-            cout << " " << name << " restores " << item_value << " mp!\n";            
+            }
+            cout << " " << name << " restores " << item_value << " mp!\n";
             return true;
         } else {
             return false;
         }
     }
-    
+
     // For Leveling up 
+
     void level_up() {
         for (int k = 1; k < 21; k++) {
             // If their experience is higher than the experience required and they 
             // are not already that level.
-            if (experience >= level_exp[k] && level != k + 1) {
+            if (experience >= level_exp[k] && level < k + 1) {
                 level++;
                 cout << " " << name << " is now level " << level << "!\n";
                 // all even levels gain stats etc.
@@ -577,7 +595,7 @@ public:
                         defense += 1;
                         strength += 1;
 
-                    } else if (job_type == "Thief") {
+                    } else if (job_type == "Prowler") {
                         max_hp += 7;
                         max_mp += 3;
                         hp = max_hp;
@@ -588,7 +606,7 @@ public:
                         dexterity += 4;
                         defense += 1;
 
-                    } else if (job_type == "Paladin") {
+                    } else if (job_type == "Crusader") {
                         max_hp += 10;
                         max_mp += 5;
                         hp = max_hp;
@@ -597,7 +615,7 @@ public:
                         stamina += 2;
                         strength += 2;
                         dexterity += 1;
-                        defense += 2;                        
+                        defense += 2;
                     }
 
                     if (level == 2) {
@@ -609,25 +627,26 @@ public:
                             ind_ability[3].defend = defense / 8;
                             ind_ability[3].mp_cost = 5;
                             ind_ability[3].ability_info = "Braces for next attack and reduces incoming damage.\n";
-                            
+
                             // Elementalist level up stuffs
                         } else if (job_type == "Elementalist") {
                             // NEW ABILITY!~
-                            ind_ability[3].ability_name = "Flames of Lucidia";
+                            ind_ability[3].ability_name = "Flame Bolts";
                             ind_ability[3].damage = get_rand(16, 18);
+                            ind_ability[3].base_dmg = ind_ability[3].damage;
                             ind_ability[3].mp_cost = 6;
-                            ind_ability[3].ability_info = "Engulfs the enemy in flames.\n";
+                            ind_ability[3].ability_info = "Engulfs the enemy in bolts of flames.\n";
 
-                            // Thief levels up 
-                        } else if (job_type == "Thief") {
+                            // Prowler levels up 
+                        } else if (job_type == "Prowler") {
                             // NEW ABILITY!!
-                            ind_ability[3].ability_name = "Low Blow";
+                            ind_ability[3].ability_name = "Diversion";
                             ind_ability[3].damage = 10;
-                            ind_ability[3].mp_cost = 2;
+                            ind_ability[3].mp_cost = 0;
                             ind_ability[3].ability_info = "Dashes quickly to deliver a sudden cheap shot.\n";
 
                             // Pally levels up 
-                        } else if (job_type == "Paladin") {
+                        } else if (job_type == "Crusader") {
                             // NEW ABILITY!!
                             ind_ability[3].ability_name = "Redemptive Light";
                             ind_ability[3].heal = 15;
@@ -638,14 +657,36 @@ public:
                     } else if (level == 6) {
 
                         if (job_type == "Protector") {
-                            ind_ability[4].ability_name = "";
-                            ind_ability[4].ability_info = "";
-
+                            ind_ability[4].ability_name = "Tremor";
+                            ind_ability[4].damage = 18;
+                            ind_ability[4].mp_cost = 6;
+                            ind_ability[4].ability_info = "Shakes the ground to damage foes and cause them to stumble.\n";
+                            
+                        } else if (job_type == "Elementalist") {
+                            ind_ability[4].ability_name = "Super Capacitor";
+                            ind_ability[4].damage = 5;
+                            ind_ability[4].mp_cost = 3;
+                            ind_ability[4].ability_info = "Harnesses raw energy to supercharge the next spell.\n";
+                            
+                        } else if (job_type == "Prowler") {
+                            ind_ability[4].ability_name = "Gut Wrench";
+                            ind_ability[4].damage = dexterity / 2;
+                            ind_ability[4].mp_cost = mp / 2 + 1;
+                            ind_ability[4].ability_info = "The prowler unloads his full power into the enemies gut, wrenching it.\n";
+                            
+                        } else if (job_type == "Crusader") {
+                            ind_ability[4].ability_name = "Judgment Day";
+                            ind_ability[4].damage = 0;
+                            ind_ability[4].mp_cost = 0;
+                            ind_ability[4].heal = 10;
+                            ind_ability[4].ability_info = "Compare the sins of the Crusader and his mark.\n"
+                                    "The guilty party shall pay an eternal fate.\n";
                         }
+                        cout << " " << name << " has learned the new ability " << ind_ability[4].ability_name << "!\n\n";
                     } else {
-                        
+
                     }
-                // all odd levels gain stats and ability upgrades
+                    // all odd levels gain stats and ability upgrades
                 } else if (level % 2 == 1) {
 
                     if (job_type == "Protector") {
@@ -657,12 +698,13 @@ public:
                         stamina += 3;
                         dexterity += 1;
                         defense += 2;
-                        ind_ability[0].damage += strength / 10;
-                        ind_ability[1].damage += strength / 8;
+                        ind_ability[0].damage += strength / 20;
+                        ind_ability[1].damage += strength / 18;
                         ind_ability[1].mp_cost += 1;
                         ind_ability[3].mp_cost += 1;
                         ind_ability[3].defend += defense / 10;
-
+                        ind_ability[4].damage += strength / 16;
+                        ind_ability[4].mp_cost += 2;
                     } else if (job_type == "Elementalist") {
                         max_hp += 5;
                         max_mp += 6;
@@ -671,13 +713,16 @@ public:
                         intelligence += 4;
                         stamina += 2;
                         defense += 1;
-                        ind_ability[0].damage += intelligence / 10;
+                        ind_ability[0].damage += intelligence / 20;
+                        ind_ability[0].base_dmg = ind_ability[0].damage;
                         ind_ability[0].mp_cost += 2;
                         ind_ability[1].damage += strength / 20;
-                        ind_ability[3].damage += intelligence / 8;
-                        ind_ability[3].mp_cost += 2;                        
-                        
-                    } else if (job_type == "Thief") {
+                        ind_ability[3].damage += intelligence / 18;
+                        ind_ability[3].base_dmg = ind_ability[3].damage;
+                        ind_ability[3].mp_cost += 2;
+                        ind_ability[4].damage += intelligence / 20;
+                        ind_ability[4].mp_cost += 2;                        
+                    } else if (job_type == "Prowler") {
                         max_hp += 5;
                         max_mp += 3;
                         hp = max_hp;
@@ -687,34 +732,48 @@ public:
                         strength += 1;
                         dexterity += 4;
                         defense += 1;
-                        ind_ability[0].damage += dexterity / 10;
+                        ind_ability[0].damage += dexterity / 20;
+                        ind_ability[0].base_dmg = ind_ability[0].damage;
                         ind_ability[1].mp_cost += 1;
-                        ind_ability[3].damage += dexterity / 8;
-                        ind_ability[3].mp_cost += 2;
-                                                
-                    } else if (job_type == "Paladin") {
+                        ind_ability[3].damage += dexterity / 19;
+                        ind_ability[3].mp_cost += 1;
+                        ind_ability[4].damage += dexterity / 15;
+                        ind_ability[4].mp_cost += 1;
+                        
+                    } else if (job_type == "Crusader") {
                         max_hp += 7;
                         max_mp += 4;
                         hp = max_hp;
-                        mp = max_mp;                       
+                        mp = max_mp;
                         intelligence += 2;
                         stamina += 2;
                         strength += 2;
                         dexterity += 1;
-                        defense += 2;                        
-                        ind_ability[0].damage += strength / 12;
-                        ind_ability[1].damage += strength / 9;
+                        defense += 2;
+                        ind_ability[0].damage += strength / 20;
+                        ind_ability[1].damage += strength / 16 + intelligence / 20;
                         ind_ability[1].mp_cost += 1;
-                        ind_ability[3].heal += intelligence / 6;
+                        ind_ability[3].heal += intelligence / 8;
                         ind_ability[3].mp_cost += 2;
+                        ind_ability[4].mp_cost += 2;
                     }
                 } // end of odd level increments
-            } // end of level up
-            else {
-                
-            }
+                else {
+                    
+                }
+            }// end of level up            
         } // end of for loop
     } // end of function
+
+    // Crusader ability activation
+    bool judgment_day() {
+        int chance = get_rand(1, 100);
+        if (chance >= 45) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 };
 
 #endif	/* JOBS_H */

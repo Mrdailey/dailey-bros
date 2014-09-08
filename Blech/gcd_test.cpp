@@ -6,10 +6,13 @@
  */
 
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 
 using namespace std;
 
 int gcd(int m, int n);
+int get_rand(int min, int max);
 
 /*
  * 
@@ -25,7 +28,7 @@ int main() {
         cin >> m; cin.ignore(80,'\n');
         cin >> n; cin.ignore(80,'\n');    
 
-        answer = gcd(m, n);
+        answer = get_rand(m, n);
         cout << "The greatest common denominator between " << m << " and " << n << " is " << answer << endl;
         
         do {
@@ -46,12 +49,20 @@ int main() {
     return 0;
 }
 
+int get_rand(int min, int max){ 
+    srand(time(NULL));
+    return(rand()% (max - min) + min); 
+} 
+
 int gcd(int m, int n) {
     int r;
+    cout << "m = " << m << endl;
+    cout << "n = " << n << endl;
     if (n == 0) {
         return m;
     } else {
         r = m % n;
+        cout << "r = " << r << endl;
         gcd(n, r);
     }
 }

@@ -22,6 +22,7 @@ int get_rand(int min, int max);
 struct ability {
     string ability_name;
     int damage;
+    int base_dmg;
     int mp_cost;
     string ability_info;
     int heal;
@@ -67,6 +68,7 @@ class Mobs {
             for (int i = 0; i < 3; i++) {
                 ind_ability[i].ability_name = "";
                 ind_ability[i].damage = 0;
+                ind_ability[i].base_dmg = 0;
                 ind_ability[i].mp_cost = 0;
                 ind_ability[i].ability_info = "";    
                 ind_ability[i].heal = 0;
