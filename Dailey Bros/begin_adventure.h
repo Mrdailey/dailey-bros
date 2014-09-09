@@ -617,11 +617,12 @@ void battle_menu(string mob_name) {
             cout << " [I]  Use Item \n";
             cout << "\n What will " << name << " do?\n";
             getline(cin, choice);              
-            string ab_1, ab_2, ab_3, ab_4;
+            string ab_1, ab_2, ab_3, ab_4, ab_5;
             ab_1 = job.get_ability_name(0);
             ab_2 = job.get_ability_name(1);
             ab_3 = job.get_ability_name(2);
             ab_4 = job.get_ability_name(3);
+            ab_5 = job.get_ability_name(4);
             // choosing the first ability
             if (choice == ab_1 || choice == "1") {        
                 error = false;    
@@ -681,8 +682,23 @@ void battle_menu(string mob_name) {
                     cout << " Not enough mana to use that ability!\n";
                     job.increase_mp(job_ability_mp_cost);
                     error = true;
+                }            
+            } else if (choice == ab_5 || choice == "5") {
+                error = false;
+                tried_to_run = false;
+                job_ability_name = job.get_ability_name(5);
+                job_ability_dmg = job.get_ability_damage(5);
+                job_ability_mp_cost = job.get_ability_mp_cost(5);
+                job_ability_info = job.get_ability_info(5);
+                job_ability_heal = job.get_ability_heal(5);
+                job_ability_defend = job.get_ability_defend(5);
+                job.decrease_mp(job_ability_mp_cost);
+                if (job.get_mp() < 0) {
+                    cout << " Not enough mana to use that ability!\n";
+                    job.increase_mp(job_ability_mp_cost);
+                    error = true;
                 }
-            // Use an item    
+                // Use an item    
             } else if (choice == "i" || choice == "I") {
                 error = false;
                 tried_to_run = false;                
