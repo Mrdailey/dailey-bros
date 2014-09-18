@@ -85,7 +85,7 @@ class Items {
             }    
         }               
         
-        void health_potion() {
+        void basic_health_potion() {
         
             name = "Basic Health Potion";
             description = "A basic health potion that restores 30 hp.\n";
@@ -94,14 +94,15 @@ class Items {
             value = 30;
         }    
             
-        void mana_potion() {
+        void basic_mana_potion() {
                     
             name = "Basic Mana Potion";
             description = "A basic mana potion that restores 20 mp.";
             cost = 10;
             drop_rate = 40;
             value = 15;
-        }    
+        }                    
+
         
 };
 #endif	/* ITEMS_H */

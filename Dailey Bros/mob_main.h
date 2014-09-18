@@ -239,9 +239,9 @@ class Mobs {
             Items potion;
             for (int i = 0; i < 2; i++) {
                 if (i == 0) {
-                    potion.health_potion();
+                    potion.basic_health_potion();
                 } else {
-                    potion.mana_potion();                    
+                    potion.basic_mana_potion();                    
                 }
                 item[i].item.set_name(potion.get_name());
                 item[i].item.set_cost(potion.get_cost());

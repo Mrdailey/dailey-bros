@@ -374,9 +374,9 @@ public:
             ind_ability[1].damage = 4;
             ind_ability[1].mp_cost = 0;
             ind_ability[1].ability_info = "A forceful swing of the staff oughta do the trick.";
-            // The prowler Job
-        } else if (job_type == "Prowler") {
-            description = "\n The agile prowler uses his cunning and shadow techniques to overcome his foes.\n"
+            // The burglar Job
+        } else if (job_type == "Burglar") {
+            description = "\n The agile burglar uses his cunning and shadow techniques to overcome his foes.\n"
                     " Select this job? Hit 'y' or 'n' and 'enter': ";
             hp = 44;
             mp = 22;
@@ -466,9 +466,6 @@ public:
                 display_stats();
             }
             break;      
-            default:
-            {
-            }
         }
     }
 
@@ -488,7 +485,7 @@ public:
             cout << " DEXTERITY    : " << dexterity << "\n\n";
             cout << " STAMINA      : " << stamina << "\n Increases health. \n\n";
             cout << " DEFENSE      : " << defense << "\n Reduces damage taken from all sources.\n";
-        } else if (job_type == "Prowler") {
+        } else if (job_type == "Burglar") {
             cout << " STRENGTH     : " << strength << "\n Increases damage done by physical attacks. \n\n";
             cout << " INTELLIGENCE : " << intelligence << "\n\n";
             cout << " DEXTERITY    : " << dexterity << "\n Increases damage done by all attacks. \n\n";
@@ -595,7 +592,7 @@ public:
                         defense += 1;
                         strength += 1;
 
-                    } else if (job_type == "Prowler") {
+                    } else if (job_type == "Burglar") {
                         max_hp += 7;
                         max_mp += 3;
                         hp = max_hp;
@@ -625,7 +622,7 @@ public:
                             // NEW ABILITY!!                    
                             ind_ability[3].ability_name = "Earth's Shell";
                             ind_ability[3].defend = defense / 8;
-                            ind_ability[3].mp_cost = 5;
+                            ind_ability[3].mp_cost = 5;                                                        
                             ind_ability[3].ability_info = "Braces for next attack and reduces incoming damage.\n";
 
                             // Elementalist level up stuffs
@@ -637,8 +634,8 @@ public:
                             ind_ability[3].mp_cost = 6;
                             ind_ability[3].ability_info = "Engulfs the enemy in bolts of flames.\n";
 
-                            // Prowler levels up 
-                        } else if (job_type == "Prowler") {
+                            // Burglar levels up 
+                        } else if (job_type == "Burglar") {
                             // NEW ABILITY!!
                             ind_ability[3].ability_name = "Diversion";
                             ind_ability[3].damage = 10;
@@ -668,11 +665,11 @@ public:
                             ind_ability[4].mp_cost = 3;
                             ind_ability[4].ability_info = "Harnesses raw energy to supercharge the next spell.\n";
                             
-                        } else if (job_type == "Prowler") {
+                        } else if (job_type == "Burglar") {
                             ind_ability[4].ability_name = "Gut Wrench";
                             ind_ability[4].damage = dexterity / 2;
                             ind_ability[4].mp_cost = mp / 2 + 1;
-                            ind_ability[4].ability_info = "The prowler unloads his full power into the enemies gut, wrenching it.\n";
+                            ind_ability[4].ability_info = "The burglar unloads his full power into the enemies gut, wrenching it.\n";
                             
                         } else if (job_type == "Crusader") {
                             ind_ability[4].ability_name = "Judgment Day";
@@ -722,7 +719,7 @@ public:
                         ind_ability[3].mp_cost += 2;
                         ind_ability[4].damage += intelligence / 20;
                         ind_ability[4].mp_cost += 2;                        
-                    } else if (job_type == "Prowler") {
+                    } else if (job_type == "Burglar") {
                         max_hp += 5;
                         max_mp += 3;
                         hp = max_hp;
