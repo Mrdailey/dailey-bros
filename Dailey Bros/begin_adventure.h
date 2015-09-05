@@ -8,6 +8,16 @@
 #ifndef BEGIN_ADVENTURE_H
 #define	BEGIN_ADVENTURE_H
 
+// define character codes for arrow key movement
+#define UP 72  
+#define LEFT 75
+#define RIGHT 77
+#define DOWN 80
+#define INFO 99
+#define QUIT 113
+#define EXIT 101
+#define ITEMS 105
+
 #include <iomanip>
 #include <iostream>
 #include <fstream>
@@ -34,7 +44,9 @@ void loot_items(string name);
 bool your_dead();
 void battle_menu(string mob_name); 
 void edge_of_map();
-void exit_game();
+//void exit_game();
+void move_test(char maze[][25]); // function to test movement using keys
+void save_game();
 
 //declare booleans for exiting purposes.
 bool game_over = false;
@@ -113,7 +125,7 @@ void begin_adventure() {
                         cout << " " << name << ": I'm a protector.\n";                        
                         selected_job = true;
                         error = false;                        
-                        cout << " Gidian: Protector's are like mindless beasts.\n"
+                        cout << " Gidian: Protectors are like mindless beasts.\n"
                                 " Gidian: But like all beasts, they too can be tamed.\n";
                         
                         // changing your mind is okay!
@@ -239,7 +251,8 @@ void begin_adventure() {
             cout << " Gidian: So where do you want to go from here?\n\n";             
             
         } else {
-            exit_game();
+//            exit_game();
+            exit(1);
         }
 
         pause();    
@@ -267,10 +280,10 @@ void draw_map(char maze[][25]) {
  * @param string name The name of the user.
  */
 bool movement() {
-    string move_to_position;
     string name = job.get_name();
     bool not_in_menu = true;
     bool exploring = true;
+    int c = 0;
     char maze[25][25] = {'-'}; // build a 2D array of 25 by 25 -'s
     int row,col;
     for (row = 0; row < 25; row++) {        
@@ -282,14 +295,16 @@ bool movement() {
     maze[10][10] = 'X';
     int x_pos = 10, y_pos = 10;    
     draw_map(maze); // initialize map with o's, X being the character.
-    while (exploring) { // until user types exit or quit         
+    //move_test(maze); // testing the new move mechanic
+    while (exploring) { // until user quits        
         cout << " Gidian: Where to next, " << name << "?\n";
-        cout << " Type in either \'move left\', move \'right\', etc...\n";
-        cout << " Press \'C\' to display character information.\n";
-        cout << " Press 'I' to display item info.\n";
-        getline(cin, move_to_position); // choose which direction to go
+        cout << " Navigate with the arrow keys.\n";
+        cout << " Press 'c' to display character information.\n";
+        cout << " Press 'i' to display item info.\n";
+        cout << " Press 'q' or 'e'to exit.\n";
         
-        if (move_to_position == "move up") { // character moves up
+        switch ((c = getch())) {            
+        case UP: { // character moves up
             not_in_menu = true;            
             if (y_pos - 1 >= 0) { // character cannot leave the grid with this here
                 system("cls"); // clear the screen upon movement
@@ -302,9 +317,10 @@ bool movement() {
                         "\"Forest of the Dark Things That Hurt Good People.\"\n";                      
             } else {
                 edge_of_map();
-            } 
-            
-        } else if (move_to_position == "move down") { // character moves down
+            }
+            Sleep(10);
+        } break;
+        case DOWN: { // character moves down
             not_in_menu = true;            
             if (y_pos + 1 < 25) {
                 system("cls");
@@ -318,8 +334,9 @@ bool movement() {
             } else {
                 edge_of_map();
             }
-            
-        } else if (move_to_position == "move left") { // character moves to the left
+            Sleep(10);
+        } break;
+        case LEFT: { // character moves to the left
             not_in_menu = true;            
             if (x_pos - 1 >= 0) {
                 system("cls");
@@ -333,8 +350,9 @@ bool movement() {
             } else {
                 edge_of_map();
             }
-            
-        } else if (move_to_position == "move right") { // character moves to the right
+            Sleep(10);       
+        } break;
+        case RIGHT: { // character moves to the right
             not_in_menu = true;            
             if (x_pos + 1 < 25) {   
                 system("cls");
@@ -348,43 +366,62 @@ bool movement() {
             } else {
                 edge_of_map();
             }
-            
-        } else if (move_to_position == "C" || move_to_position == "c") {
+            Sleep(10);        
+        } break;
+        case INFO: { // character info selected
             job.display_info(); // all character info that is currently in the system
             not_in_menu = false;
             pause();
-            
-        } else if (move_to_position == "quit" || move_to_position == "exit") {// user types quit or exit
+            Sleep(10);
+        } break;
+        case QUIT: case EXIT: { // user types quit or exit
             char goodbye;
             bool error;
-            
+            char save_status;
+            not_in_menu = false;
             do { 
                 error = true;                
                 cout << " Are you sure you want to exit the game?\n";
                 cout << " Y/N: ";
                 cin >> goodbye; cin.ignore(80, '\n');
-                
+
                 if (goodbye == 'Y' || goodbye == 'y') { // if they're sure they want to leave
-                    exploring = false;
-                    error = false;
-                    
+                    cout << " Would you like to save your progress?\n";
+                    cout << "Y/N: ";
+                    cin >> save_status; cin.ignore(80, '\n'); // save progress to file?
+                    if (save_status == 'Y' || save_status == 'y') {
+                        save_game();
+                    } else if (save_status == 'N' || save_status == 'n') {
+                        exit(1);
+                    } else { // they pressed an incorrect key
+                        cout << error_message;
+                        exploring = true;
+                        error = true;
+                    }                    
+
                 } else if (goodbye == 'N' || goodbye == 'n') { // they changed their mind, np
                     exploring = true;
                     error = false;
-                    
+
                 } else { // they pressed an incorrect key          
                     cout << error_message;
                     exploring = true;
                     error = true;                        
                 }
-            } while (error);               
-        } else if(move_to_position == "I" || move_to_position == "i") {
+            } while (error);  
+            Sleep(10);
+        } break;
+        case ITEMS: {
             job.display_items(); 
             not_in_menu = false;
             pause();
-        } else {   
-            cout << " Gidian: Up, Down, Left, or right! Let's move " << name << "!!\n\n";        
-        }          
+            Sleep(10); 
+        } break;
+        default: {   
+            cout << " Gidian: Up, Down, Left, or right! Let's move " << name << "!!\n\n"; 
+            Sleep(10);               
+        }
+        } // end of switch for getch
         if (exploring && not_in_menu) {
             if (spaces % 12 == 0 && spaces != 0) {
                 system("cls");
@@ -411,8 +448,7 @@ bool movement() {
                 system("cls");
                 exploring = encounter_forest_feral();
             }
-        }       
-        spaces++;
+        }    
     }    
     return exploring;
 }
@@ -606,7 +642,7 @@ void battle_menu(string mob_name) {
             int cap = 4;
             
             if (job.get_level() >= 2) {
-                cap = 5;
+                cap = 6; // testing 6, should be 5
             } else if (job.get_level() >= 6) {
                 cap = 6;
             }
@@ -686,12 +722,12 @@ void battle_menu(string mob_name) {
             } else if (choice == ab_5 || choice == "5") {
                 error = false;
                 tried_to_run = false;
-                job_ability_name = job.get_ability_name(5);
-                job_ability_dmg = job.get_ability_damage(5);
-                job_ability_mp_cost = job.get_ability_mp_cost(5);
-                job_ability_info = job.get_ability_info(5);
-                job_ability_heal = job.get_ability_heal(5);
-                job_ability_defend = job.get_ability_defend(5);
+                job_ability_name = job.get_ability_name(4);
+                job_ability_dmg = job.get_ability_damage(4);
+                job_ability_mp_cost = job.get_ability_mp_cost(4);
+                job_ability_info = job.get_ability_info(4);
+                job_ability_heal = job.get_ability_heal(4);
+                job_ability_defend = job.get_ability_defend(4);
                 job.decrease_mp(job_ability_mp_cost);
                 if (job.get_mp() < 0) {
                     cout << " Not enough mana to use that ability!\n";
@@ -738,11 +774,16 @@ void battle_menu(string mob_name) {
             if (flee == false && tried_to_run == false && error == false) {
                 if (!used_item) {
                     cout << "\n " << name << " uses " << job_ability_name << "!\n";
+                    // Special Ability Cases
+                    
+                    // Special Ability Burglar (Stealth)
                     if (job_ability_name == "Stealth") {
                         cout << " " << name << " enters the shadows unseen.\n";
-                    } else if (job_ability_name == "Earth's Shell") {
+                    } else if (job_ability_name == "Earth's Shell") { 
+                        // Special ability Protector (Earth's Shell)
                         cout << " " << name << " surrounds himself with an earthen shield!\n";                    
                     } else if(job_ability_name == "Redemptive Light") {
+                        // Special ability Crusader (Redemptive Light)
                         cout << " " << name << " calls down the light of Redemption!\n";
                         job.increase_hp(job_ability_heal);                    
                         // Check for overheal
@@ -753,6 +794,24 @@ void battle_menu(string mob_name) {
                             job.set_hp(max_hp);                        
                         }                    
                         cout << " " << name << " restored "  << job_ability_heal << " hit points!\n";
+                        // Special Ability Crusader (Judgment Day)
+                    } else if (job_ability_name == "Judgment Day") {
+                        if (job.judgment_day() == true) {
+                            cout << " " << mob_name;
+                            battle_over = mob.damage_hp(job_ability_dmg);
+                            job.increase_hp(job_ability_heal);
+                            // Check for overheal
+                            if (job.get_hp() > max_hp) {
+                                int temp_val;
+                                temp_val = job.get_hp() - max_hp;
+                                job_ability_heal = job_ability_heal - temp_val;
+                                job.set_hp(max_hp);
+                            }
+                            // display restored amount
+                            cout << " " << name << " restored "  << job_ability_heal << " hit points!\n";
+                        } else { // judgment cast on self, ability failed
+                            job.damage_hp(job_ability_dmg / 2);
+                        }
                     } else {
                         cout << " " << mob_name;
                         battle_over = mob.damage_hp(job_ability_dmg);                    
@@ -843,6 +902,73 @@ void pause () {
     cin.ignore();
 }    
 
+void move_test(char maze[][25]) {    
+
+    int pointer = 1;
+    //int j = 12;
+    string map[4] = {"Right", "Left", "Down","Up"};
+    while (true) {
+        system("cls");
+        cout << "   ***************************************************\n";
+        cout << "   *                    Up                           *\n";
+        cout << "   *               Left      Right                   *\n";
+        cout << "   *                    Down                         *\n";
+        cout << "   ***************************************************\n";   
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+    
+        for (int i = 0; i < 4; ++i) {
+            if (i == pointer) {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
+                cout << map[i] << endl;
+                //cout << maze[i][j] << endl;
+            } else {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+                cout << map[i] << endl;
+                //cout << maze[i][j] << endl;
+            }       
+        }        
+        
+        while (true) {
+            if (GetAsyncKeyState(VK_UP) != 0) {
+                pointer = 3;
+                break;                
+            } else if (GetAsyncKeyState(VK_DOWN) != 0) {
+                pointer = 2;        
+                break;
+            } else if (GetAsyncKeyState(VK_RIGHT) != 0) {
+                pointer = 0;
+                break;
+            } else if (GetAsyncKeyState(VK_LEFT) != 0) {
+                pointer = 1;
+                break;
+            } else if (GetAsyncKeyState(VK_RETURN) != 0) {
+                cout << map[pointer] << endl;   
+                Sleep(1000);    
+            break; 
+            }
+            Sleep(150);
+//            else if (GetAsyncKeyState(VK_RETURN) != 0) {
+//                    switch (pointer) {
+//                        case 0: {                                                                             
+//                            cout << "";
+//                            Sleep(1000);        
+////                            pause();
+//                            begin_adventure(); 
+//                        } break;
+//                        case 1: {
+//                            cout << "\n\n\nNo file saved...";
+//                            Sleep(1000);                                                                    
+//                        } break;
+//                        case 2: {  
+//                            cout << "\n\n\n Exit the game...";                            
+//                            return 0;           
+//                        } break;
+//                    }
+//                break;
+        }            
+    }
+}
+ 
 /**
  * @param int min
  * @param int max
@@ -853,9 +979,69 @@ int get_rand(int min, int max){
     return(rand()% (max - min) + min); 
 } 
 
-// Exits the game if a condition is met.
-void exit_game() {    
-    game_active = false;
+//// Exits the game if a condition is met.
+//void exit_game() {    
+//    game_active = false;
+//}
+
+/**
+ * Function will write the necessary data to file to save character progress.
+ * '
+ * 
+ * @param none
+ * 
+ * 
+ */ 
+void save_game() {
+    //const char *path="C:\\Program Files (x86)\\Dailey Bros. Saves\\saved_game.txt";
+    char path[50];
+    string s_path;
+    s_path = job.get_name();
+    s_path += ".txt";
+    strncpy(path, s_path.c_str(), sizeof(path));
+    path[sizeof(path) - 1] = 0;     
+    ofstream file;
+    string data;
+    file.open(path); // Open File to write to path defined above
+    
+    if(!file) {
+        cerr << "Could not open file to save...\n";        
+    } else {
+        // Create a save file structure
+        
+         // Save name 'Name: Myname'
+        file << "Name: ";
+        file << job.get_name(); file << endl;
+        // Save job type 'Job: Myjob'
+        file << "Job: ";
+        file << job.get_job_type(); file << endl;
+        // Save experience 'Experience: ###'
+        file << "Experience: ";
+        file << job.get_experience(); file << endl;        
+        // Save level 'Level: #'
+        file << "Level: ";
+        file << job.get_level(); file << endl;
+        // Save stats 'STR: # ; INT: # ; DEX: # ; STAM: # ; DEF # ;'
+        file << "STR:  "; 
+        file << job.get_strength();
+        file << " INT:  ";
+        file << job.get_intelligence();
+        file << " DEX:  ";
+        file << job.get_dexterity();
+        file << " STAM:  ";
+        file << job.get_stamina();
+        file << " DEF:  ";
+        file << job.get_defense(); file << endl;       
+        //Save items 'Items: name ##'
+        file << "Items: ";
+        file << job.get_item_name(0);
+        file << ": "; 
+        file << job.get_item_quantity(0); file << endl;
+        file << job.get_item_name(1);
+        file << ": ";
+        file << job.get_item_quantity(1); file << endl;
+    }
+    exit(1);
 }
 
 #endif	/* BEGIN_ADVENTURE_H */

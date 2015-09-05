@@ -11,6 +11,9 @@
 #include <string>
 #include <iomanip>
 #include "mob_main.h"
+#include "equipment.h"
+
+const int MAX = 9;
 
 using namespace std;
 
@@ -20,8 +23,15 @@ int level_exp[21] = {
     1925, 2250, 2600, 2975, 3375, 3800, 4250, 4725, 5525, 6050
 };
 
+// equipment is a structure so it is easily modifiable and loaded
+struct equipment {
+    string slot;
+    Equipment equip;
+};
+
 typedef ability ab;
 typedef item_bag items;
+typedef equipment gear;
 
 class Jobs {
 private:
@@ -41,7 +51,8 @@ private:
     int defense;
     ab ind_ability[10];
     items item[20];
-
+    gear job_gear[6];
+    
 public:
 
     Jobs() {
@@ -69,7 +80,7 @@ public:
             ind_ability[i].heal = 0;
             ind_ability[i].defend = 0;
         }
-
+        
         for (int k = 0; k < 2; k++) {
             item[k].item.set_description("");
             item[k].item.set_cost(0);
@@ -78,8 +89,18 @@ public:
             item[k].item.set_drop_rate(0);
             item[k].quantity = 0;
         }
+        
+        job_gear[0].slot = "Head";        
+        job_gear[1].slot = "Weapon";
+        job_gear[2].slot = "Off-Hand";
+        job_gear[3].slot = "Shoulders";
+        job_gear[4].slot = "Chest";
+        job_gear[5].slot = "Feet";        
+        job_gear[0].equip.useless_helment();
     }
-
+    /** GET ALL INFO ON JOB **/
+    
+    
     /** Begin name functions **/
 
     void set_name(string n) {
@@ -132,7 +153,31 @@ public:
     }
 
     /** End of Level functions **/
-
+    
+    /** Begin stat functions **/
+    
+    int get_strength() {
+        return strength;
+    }
+    
+    int get_intelligence() {
+        return intelligence;
+    }
+    
+    int get_dexterity() {
+        return dexterity;
+    }
+    
+    int get_stamina() {
+        return stamina;
+    }
+    
+    int get_defense() {
+        return defense;
+    }
+    
+    /** End Stat functions **/
+    
     /** Begin Description functions **/
 
     void set_description(string desc) {
@@ -325,6 +370,42 @@ public:
         return item[choice].item.get_description();
     }
 
+    string get_equip_name(int choice) {
+        return job_gear[choice].equip.get_name();
+    }
+    
+    string get_equip_slot(int choice) {
+        return job_gear[choice].equip.get_slot();
+    }
+    
+    string get_equip_description(int choice) {
+        return job_gear[choice].equip.get_description();
+    }
+    
+    int get_equip_cost(int choice) {
+        return job_gear[choice].equip.get_cost();        
+    }
+    
+    int get_equip_drop_rate(int choice) {
+        return job_gear[choice].equip.get_drop_rate();
+    }
+     // Equipment stats. Using class equipment and indiv. functions for each piece.
+    // not every item has every stat. This is for retrieving a particular stat
+    // off a string [choice2] which is the name of the item.
+    int get_equip_stats(int choice1, string choice2) {
+        if (choice2 == "strength") {
+            return job_gear[choice1].equip.get_strength();
+        } else if (choice2 == "stamina") {
+            return job_gear[choice1].equip.get_stamina();
+        } else if (choice2 == "dexterity") {
+            return job_gear[choice1].equip.get_dexterity();
+        } else if (choice2 == "intelligence") {
+            return job_gear[choice1].equip.get_intelligence();
+        } else {
+            return job_gear[choice1].equip.get_defense();
+        }            
+    }
+    
     void set_job(string job_name) {
         job_type = job_name;
         // The Protector job        
@@ -437,7 +518,7 @@ public:
         cout << "  ABILITIES  : \n\n";
 
         if (level >= 2) {
-            cap = 4;
+            cap = 5; // testing 5 should be 4
         } else if (level >= 6) {
             cap = 5;
         }
@@ -445,15 +526,12 @@ public:
         for (int k = 0; k < cap; k++) { // for printing all ability props
             cout << " " << ind_ability[k].ability_name << "\n";
             cout << " ____________\n";
-
-            if (ind_ability[k].heal > 0) {
-                cout << "  Heal    : " << ind_ability[k].heal << "\n";
-            } else if (ind_ability[k].defend > 0) {
+            if (ind_ability[k].defend > 0) {
                 cout << "  Defensive Value : " << ind_ability[k].defend << "\n";
-            } else {    
-                cout << "  Damage  : " << ind_ability[k].damage << "\n";
             }
-
+            
+            cout << "  Heal    : " << ind_ability[k].heal << "\n";
+            cout << "  Damage  : " << ind_ability[k].damage << "\n";
             cout << "  MP Cost : " << ind_ability[k].mp_cost << "\n";
             cout << "  Info    : " << ind_ability[k].ability_info << "\n\n";
         }
@@ -648,7 +726,15 @@ public:
                             ind_ability[3].ability_name = "Redemptive Light";
                             ind_ability[3].heal = 15;
                             ind_ability[3].mp_cost = 5;
-                            ind_ability[3].ability_info = "The power of redemption restores the Paladin's health.\n";
+                            ind_ability[3].ability_info = "The power of redemption restores the Paladin's health.\n";                            
+                             // Testing judgment day for crusader
+                            ind_ability[4].ability_name = "Judgment Day";
+                            ind_ability[4].damage = 30;
+                            ind_ability[4].mp_cost = 2;
+                            ind_ability[4].heal = 10;
+                            ind_ability[4].ability_info = "Compare the sins of the Crusader and his mark.\n"
+                                    "The guilty party shall pay an eternal fate.\n";
+                            // end test code
                         }
                         cout << " " << name << " has learned the new ability " << ind_ability[3].ability_name << "!\n\n";
                     } else if (level == 6) {
@@ -673,8 +759,8 @@ public:
                             
                         } else if (job_type == "Crusader") {
                             ind_ability[4].ability_name = "Judgment Day";
-                            ind_ability[4].damage = 0;
-                            ind_ability[4].mp_cost = 0;
+                            ind_ability[4].damage = 30;
+                            ind_ability[4].mp_cost = 2;
                             ind_ability[4].heal = 10;
                             ind_ability[4].ability_info = "Compare the sins of the Crusader and his mark.\n"
                                     "The guilty party shall pay an eternal fate.\n";
@@ -752,26 +838,38 @@ public:
                         ind_ability[1].mp_cost += 1;
                         ind_ability[3].heal += intelligence / 8;
                         ind_ability[3].mp_cost += 2;
+                        ind_ability[4].damage += strength / 18;
                         ind_ability[4].mp_cost += 2;
+                        ind_ability[4].heal += intelligence / 12;
                     }
                 } // end of odd level increments
                 else {
                     
                 }
-            }// end of level up            
+            }// end of level up loop            
         } // end of for loop
     } // end of function
 
-    // Crusader ability activation
+    /* Crusader ability activation:
+     * If ability returns true, opponent will be damaged by the base amount
+     *  and the crusader healed.
+     * If the ability returns false, then the crusader will be damaged by half
+     *  of the amount that the ability deals.
+     */
     bool judgment_day() {
+        cout << " " << name << " casts Judgment Day!\n";
+        cout << " " << name << ": The guilty will pay!\n";
         int chance = get_rand(1, 100);
-        if (chance >= 45) {
+        // Chance for success increases with level.
+        // At level 6 when you get the ability, the chance is 55%.
+        if (chance >= (51 - level)) {             
             return true;
         } else {
+            cout << " " << name << " has been guilty!\n";       
             return false;
         }
     }
-};
+ };
 
 #endif	/* JOBS_H */
 

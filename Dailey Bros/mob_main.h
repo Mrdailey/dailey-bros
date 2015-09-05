@@ -12,9 +12,9 @@
 #include <iomanip>
 #include <string>
 #include <stdlib.h>
-#include "begin_adventure.h"
 #include "jobs.h"
 #include "items.h"
+#include "begin_adventure.h"
 
 using namespace std;
 int get_rand(int min, int max);
@@ -403,6 +403,7 @@ class Mobs {
                 ind_ability[2].mp_cost = 0;
                 ind_ability[2].ability_info = " The Forest Feral commands strong roots to spring out of the ground with force!\n";
             }
-        }                
+        }     
+    // end of public functions/variables    
 };      
 #endif	/* MOB_MAIN_H */

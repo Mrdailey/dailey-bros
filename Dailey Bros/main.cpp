@@ -1,5 +1,5 @@
 /* 
- * File:   text_adventure.cpp
+ * File:   begin_adventure.cpp
  * Author: Michael Ryan
  *
  * Created on August 1, 2014, 9:10 PM
@@ -11,6 +11,7 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <conio.h>
 #include "begin_adventure.h"
 
 using namespace std;

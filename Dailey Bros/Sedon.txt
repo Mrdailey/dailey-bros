@@ -1,0 +1,7 @@
+Name: Sedon
+Job: Crusader
+Experience: 10
+Level: 1
+STR:  26 INT:  24 DEX:  10 STAM:  25 DEF:  25
+Items: Basic Health Potion: 1
+: 0
