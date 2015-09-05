@@ -9,14 +9,16 @@
 #define	BEGIN_ADVENTURE_H
 
 // define character codes for arrow key movement
-#define UP 72  
-#define LEFT 75
-#define RIGHT 77
-#define DOWN 80
-#define INFO 99
-#define QUIT 113
-#define EXIT 101
-#define ITEMS 105
+#define UP 72 // up arrow
+#define LEFT 75 // left arrow
+#define RIGHT 77 // right arrow
+#define DOWN 80 // down arrow
+#define INFO 99 // 'c'
+#define QUIT 113 // 'q'
+#define EXIT 101 // 'e'
+#define ITEMS 105 // 'i'
+#define SURE 121 // 'y'
+#define UNSURE 110 // 'n'
 
 #include <iomanip>
 #include <iostream>
@@ -70,10 +72,9 @@ void begin_adventure() {
     string description;
     string job_type;
     string mob_type;
-//    system("cls");  // clears the screen
     while (game_active) {
         string name;
-        char decision;
+        int decision;
         string response;
         bool selected_job = false;    
 
@@ -113,33 +114,33 @@ void begin_adventure() {
             if (response == "protector" || response == "Protector") {                                         
                 job_type = "Protector";
                 job.set_job(job_type);
-                description = job.get_description();
-                
+                description = job.get_description();                
                 do {                                
                     cout << "\n You have selected the protector job." << description;
-                    cin >> decision; cin.ignore(80, '\n');
                     cout << "\n";
                     
-                    // confirm decision
-                    if (decision == 'Y' || decision == 'y') {
+                    // confirm job choice
+                    switch ((decision = getch())) {
+                    case SURE: {
                         cout << " " << name << ": I'm a protector.\n";                        
                         selected_job = true;
                         error = false;                        
                         cout << " Gidian: Protectors are like mindless beasts.\n"
-                                " Gidian: But like all beasts, they too can be tamed.\n";
-                        
-                        // changing your mind is okay!
-                    } else if (decision == 'N' || decision == 'n') {
+                                " Gidian: But like all beasts, they too can be tamed.\n";                       
+                    } break;
+                    // changing your mind is okay!
+                    case UNSURE: {
                         cout << " " << name << ": On second thought, I am definitely not a protector.\n";  
                         pause();
                         error = false;
-                        selected_job = false;
-                        // Users are idiots, so...
-                        
-                    } else {
+                        selected_job = false;                        
+                    } break;
+                    // Users are idiots, so...                        
+                    default: {
                         selected_job = false;
                         cout << error_message;                        
-                    }     
+                    }   
+                    } // end of switch case for confirming job protector
                 } while (error);    
                 
             } else if (response == "elementalist" || response == "Elementalist") {    
@@ -148,28 +149,30 @@ void begin_adventure() {
                 description = job.get_description();
                 do {
                     cout << "\n You have selected the elementalist job." << description;
-                    cin >> decision; cin.ignore(80, '\n');
                     cout << "\n";
+                    
                     // confirm job choice
-                    if (decision == 'Y' || decision == 'y') {
-                        
+                    switch ((decision = getch())) {
+                    case SURE: {    
                         cout << " " << name << ": I'm a elementalist.\n";                        
                         selected_job = true;
                         error = false;
                         cout << " Gidian: Elementalists are very powerful beings!\n"
-                                " Gidian: You should go first.\n";
-                        // changing of the mind
-                    } else if (decision == 'N' || decision == 'n') {
-                        
+                                " Gidian: You should go first.\n";                        
+                    } break;
+                    // changing of the mind
+                    case UNSURE: {                        
                         cout << " " << name << ": Gotcha! I'm not a elementalist.\n";
                         pause();                        
                         error = false;
                         selected_job = false;                        
-                    } else {
-                        
+                    } break;
+                    // error, pressed incorrect key
+                    default: {                        
                         selected_job = false;
                         cout << error_message;
                     }
+                    } // end of switch case for confirming job elementalist
                 } while (error);                
                 
             } else if (response == "burglar" || response == "Burglar") {
@@ -178,28 +181,33 @@ void begin_adventure() {
                 description = job.get_description();
                 do {
                     cout << "\n You have selected the burglar job." << description;
-                    cin >> decision; cin.ignore(80, '\n');
                     cout << "\n";
                     
                     // confirm job choice
-                    if (decision == 'Y' || decision == 'y') {
+                    switch ((decision = getch())) {
+                    case SURE: {
                         cout << " " << name << ": I'm a burglar.\n";                        
                         selected_job = true;
                         error = false;
                         cout << " Gidian: A burglar, how wonderful! I may have a use for you.\n"
                                 " Gidian: Have you ever tried stealing from a king? *winks*\n";
                         
-                        // changing of the mind
-                    } else if (decision == 'N' || decision == 'n') {
+                        
+                    } break;
+                    // changing of the mind
+                    case UNSURE: {
                         cout << " " << name << ": There\'s no way I\'m a burglar!\n";
                         pause();                        
                         error = false;
                         selected_job = false;     
                         
-                    } else {
+                    } break;
+                    // users cannot use things correctly!
+                    default: {
                         selected_job = false;
                         cout << error_message;
-                    }                    
+                    }  
+                    } // end of switch case for confirming job burglar
                 } while (error);
                 
             } else if (response == "crusader" || response == "Crusader") {
@@ -208,28 +216,31 @@ void begin_adventure() {
                 description = job.get_description();
                 do {
                     cout << "\n You have selected the Crusader job." << description;
-                    cin >> decision; cin.ignore(80, '\n');
                     cout << "\n";
                     
                     // confirm job choice
-                    if (decision == 'Y' || decision == 'y') {
+                    switch ((decision = getch())) {
+                    case SURE: { 
                         cout << " " << name << ": I'm a crusader.\n";                        
                         selected_job = true;
                         error = false;
                         cout << " Gidian: A purist eh?\n"
-                                " Gidian: Listen, you answer to me now, got it?!\n";
-                        // changing of the mind
-                        
-                    } else if (decision == 'N' || decision == 'n') {
+                                " Gidian: Listen, you answer to me now, got it?!\n";                                                
+                    } break;
+                    // changing of the mind
+                    case UNSURE: {
                         cout << " " << name << ": You fell for it! I'm no crusader!\n";
                         pause();                        
                         error = false;
                         selected_job = false;         
                         
-                    } else {
+                    } break; 
+                    // Users are ignorant once more!
+                    default: {
                         selected_job = false;
                         cout << error_message;
-                    }                    
+                    }        
+                    } // end of switch case for confirming job crusader
                 } while (error);
             } else { // They did something wrong.
                 cout << "That\'s not a real job!\n";
@@ -249,9 +260,8 @@ void begin_adventure() {
         if (encounter_goblin() == true) { // if the character is dead, return false!
             cout << " Gidian: Wow. You really showed that goblin how to bake bread!\n";
             cout << " Gidian: So where do you want to go from here?\n\n";             
-            
+            system("cls");
         } else {
-//            exit_game();
             exit(1);
         }
 
@@ -371,51 +381,54 @@ bool movement() {
         case INFO: { // character info selected
             job.display_info(); // all character info that is currently in the system
             not_in_menu = false;
-            pause();
-            Sleep(10);
+            draw_map(maze); // redraw map after exiting menu
         } break;
         case QUIT: case EXIT: { // user types quit or exit
-            char goodbye;
+            int goodbye;
             bool error;
-            char save_status;
+            int save_status;
             not_in_menu = false;
             do { 
                 error = true;                
                 cout << " Are you sure you want to exit the game?\n";
                 cout << " Y/N: ";
-                cin >> goodbye; cin.ignore(80, '\n');
-
-                if (goodbye == 'Y' || goodbye == 'y') { // if they're sure they want to leave
-                    cout << " Would you like to save your progress?\n";
-                    cout << "Y/N: ";
-                    cin >> save_status; cin.ignore(80, '\n'); // save progress to file?
-                    if (save_status == 'Y' || save_status == 'y') {
+                switch ((goodbye = getch())) {
+                case SURE: { // if they're sure they want to leave
+                    cout << "\n Would you like to save your progress?\n";
+                    cout << " Y/N: ";
+                    switch ((save_status = getch())) { // save progress to file?
+                    case SURE: { // pressed y, save game
                         save_game();
-                    } else if (save_status == 'N' || save_status == 'n') {
+                    } break;
+                    case UNSURE: { // pressed n, exit game without saving
                         exit(1);
-                    } else { // they pressed an incorrect key
+                    } break;
+                    default: { // they pressed an incorrect key
                         cout << error_message;
                         exploring = true;
                         error = true;
-                    }                    
-
-                } else if (goodbye == 'N' || goodbye == 'n') { // they changed their mind, np
+                    }      
+                    }
+                } break;
+                case UNSURE: { // they changed their mind, np
                     exploring = true;
                     error = false;
-
-                } else { // they pressed an incorrect key          
+                } break;
+                default: { // they pressed an incorrect key          
                     cout << error_message;
                     exploring = true;
                     error = true;                        
                 }
-            } while (error);  
+                } // end of switch case for exiting game
+            } while (error); // will loop asking. IF there was an error
             Sleep(10);
+            system("cls");
+            draw_map(maze); // redraw map after exiting menu
         } break;
         case ITEMS: {
             job.display_items(); 
             not_in_menu = false;
-            pause();
-            Sleep(10); 
+            draw_map(maze); // redraw map after exiting menu
         } break;
         default: {   
             cout << " Gidian: Up, Down, Left, or right! Let's move " << name << "!!\n\n"; 
@@ -435,15 +448,17 @@ bool movement() {
                         " Gidian: I am an old man, remember!\n";
                 exploring = encounter_skeleton_warrior();               
                 
-            } else if (spaces % 9 == 0 && spaces !=0) {                
+            } else if (spaces % 20 == 0 && spaces !=0) {                
                system("cls");
                cout << " Gidian: This is no ordinary Giant Tree Frog!\n"
                        " Gidian: Let's bust 'em up!\n";
                exploring = encounter_giant_tree_frog(); 
                
-            } else if (spaces == 19 || spaces == 17 || spaces == 23) {
+            }
+            //else if (spaces == 19 || spaces == 17 || spaces == 23) {
              
-            } else if (spaces == 50) {
+       //     } 
+        else if (spaces == 50) {
                 // FIRST BOSS ENCOUNTER
                 system("cls");
                 exploring = encounter_forest_feral();
@@ -810,7 +825,7 @@ void battle_menu(string mob_name) {
                             // display restored amount
                             cout << " " << name << " restored "  << job_ability_heal << " hit points!\n";
                         } else { // judgment cast on self, ability failed
-                            job.damage_hp(job_ability_dmg / 2);
+                            job.damage_hp(job_ability_dmg / 2);                            
                         }
                     } else {
                         cout << " " << mob_name;
@@ -856,20 +871,20 @@ void battle_menu(string mob_name) {
                     }
                     cout << mob.get_ability_info(ability_type);
                     mob.increase_hp(mob.get_ability_heal(ability_type));
+                    // character takes dmg from mob
                     if (job_ability_name == "Stealth") {
                         stealth_counter += 2;
                         cout << " " << mob_name << " cannot find " << name << "!\n";
                         cout << " " << name << " is hiding in the shadows.\n";
                         job.set_ability_damage(0, job.get_ability_damage(0) + stealth_counter);                        
                     } else if (job_ability_name == "Earth's Shell") {
-                        cout << " " << name;
                         game_over = job.damage_hp((mob.get_ability_damage(ability_type)) - job_ability_defend);
                     } else {
-                        cout << " " << name;
                         game_over = job.damage_hp((mob.get_ability_damage(ability_type)));                                               
                     }
                                                                                                                                        
                 }
+                // if the mob defeated the character in battle
                 if (game_over) {
                     cout << " " << name << " has been defeated by " << mob_name << "!!\n";
                     pause();
@@ -887,7 +902,7 @@ void battle_menu(string mob_name) {
             cout << " " << name << ": No wonder this guy is all alone out here...\n";        
         } 
         
-        // after double stab is used reset it's damage boost.
+        // after double stab is used, reset it's damage boost.
         if (job_ability_name == "Double Stab") {            
             job.set_ability_damage(0, job.get_ability_base_dmg(0));
         }
@@ -901,73 +916,6 @@ void pause () {
     cout << "  \n\n <Enter to continue> \n";
     cin.ignore();
 }    
-
-void move_test(char maze[][25]) {    
-
-    int pointer = 1;
-    //int j = 12;
-    string map[4] = {"Right", "Left", "Down","Up"};
-    while (true) {
-        system("cls");
-        cout << "   ***************************************************\n";
-        cout << "   *                    Up                           *\n";
-        cout << "   *               Left      Right                   *\n";
-        cout << "   *                    Down                         *\n";
-        cout << "   ***************************************************\n";   
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-    
-        for (int i = 0; i < 4; ++i) {
-            if (i == pointer) {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
-                cout << map[i] << endl;
-                //cout << maze[i][j] << endl;
-            } else {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-                cout << map[i] << endl;
-                //cout << maze[i][j] << endl;
-            }       
-        }        
-        
-        while (true) {
-            if (GetAsyncKeyState(VK_UP) != 0) {
-                pointer = 3;
-                break;                
-            } else if (GetAsyncKeyState(VK_DOWN) != 0) {
-                pointer = 2;        
-                break;
-            } else if (GetAsyncKeyState(VK_RIGHT) != 0) {
-                pointer = 0;
-                break;
-            } else if (GetAsyncKeyState(VK_LEFT) != 0) {
-                pointer = 1;
-                break;
-            } else if (GetAsyncKeyState(VK_RETURN) != 0) {
-                cout << map[pointer] << endl;   
-                Sleep(1000);    
-            break; 
-            }
-            Sleep(150);
-//            else if (GetAsyncKeyState(VK_RETURN) != 0) {
-//                    switch (pointer) {
-//                        case 0: {                                                                             
-//                            cout << "";
-//                            Sleep(1000);        
-////                            pause();
-//                            begin_adventure(); 
-//                        } break;
-//                        case 1: {
-//                            cout << "\n\n\nNo file saved...";
-//                            Sleep(1000);                                                                    
-//                        } break;
-//                        case 2: {  
-//                            cout << "\n\n\n Exit the game...";                            
-//                            return 0;           
-//                        } break;
-//                    }
-//                break;
-        }            
-    }
-}
  
 /**
  * @param int min
@@ -994,6 +942,13 @@ int get_rand(int min, int max){
  */ 
 void save_game() {
     //const char *path="C:\\Program Files (x86)\\Dailey Bros. Saves\\saved_game.txt";
+    cout << "\n\n Saving progress...\n";
+    // save is instant realistically, but this looks cooler.
+    for (int i = 0; i < 5; i++) { 
+        Sleep(1000); // wait for 1 second, simulates saving taking time
+        cout << " " << 20 + 20*i << "%\n";
+    }
+ 
     char path[50];
     string s_path;
     s_path = job.get_name();
@@ -1040,6 +995,7 @@ void save_game() {
         file << job.get_item_name(1);
         file << ": ";
         file << job.get_item_quantity(1); file << endl;
+        cout << "\n Game Saved!\n";
     }
     exit(1);
 }

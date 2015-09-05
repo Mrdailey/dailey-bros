@@ -1,0 +1,7 @@
+Name: Sedon
+Job: Crusader
+Experience: 80
+Level: 2
+STR:  28 INT:  26 DEX:  11 STAM:  27 DEF:  27
+Items: Basic Health Potion: 3
+Basic Mana Potion: 2

@@ -7,6 +7,8 @@
 
 #ifndef JOBS_H
 #define	JOBS_H
+
+#define STATS 115
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -17,6 +19,7 @@ const int MAX = 9;
 
 using namespace std;
 
+void pause();
 // initialize levels from 1-20
 int level_exp[21] = {
     0, 50, 125, 225, 350, 500, 675, 875, 1100, 1350, 1625,
@@ -199,7 +202,7 @@ public:
         return hp;
     }
 
-    // job is damaged; @return bool if job is killed        
+    // job is damaged; @return bool if character is killed        
 
     bool damage_hp(int dmg) {
         bool dead = false;
@@ -210,6 +213,7 @@ public:
             hp = temp_hp;
             dmg = 0;
         }
+        cout << " " << name;
         cout << " took " << dmg << " points of damage!\n";
         if (hp <= 0) {
             dead = true;
@@ -411,7 +415,7 @@ public:
         // The Protector job        
         if (job_type == "Protector") {
             description = "\n The brave protector uses his strength and skills "
-                    "in earthen might to massacre his foes.\n Select this job? Hit 'y' or 'n' and 'enter': ";
+                    "in earthen might to massacre his foes.\n Select this job? Hit 'y' or 'n': \n";
             hp = 50;
             mp = 20;
             max_hp = 50;
@@ -434,7 +438,7 @@ public:
             // The Elementalist
         } else if (job_type == "Elementalist") {
             description = "\n The powerful Elementalist unleashes spells to devastate his foes.\n"
-                    " Select this job? Hit 'y' or 'n' and 'enter': ";
+                    " Select this job? Hit 'y' or 'n': \n";
             hp = 40;
             mp = 40;
             max_hp = 40;
@@ -458,7 +462,7 @@ public:
             // The burglar Job
         } else if (job_type == "Burglar") {
             description = "\n The agile burglar uses his cunning and shadow techniques to overcome his foes.\n"
-                    " Select this job? Hit 'y' or 'n' and 'enter': ";
+                    " Select this job? Hit 'y' or 'n': \n";
             hp = 44;
             mp = 22;
             max_hp = 44;
@@ -480,7 +484,7 @@ public:
             // The Crusader Job
         } else if (job_type == "Crusader") {
             description = "\n The unrelenting crusader is a master of both weaponry and holy magic.\n"
-                    " Select this job? Hit 'y' or 'n' and 'enter': ";
+                    " Select this job? Hit 'y' or 'n': \n";
             hp = 50;
             mp = 25;
             max_hp = 50;
@@ -505,7 +509,10 @@ public:
     // Gives information on character while exploring
 
     void display_info() {
-        char choice;
+        system("cls");
+        cout << "                 " << name << "\n";
+        cout << "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\n";
+        int choice = 0;
         int cap = 3;
         cout << "                   " << name << "\n";
         cout << " _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n";
@@ -538,12 +545,12 @@ public:
 
         cout << " _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _";
         // View Stats?
-        cin >> choice; toupper(choice);
-        switch (choice) {
-            case 's': case 'S': {
+        switch ((choice = getch())) {
+            case STATS: {
+                system("cls");
                 display_stats();
-            }
-            break;      
+            } break;
+            default: system("cls");  
         }
     }
 
@@ -576,10 +583,14 @@ public:
             cout << " STAMINA      : " << stamina << "\n Increases health. \n\n";
             cout << " DEFENSE      : " << defense << "\n Reduces damage taken from all sources.\n\n";
         }
+        pause();
+        Sleep(10);
     }
 
     void display_items() {
         system("cls");
+        cout << "                 " << name << "\n";
+        cout << "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\n";
         int items = sizeof (item) / sizeof (item[0]);
         cout << "      ITEMS\n";
         cout << "_ _ _ _ _ _ _ _ _\n\n";
@@ -589,6 +600,8 @@ public:
                 cout << "  Description: " << item[i].item.get_description() << "\n\n";
             }
         }
+        pause();
+        system("cls");
     }
 
     bool item_validation(string item_choice) {
@@ -857,7 +870,6 @@ public:
      *  of the amount that the ability deals.
      */
     bool judgment_day() {
-        cout << " " << name << " casts Judgment Day!\n";
         cout << " " << name << ": The guilty will pay!\n";
         int chance = get_rand(1, 100);
         // Chance for success increases with level.
@@ -865,7 +877,7 @@ public:
         if (chance >= (51 - level)) {             
             return true;
         } else {
-            cout << " " << name << " has been guilty!\n";       
+            cout << " " << name << " has been found guilty!\n";       
             return false;
         }
     }
