@@ -510,8 +510,6 @@ public:
 
     void display_info() {
         system("cls");
-        cout << "                 " << name << "\n";
-        cout << "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\n";
         int choice = 0;
         int cap = 3;
         cout << "                   " << name << "\n";
@@ -525,7 +523,7 @@ public:
         cout << "  ABILITIES  : \n\n";
 
         if (level >= 2) {
-            cap = 5; // testing 5 should be 4
+            cap = 4; // testing 5 should be 4
         } else if (level >= 6) {
             cap = 5;
         }

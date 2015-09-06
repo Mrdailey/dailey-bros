@@ -1,0 +1,38 @@
+
+
+To Do List (last edit Sept. 15 2015)
+
+
+Abilities
+- Expand abilities past level 6 for all jobs.
+- Perhaps status effects on abilities, none currently in effect on mobs.
+
+Mobs
+- Add more mobs.
+- Variety of bosses need to be in place.
+- Balancing the numbers for all mobs, including the forest feral.
+
+Map
+- Add randomized events to the map structure
+- Make a battle happen on a random space(need to truly randomize, not using modulus operator)
+- Consider redoing map structure entirely from ground up, making it more dynamic, less predictable, and 
+much bigger. (ways to do this???)
+
+Items
+- Equipment needs to be used in loot tables for mobs.
+- Obtaining an item auto equips for increased stats?
+
+General 
+- Can functions be refactored and made to be more clear? (This involves detail work
+and determining what should be passed into the function).
+- Load Game implementation... going to be quite detailed and arduous.
+- Work on more story elements. Script, events, etc.
+
+
+Levels
+1 - 50 exp required ...
+level_exp = 50;
+for (int i = 1; i < 21; i++) {
+    cout << i << ": " << level_exp << endl;
+    level_exp = level_exp + 50 + i * 25;
+}

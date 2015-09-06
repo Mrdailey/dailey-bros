@@ -20,7 +20,7 @@ using namespace std;
 
 int main() {
     
-    system("pause");
+    system("pause"); // press any key to continue
     string Menu[3] = {"Start Game", "Continue", "Exit"};
     int pointer = 1;   
     
@@ -33,6 +33,8 @@ int main() {
         cout << "   *                   FotDTTHGP                     *\n";
         cout << "   *                   Main Menu                     *\n";
         cout << "   ***************************************************\n";        
+        // windows header file function to establish menu that can be
+        // navigated by arrow keys
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);        
 
         for (int i = 0; i < 3; ++i) {
@@ -45,7 +47,7 @@ int main() {
             }
         }        
 
-        while (true) {
+        while (true) { // loop until a selection is made
             if (GetAsyncKeyState(VK_UP) != 0) {
                 pointer -= 1;
                 if (pointer == -1) {

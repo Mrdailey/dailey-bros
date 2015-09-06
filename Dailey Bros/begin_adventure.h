@@ -8,7 +8,7 @@
 #ifndef BEGIN_ADVENTURE_H
 #define	BEGIN_ADVENTURE_H
 
-// define character codes for arrow key movement
+// define character codes for arrow key movement and other inputs
 #define UP 72 // up arrow
 #define LEFT 75 // left arrow
 #define RIGHT 77 // right arrow
@@ -436,29 +436,34 @@ bool movement() {
         }
         } // end of switch for getch
         if (exploring && not_in_menu) {
-            if (spaces % 12 == 0 && spaces != 0) {
+            if (get_rand(spaces, 100) >= 80) {
                 system("cls");
                 cout << " Gidian: Here we go " << name << "!\n"
                         " Gidian: Let\'s show \'em what we\'re made of!\n";
-                exploring = encounter_goblin();                
+                exploring = encounter_goblin();   
+                draw_map(maze);
+                spaces = 0;
                 
-            } else if (spaces % 7 == 0 && spaces != 0) {
+            } else if (get_rand(spaces, 100) >= 85) {
                 system("cls");
                 cout << " Gidian: No more picking berries " << name << "!\n"
                         " Gidian: I am an old man, remember!\n";
-                exploring = encounter_skeleton_warrior();               
+                exploring = encounter_skeleton_warrior(); 
+                draw_map(maze);
+                spaces = 0;
                 
-            } else if (spaces % 20 == 0 && spaces !=0) {                
+            } else if (get_rand(spaces, 100) >= 95) {                
                system("cls");
                cout << " Gidian: This is no ordinary Giant Tree Frog!\n"
                        " Gidian: Let's bust 'em up!\n";
                exploring = encounter_giant_tree_frog(); 
-               
+               draw_map(maze);
+               spaces = 0;
             }
             //else if (spaces == 19 || spaces == 17 || spaces == 23) {
              
        //     } 
-        else if (spaces == 50) {
+            else if (spaces == 50) {
                 // FIRST BOSS ENCOUNTER
                 system("cls");
                 exploring = encounter_forest_feral();
@@ -934,11 +939,6 @@ int get_rand(int min, int max){
 
 /**
  * Function will write the necessary data to file to save character progress.
- * '
- * 
- * @param none
- * 
- * 
  */ 
 void save_game() {
     
@@ -949,7 +949,7 @@ void save_game() {
      */
     
     // saves file to program files as .txt
-    const char *path = "C:\\Program Files\\";
+    const char *path = "C:\\Program Files\\Saved Games\\";
     cout << "\n\n Saving progress...\n";
     // save is instant realistically, but this looks cooler.
     for (int i = 0; i < 5; i++) { 
@@ -962,11 +962,13 @@ void save_game() {
     s_path += ".txt";
     string conc_path = path + s_path; // conc to new string
     const char *true_path = conc_path.c_str(); // true path is string to const char *  
+    cout << true_path << endl;
+    
     ofstream file;
     string data;
     file.open(true_path); // Open File to write to path defined above
-    
-    if(!file) {
+    //cout << file << endl;
+    if (!file) {
         cerr << "Could not open file to save...\n";        
     } else {
         // Create a save file structure
