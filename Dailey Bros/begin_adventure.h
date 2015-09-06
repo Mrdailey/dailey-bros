@@ -941,23 +941,30 @@ int get_rand(int min, int max){
  * 
  */ 
 void save_game() {
-    //const char *path="C:\\Program Files (x86)\\Dailey Bros. Saves\\saved_game.txt";
+    
+    /*
+     * NOTE: This is for saving to my particular system.
+     * Below this will be the save to Program Files for all systems
+     * const char *path="C:\\Users\\Michael Ryan\\Documents\\Github\\mrd\\dailey-bros\\Dailey Bros\\Saves\\";
+     */
+    
+    // saves file to program files as .txt
+    const char *path = "C:\\Program Files\\";
     cout << "\n\n Saving progress...\n";
     // save is instant realistically, but this looks cooler.
     for (int i = 0; i < 5; i++) { 
         Sleep(1000); // wait for 1 second, simulates saving taking time
         cout << " " << 20 + 20*i << "%\n";
     }
- 
-    char path[50];
+    // must concatenate string job name and .txt to end of path
     string s_path;
     s_path = job.get_name();
     s_path += ".txt";
-    strncpy(path, s_path.c_str(), sizeof(path));
-    path[sizeof(path) - 1] = 0;     
+    string conc_path = path + s_path; // conc to new string
+    const char *true_path = conc_path.c_str(); // true path is string to const char *  
     ofstream file;
     string data;
-    file.open(path); // Open File to write to path defined above
+    file.open(true_path); // Open File to write to path defined above
     
     if(!file) {
         cerr << "Could not open file to save...\n";        

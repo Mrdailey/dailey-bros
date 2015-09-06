@@ -1,0 +1,7 @@
+Name: Apples
+Job: Burglar
+Experience: 10
+Level: 1
+STR:  19 INT:  12 DEX:  30 STAM:  24 DEF:  25
+Items: Basic Health Potion: 1
+Basic Mana Potion: 1

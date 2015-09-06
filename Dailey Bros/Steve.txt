@@ -1,7 +1,0 @@
-Name: Steve
-Job: Crusader
-Experience: 65
-Level: 2
-STR:  28 INT:  26 DEX:  11 STAM:  27 DEF:  27
-Items: Basic Health Potion: 2
-Basic Mana Potion: 2

@@ -1,7 +1,0 @@
-Name: 123
-Job: Protector
-Experience: 25
-Level: 1
-STR:  30 INT:  12 DEX:  15 STAM:  25 DEF:  28
-Items: Basic Health Potion: 1
-Basic Mana Potion: 1
