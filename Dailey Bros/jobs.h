@@ -740,14 +740,6 @@ public:
                             ind_ability[3].heal = 15;
                             ind_ability[3].mp_cost = 5;
                             ind_ability[3].ability_info = "The power of redemption restores the Paladin's health.\n";                            
-                             // Testing judgment day for crusader
-                            ind_ability[4].ability_name = "Judgment Day";
-                            ind_ability[4].damage = 30;
-                            ind_ability[4].mp_cost = 2;
-                            ind_ability[4].heal = 10;
-                            ind_ability[4].ability_info = "Compare the sins of the Crusader and his mark.\n"
-                                    "The guilty party shall pay an eternal fate.\n";
-                            // end test code
                         }
                         cout << " " << name << " has learned the new ability " << ind_ability[3].ability_name << "!\n\n";
                     } else if (level == 6) {

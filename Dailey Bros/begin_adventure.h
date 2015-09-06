@@ -630,8 +630,8 @@ void battle_menu(string mob_name) {
     system("cls");    
     string name = job.get_name();
     string choice, job_ability_name;    
-    int hp_gained = mob.get_hp() * .15;
-    int mp_gained = mob.get_mp() * .12;
+    int hp_gained = mob.get_hp() * .15; // hp gained = 15% of mob hp
+    int mp_gained = mob.get_mp() * .12; // mp gained = 10% of mob mp
     int job_ability_dmg, ability_type, job_ability_mp_cost, job_ability_heal, job_ability_defend;
     string job_ability_info;
     bool battle_over = false;   
@@ -646,7 +646,7 @@ void battle_menu(string mob_name) {
     cout << " " << name << " has encountered a " << mob_name << "!!\n\n";
     // if mob is dead battle is over
     while (!battle_over) {           
-        int stealth_counter = 0;
+        int stealth_counter = 0; // variable used for burglar stealth inc dmg counter
         bool flee = false;    
         bool error = false;
         bool used_item = false;
@@ -657,7 +657,7 @@ void battle_menu(string mob_name) {
             int cap = 4;
             
             if (job.get_level() >= 2) {
-                cap = 6; // testing 6, should be 5
+                cap = 5; // testing 6, should be 5
             } else if (job.get_level() >= 6) {
                 cap = 6;
             }

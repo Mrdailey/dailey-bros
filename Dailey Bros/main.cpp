@@ -12,13 +12,15 @@
 #include <cstdlib>
 #include <ctime>
 #include <conio.h>
+//#include <mmsystem.h>
 #include "begin_adventure.h"
 
 using namespace std;
-
+    
 
 int main() {
-
+    
+    system("pause");
     string Menu[3] = {"Start Game", "Continue", "Exit"};
     int pointer = 1;   
     
